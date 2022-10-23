@@ -1,5 +1,5 @@
-# **Pygame Demo**
-PygameDemo is an elegant demo for Pygame beginners to create a maintainable Pygame project.
+# **Arena**
+Arena is a 2D platform game by Pygame
 ## Getting Started
 1. Make sure you are running this on Python3.6+
 ```
