@@ -22,7 +22,8 @@ PATH_MAP_COLL = r"./assets/game/map/collision_box/"
 
 # * Layer Settings * #
 LAYERS = {
-    "background": 1,
+    "background": 0,
+    "map_coll": 1,  # Collision Box
     "map": 2,
     "default": 3,
     "weapon": 4,
