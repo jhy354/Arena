@@ -35,19 +35,11 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center)
         self.hitbox = self.rect.copy()
         self.mask = pygame.mask.from_surface(self.image)
-
-        # Physical Attributes
-        self.mass = 2
-        self.speed_x = 0
-        self.speed_y = 0
-        self.acceleration = 10
-        self.max_speed = 200
-        self.max_jump_h = 50
+        self.speed = 300
 
         # * Timers * #
         self.timers = {
             # 函数后不应有 "()"
-            "jump_up": Timer(1000, self.jump_down)  # 跳跃上升
         }
 
         Debug(True) << "Inited Player" << "\n"
@@ -107,11 +99,14 @@ class Player(pygame.sprite.Sprite):
             if hasattr(sprite, "hitbox"):
                 if sprite.hitbox.colliderect(self.hitbox):
                     Debug(DEBUG_MODE) << "Collide with Hitbox" << "\n"
+
                     if direction == "horizontal":
-                        if self.direction.x > 0:  # moving right
+
+                        if self.direction.x > 0:
                             self.hitbox.right = sprite.hitbox.left
-                        if self.direction.x < 0:  # moving left
+                        if self.direction.x < 0:
                             self.hitbox.left = sprite.hitbox.right
+
                         self.rect.centerx = self.hitbox.centerx
                         self.pos.x = self.hitbox.centerx
 
@@ -119,14 +114,21 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.coll_mask_sprites.sprites():
             if hasattr(sprite, "mask") and hasattr(sprite, "rect"):
                 offset = (sprite.rect.x - self.rect.x, sprite.rect.y - self.rect.y)
-                tmp_rect = self.rect.copy()
                 if self.mask.overlap(sprite.mask, offset) is not None:
                     Debug(DEBUG_MODE) << "Collide with Mask" << "\n"
+
                     if direction == "horizontal":
-                        if self.direction.x > 0:  # moving right
-                            self.rect.right = tmp_rect.right - 4
-                        if self.direction.x < 0:  # moving left
-                            self.rect.left = tmp_rect.left - 4
+
+                        if self.direction.x > 0:
+                            self.rect.x = self.rect.x = \
+                                self.mask.overlap(sprite.mask, offset)[0] + self.rect.x - self.rect.size[0]
+                        if self.direction.x < 0:
+                            # (可能)由于 Player.mask(图片非透明区域) 不等于 Player.rect.size(图片尺寸) 所产生的错误
+                            # 通过试验, 在 50 <= Player.speed <= 600 的范围中:
+                            # 得到碰撞坐标补偿值的函数式: 0.015 * self.speed + 1
+                            self.rect.x = \
+                                self.mask.overlap(sprite.mask, offset)[0] + self.rect.x + round(0.015 * self.speed + 1)
+
                         self.pos.x = self.rect.centerx
 
     def respond_input(self):
@@ -138,45 +140,18 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_LEFT]:
                 self.status = "walk"
                 self.direction.x = -1
-                if self.speed_x <= self.max_speed:
-                    self.speed_x += self.acceleration
 
             elif keys[pygame.K_RIGHT]:
                 self.status = "walk"
                 self.direction.x = 1
-                if self.speed_x <= self.max_speed:
-                    self.speed_x += self.acceleration
 
             else:
-                if self.speed_x >= 0:
-                    self.speed_x -= self.acceleration
-                else:
-                    self.direction.x = 0
-
-            # * Vertical Movement * #
-            """
-            if keys[pygame.K_UP]:
-                self.direction.y = -1
-                if self.speed_y <= self.max_speed:
-                    self.speed_y += self.acceleration
-
-            elif keys[pygame.K_DOWN]:
-                self.direction.y = 1
-                if self.speed_y <= self.max_speed:
-                    self.speed_y += self.acceleration
-
-            else:
-                if self.speed_y >= 0:
-                    self.speed_y -= self.acceleration
-                else:
-                    self.direction.y = 0
-            """
+                self.direction.x = 0
 
             # * Other Movement * #
             if keys[pygame.K_SPACE]:
                 self.frame_index = 0  # Start a new animation
                 self.status = "jump"
-                # self.direction = pygame.math.Vector2()
             else:
                 pass
 
@@ -186,14 +161,14 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()
 
-        self.pos.x += self.direction.x * self.speed_x * dt
+        self.pos.x += self.direction.x * self.speed * dt
         self.rect.centerx = self.pos.x
 
         self.respond_collide("horizontal")
 
     def vertical_move(self, dt):
         if self.status == "jump":
-            self.jump_up(dt)
+            pass
 
     def update_timers(self):
         for timer in self.timers.values():
@@ -218,12 +193,3 @@ class Player(pygame.sprite.Sprite):
         # * Idle * #
         if self.direction.magnitude() == 0:
             self.status = "idle"
-
-    def jump_up(self, dt):
-        vmax = 20 * self.max_jump_h
-        if self.speed_y >= vmax:
-            self.speed_y -= 10 / dt  # g = 10 m/s^2
-        self.pos.y += self.speed_y
-
-    def jump_down(self):
-        self.status = "jump_down"
