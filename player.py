@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center)
         self.hitbox = self.rect.copy()
         self.mask = pygame.mask.from_surface(self.image)
-        self.speed = 300
+        self.speed = 400
 
         # * Timers * #
         self.timers = {
