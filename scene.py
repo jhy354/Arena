@@ -4,11 +4,12 @@ import layout
 import text_script
 from settings import *
 from utils import Debug
-from utils import render_text
 from player import Player
 from sprites import Generic
 from sprites import TextButton
+from sprites import Map
 from support import import_folder
+from support import custom_load
 
 
 class Scene:
@@ -17,10 +18,15 @@ class Scene:
     """
 
     def __init__(self):
+        # * General * #
         self.active = False
         self.display_surface = pygame.display.get_surface()
-        self.all_sprites = CameraGroup()
         self.background = pygame.surface.Surface(SCR_SIZE)
+
+        # * Groups * #
+        self.all_sprites = CameraGroup()
+        self.coll_rect_sprites = pygame.sprite.Group()
+        self.coll_mask_sprites = pygame.sprite.Group()
 
     def activate(self):
         """
@@ -68,14 +74,14 @@ class StartMenu(Scene):
 
         self.background = Generic(
             pos=layout.SM_BG,
-            surf=pygame.image.load(PATH_UI_BG + "2_bg_night.png"),
+            surf=custom_load(PATH_UI_BG + "2_bg_night.png", layout.SM_BG_SIZE),
             group=self.all_sprites,
             z=LAYERS["background"]
         )
 
         self.game_title = Generic(
             pos=layout.SM_TITLE,
-            surf=pygame.image.load(PATH_TEXT + "game_title.png"),
+            surf=custom_load(PATH_TEXT + "game_title.png", layout.SM_TITLE_SIZE),
             group=self.all_sprites
         )
 
@@ -120,14 +126,21 @@ class PlayGround(Scene):
     def __init__(self):
         super().__init__()
 
-        self.background = Generic(
+        self.map = Generic(
             pos=(0, 0),
-            surf=import_folder(PATH_MAP_IMG)[0],
+            surf=import_folder(PATH_MAP_IMG, SCR_SIZE)[0],
             group=self.all_sprites,
-            z=LAYERS["background"]
+            z=LAYERS["map"]
         )
 
-        self.player = Player(layout.SCR_CENTER, self.all_sprites)
+        self.map_cb = Map(
+            pos=(0, 0),
+            surf=import_folder(PATH_MAP_COLL, SCR_SIZE)[0],
+            group=[self.all_sprites, self.coll_mask_sprites],
+            z=LAYERS["map_coll"]
+        )
+
+        self.player = Player(layout.SCR_CENTER, self.all_sprites, self.coll_rect_sprites, self.coll_mask_sprites)
 
         Debug(True) << "Inited PlayGround" << "\n"
 

@@ -2,8 +2,8 @@ import sys
 
 import pygame
 
-from utils import Debug
 from settings import *
+from utils import Debug
 from scene import PlayGround
 from scene import StartMenu
 
