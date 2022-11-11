@@ -1,7 +1,8 @@
 from settings import *
 
 # * Global * #
-PLAYER_SIZE = (64, 50)
+PLAYER_SIZE = (64, 51)
+TILE_SIZE = 64
 SCR_CENTER = (SCR_SIZE[0]/2, SCR_SIZE[1]/2)
 
 # * StartMenu * #

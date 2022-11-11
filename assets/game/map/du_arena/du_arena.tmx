@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" name="du_arena" tilewidth="64" tileheight="64" tilecount="100" columns="10">
+  <image source="du_arena.png" width="640" height="640"/>
+ </tileset>
+ <layer id="1" name="edge" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKIyZqYSRjaPUjBq3qh5o+YRbx418y81MQDUYgEz
+  </data>
+ </layer>
+ <objectgroup id="2" name="floor_obj"/>
+ <layer id="3" name="floor" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDDTgAWJeCvTLA7ECECsCsRIQiwGxOBArA7EKEKsCsRqUrwrFIHWiUDxUAACxVwIU
+  </data>
+ </layer>
+</map>
