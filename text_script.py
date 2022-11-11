@@ -1,4 +1,4 @@
 from settings import *
 
-START_GAME = "BUTTON_START"
+START_GAME = "Start Adventure"
 
