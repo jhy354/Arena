@@ -3,8 +3,8 @@ SCR_SIZE = (1280, 720)
 FPS = 60
 FONT = "方正粗黑宋简体"
 
-VERSION = "0.0.1.1022"
-CAPTION = "Arena - v" + VERSION
+VERSION = "e0.0.1.1022"
+CAPTION = "Arena - " + VERSION
 
 # * Game Settings * #
 DEBUG_MODE = True
