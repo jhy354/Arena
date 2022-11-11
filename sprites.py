@@ -29,15 +29,6 @@ class GameObject(Generic):
         self.hitbox = self.rect.copy()
 
 
-class Map(Generic):
-    """
-    蒙版碰撞的地图
-    """
-    def __init__(self, pos, surf, group, z=LAYERS["map_coll"]):
-        super().__init__(pos, surf, group, z)
-        self.mask = pygame.mask.from_surface(self.image)
-
-
 class Button(pygame.sprite.Sprite):
     """
     不可直接实例化, 必须通过其子类创建按钮
