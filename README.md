@@ -6,9 +6,10 @@ Arena is a 2D platform game by Pygame
 # check your python version
 python --version
 ```
-2. Make sure you already installed Pygame in your python environment
+2. Make sure you already installed following packages in your python environment
 ```shell
 pip install pygame==2.1.2
+pip install pytmx
 ```
 3. Just run it!
 ```shell

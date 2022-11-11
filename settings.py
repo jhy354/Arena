@@ -5,7 +5,7 @@ FONT = "方正粗黑宋简体"
 MOVEMENT_RATING = 100
 
 VERSION = "e0.0.2.1111"
-CAPTION = "Arena - e" + VERSION
+CAPTION = "Arena - " + VERSION
 
 # * Game Settings * #
 DEBUG_MODE = True
