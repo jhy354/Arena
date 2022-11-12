@@ -4,12 +4,15 @@ from pytmx.util_pygame import load_pygame
 import layout
 import text_script
 from settings import *
+from path import *
 from utils import Debug
 from player import Player
 from sprites import Generic
 from sprites import GameObject
 from sprites import TextButton
+from sprites import Fog
 from support import custom_load
+from weapons import Pistol
 
 
 class Scene:
@@ -72,15 +75,15 @@ class StartMenu(Scene):
         super().__init__()
 
         self.background = Generic(
-            pos=layout.SM_BG,
-            surf=custom_load(PATH_UI_BG + "2_bg_night.png", layout.SM_BG_SIZE),
+            pos=layout.BG_POS,
+            surf=custom_load(PATH_UI_BG + "2_bg_night.png", layout.BG_SIZE),
             group=[self.all_sprites],
             z=LAYERS["background"]
         )
 
         self.game_title = Generic(
             pos=layout.SM_TITLE,
-            surf=custom_load(PATH_TEXT + "game_title.png", layout.SM_TITLE_SIZE),
+            surf=custom_load(PATH_UI_TEXT + "game_title.png", layout.SM_TITLE_SIZE),
             group=[self.all_sprites]
         )
 
@@ -133,6 +136,14 @@ class PlayGround(Scene):
 
         self.player = None
 
+        # * 武器 * #
+        # 武器只是一个跟随 player 移动的 surface
+        # 不实现其他功能
+        self.weapon = None
+
+        self.fog_1 = None
+        self.fog_2 = None
+
         Debug(True) << "Inited PlayGround" << "\n"
 
     def horizontal_movement_coll(self, dt):
@@ -167,6 +178,15 @@ class PlayGround(Scene):
                     player.direction.y = 0
                     player.can_jump = False
 
+    def move_weapon(self):
+        self.weapon.image = self.weapon.init_image
+        if self.player.face_direction == "left":
+            self.weapon.image = pygame.transform.flip(self.weapon.image, True, False)
+            self.weapon.rect.topright = self.player.rect.midleft
+        else:
+            self.weapon.rect.topleft = self.player.rect.midright
+        self.weapon.rect.y -= 5
+
     def activate(self):
         super().activate()
         Debug(True) << "Activated PlayGround" << "\n"
@@ -182,8 +202,8 @@ class PlayGround(Scene):
 
         # * Load Background * #
         self.background = Generic(
-            pos=layout.SM_BG,
-            surf=custom_load(PATH_UI_BG + "1_bg_dust.png", layout.SM_BG_SIZE),
+            pos=layout.BG_POS,
+            surf=custom_load(PATH_UI_BG + "1_bg_dust.png", layout.BG_SIZE),
             group=[self.all_sprites],
             z=LAYERS["background"]
         )
@@ -226,6 +246,22 @@ class PlayGround(Scene):
         self.player = Player(layout.SCR_CENTER, self.all_sprites)
         self.player.activate()
 
+        # * Load Weapon * #
+        self.weapon = Pistol([self.all_sprites])
+
+        # * Load Fog * #
+        self.fog_1 = Fog(
+            pos=(0, 0),
+            surf=custom_load(PATH_EFFECT_FOG + "fog_thin.png", layout.FOG_SIZE),
+            group=[self.all_sprites],
+        )
+
+        self.fog_2 = Fog(
+            pos=(-SCR_SIZE[0], 0),
+            surf=custom_load(PATH_EFFECT_FOG + "fog_thin.png", layout.FOG_SIZE),
+            group=[self.all_sprites],
+        )
+
     def _release(self):
         super()._release()
         Debug(True) << "Released PlayGround" << "\n"
@@ -234,6 +270,9 @@ class PlayGround(Scene):
         super().run(dt)
         self.horizontal_movement_coll(dt)
         self.vertical_movement_coll(dt)
+        self.move_weapon()
+        self.fog_1.move(dt)
+        self.fog_2.move(dt)
 
 
 class CameraGroup(pygame.sprite.Group):
