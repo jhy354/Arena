@@ -4,7 +4,7 @@ FPS = 144
 FONT = "方正粗黑宋简体"
 MOVEMENT_RATING = 100
 
-VERSION = "e0.0.3.1112"
+VERSION = "e0.0.4.1113"
 CAPTION = "Arena - " + VERSION
 
 # * Game Settings * #

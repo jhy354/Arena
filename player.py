@@ -5,6 +5,7 @@ from settings import *
 from path import *
 from utils import Debug
 from support import import_folder
+from weapons import Pistol
 
 
 class Player(pygame.sprite.Sprite):
@@ -12,12 +13,12 @@ class Player(pygame.sprite.Sprite):
     控制玩家的行为
     """
 
-    def __init__(self, start_pos, group):
+    def __init__(self, start_pos, group, player_keys, skin="p_pale"):
         super().__init__(group)
 
         # * 图像参数 * #
         self.display_surface = pygame.display.get_surface()
-        self.skin = "p_pale"
+        self.skin = skin
         self.animations = {}
         self.status = "idle"
         self.import_assets()
@@ -32,6 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=start_pos)
 
         # * 移动参数 * #
+        self.player_keys = player_keys
         self.direction = pygame.math.Vector2(0, 0)
         self.speed = 8
         self.gravity = 0.8
@@ -42,6 +44,7 @@ class Player(pygame.sprite.Sprite):
 
         # * 其他 * #
         self.push_space = False
+        self.weapon = Pistol([self.groups()[0]])
 
         Debug(True) << "Inited Player" << "\n"
 
@@ -80,12 +83,12 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         # * Horizontal Movement * #
-        if keys[pygame.K_a]:
+        if keys[self.player_keys["left"]]:
             self.status = "walk"
             self.face_direction = "left"
             self.direction.x = -1 * self.speed
 
-        elif keys[pygame.K_d]:
+        elif keys[self.player_keys["right"]]:
             self.status = "walk"
             self.face_direction = "right"
             self.direction.x = 1 * self.speed
@@ -94,7 +97,7 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
         # * Other Movement * #
-        if keys[pygame.K_SPACE]:
+        if keys[self.player_keys["jump"]]:
             self.push_space = True
             if self.can_jump:
                 self.jump(dt)
