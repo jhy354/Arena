@@ -1,3 +1,5 @@
+from random import randint
+
 import pygame
 from pytmx.util_pygame import load_pygame
 
@@ -12,7 +14,6 @@ from sprites import GameObject
 from sprites import TextButton
 from sprites import Fog
 from support import custom_load
-from weapons import Pistol
 
 
 class Scene:
@@ -134,7 +135,10 @@ class PlayGround(Scene):
         self.map_edges = []
         self.map_floors = []
 
-        self.player = None
+        self.player_group = pygame.sprite.Group()
+
+        self.player_1 = None
+        self.player_2 = None
 
         # * 武器 * #
         # 武器只是一个跟随 player 移动的 surface
@@ -147,45 +151,50 @@ class PlayGround(Scene):
         Debug(True) << "Inited PlayGround" << "\n"
 
     def horizontal_movement_coll(self, dt):
-        player = self.player
+        for player in self.player_group:
 
-        player.rect.x += player.direction.x * dt * MOVEMENT_RATING
+            player.rect.x += player.direction.x * dt * MOVEMENT_RATING
 
-        for sprite in self.coll_rect_sprites:
-            if sprite.rect.colliderect(player.rect):
-                if player.direction.x < 0:
-                    player.rect.left = sprite.rect.right
-                elif player.direction.x > 0:
-                    player.rect.right = sprite.rect.left
+            for sprite in self.coll_rect_sprites:
+                if sprite.rect.colliderect(player.rect):
+                    if player.direction.x < 0:
+                        player.rect.left = sprite.rect.right
+                    elif player.direction.x > 0:
+                        player.rect.right = sprite.rect.left
 
     def vertical_movement_coll(self, dt):
-        player = self.player
-        player.apply_gravity()
+        for player in self.player_group:
+            player.apply_gravity()
 
-        player.rect.y += player.direction.y * dt * MOVEMENT_RATING
+            player.rect.y += player.direction.y * dt * MOVEMENT_RATING
 
-        for sprite in self.coll_rect_sprites:
-            if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
-                    player.direction.y = 0
-                    player.jump_cnt = 0
-                    if not player.can_jump and not player.push_space:
-                        player.can_jump = True
-                        Debug(DEBUG_MODE) << "Player Enabled Jump" << "\n"
-                elif player.direction.y < 0:
-                    player.rect.top = sprite.rect.bottom
-                    player.direction.y = 0
-                    player.can_jump = False
+            for sprite in self.coll_rect_sprites:
+                if sprite.rect.colliderect(player.rect):
+                    if player.direction.y > 0:
+                        player.rect.bottom = sprite.rect.top
+                        player.direction.y = 0
+                        player.jump_cnt = 0
+                        if not player.can_jump and not player.push_space:
+                            player.can_jump = True
+                            Debug(DEBUG_MODE) << "Player Enabled Jump" << "\n"
+                    elif player.direction.y < 0:
+                        player.rect.top = sprite.rect.bottom
+                        player.direction.y = 0
+                        player.can_jump = False
 
     def move_weapon(self):
-        self.weapon.image = self.weapon.init_image
-        if self.player.face_direction == "left":
-            self.weapon.image = pygame.transform.flip(self.weapon.image, True, False)
-            self.weapon.rect.topright = self.player.rect.midleft
-        else:
-            self.weapon.rect.topleft = self.player.rect.midright
-        self.weapon.rect.y -= 5
+        for player in self.player_group:
+            player.weapon.image = player.weapon.init_image
+            if player.face_direction == "left":
+                player.weapon.image = pygame.transform.flip(player.weapon.image, True, False)
+                player.weapon.rect.topright = player.rect.midleft
+            else:
+                player.weapon.rect.topleft = player.rect.midright
+            player.weapon.rect.y -= 5
+            if player.face_direction == "right":
+                player.weapon.rect.x -= 5
+            else:
+                player.weapon.rect.x += 5
 
     def activate(self):
         super().activate()
@@ -209,7 +218,8 @@ class PlayGround(Scene):
         )
 
         # * Load Map Data * #
-        tmx_data = load_pygame(PATH_MAP_DU_DUST)
+        rand_map = randint(0, len(PATH_MAP)-1)
+        tmx_data = load_pygame(PATH_MAP[rand_map])
 
         for x, y, surf in tmx_data.get_layer_by_name("edge").tiles():
             self.map_edges.append(
@@ -242,12 +252,25 @@ class PlayGround(Scene):
             )
 
         # * Load Player * #
+        p1_skin = SKIN_DICT[randint(0, len(SKIN_DICT)-1)]
+        p2_skin = SKIN_DICT[randint(0, len(SKIN_DICT)-1)]
 
-        self.player = Player(layout.SCR_CENTER, self.all_sprites)
-        self.player.activate()
+        self.player_1 = Player(
+            start_pos=layout.SCR_CENTER,
+            group=[self.all_sprites, self.player_group],
+            player_keys={"jump": pygame.K_w, "left": pygame.K_a, "right": pygame.K_d},
+            skin=p1_skin
+        )
 
-        # * Load Weapon * #
-        self.weapon = Pistol([self.all_sprites])
+        self.player_2 = Player(
+            start_pos=layout.SCR_CENTER,
+            group=[self.all_sprites, self.player_group],
+            player_keys={"jump": pygame.K_UP, "left": pygame.K_LEFT, "right": pygame.K_RIGHT},
+            skin=p2_skin
+        )
+
+        for player in self.player_group:
+            player.activate()
 
         # * Load Fog * #
         self.fog_1 = Fog(
