@@ -2,6 +2,7 @@ import pygame
 
 import layout
 from settings import *
+from path import *
 from utils import Debug
 from support import import_folder
 
@@ -23,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.z = LAYERS["player"]
         self.image = self.animations[self.status][self.frame_index]
+        self.face_direction = "right"
 
         # * 角色判断参数 * #
         self.active = False
@@ -69,7 +71,10 @@ class Player(pygame.sprite.Sprite):
         super().update()
 
         if self.active:
+            # print(self.status)
             self.respond_input(dt)
+            self.switch_status()
+            self.switch_frame(dt)
 
     def respond_input(self, dt):
         keys = pygame.key.get_pressed()
@@ -77,10 +82,12 @@ class Player(pygame.sprite.Sprite):
         # * Horizontal Movement * #
         if keys[pygame.K_a]:
             self.status = "walk"
+            self.face_direction = "left"
             self.direction.x = -1 * self.speed
 
         elif keys[pygame.K_d]:
             self.status = "walk"
+            self.face_direction = "right"
             self.direction.x = 1 * self.speed
 
         else:
@@ -116,12 +123,20 @@ class Player(pygame.sprite.Sprite):
 
         # 必须在下一行使用 int()
         self.image = self.animations[self.status][int(self.frame_index)]
+        if self.face_direction == "left":
+            self.image = pygame.transform.flip(self.image, True, False)
 
     def switch_status(self):
         # 注意优先级
 
+        # * Jump * #
+        if self.jump_cnt != 0:
+            self.status = "jump"
+            # start a new animation
+            self.frame_index = 0
+
         # * Idle * #
-        if self.direction.magnitude() == 0:
+        elif self.direction.x == 0:
             self.status = "idle"
 
     def import_assets(self):
