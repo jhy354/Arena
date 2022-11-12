@@ -10,6 +10,7 @@ def import_folder(path, size=(0, 0)):
     """
     将目录中所有图片文件导入为 surface 对象
     在需要使用目录中所有图片时使用
+    保留 alpha通道
     """
     surface_list = []
 
@@ -18,7 +19,7 @@ def import_folder(path, size=(0, 0)):
             full_path = path + "/" + image
             Debug(DEBUG_MODE) << full_path << "\n"
 
-            # convert_alpha() 优化性能, 但相对于 convert() 保留了透明效果
+            # convert_alpha() 优化性能 保留 alpha通道
             image_surf = pygame.image.load(full_path).convert_alpha()
 
             # 重置尺寸
@@ -34,8 +35,14 @@ def import_folder(path, size=(0, 0)):
 
 
 def custom_load(image_path, size=(0, 0)):
-    surf = pygame.image.load(image_path)
+    """
+    带缩放图片大小的导入
+    保留 alpha通道
+    """
+    surf = pygame.image.load(image_path).convert_alpha()
     if size[0] != 0:
         surf = pygame.transform.scale(surf, size)
+    Debug(True) << "Imported" << image_path << "\n"
+    Debug(True).div()
 
     return surf

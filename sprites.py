@@ -2,7 +2,6 @@ import pygame
 
 from settings import *
 from utils import render_text
-from utils import Debug
 
 
 class Generic(pygame.sprite.Sprite):
@@ -129,3 +128,15 @@ class TextButton(Button):
         super().cancel_hover()
         self.size = self.former_size
         self.color = self.former_color
+
+
+class Fog(Generic):
+    def __init__(self, pos, surf, group, z=LAYERS["fog"]):
+        super().__init__(pos, surf, group, z)
+        self.start_x = pos[0]
+        self.move_speed = 1
+
+    def move(self, dt):
+        self.rect.x += self.move_speed
+        if self.rect.x >= SCR_SIZE[0]:
+            self.rect.x = -SCR_SIZE[0]
