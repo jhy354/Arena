@@ -2,6 +2,7 @@ import pygame
 
 from settings import *
 from utils import render_text
+from utils import Debug
 
 
 class Generic(pygame.sprite.Sprite):
@@ -11,7 +12,6 @@ class Generic(pygame.sprite.Sprite):
     """
 
     def __init__(self, pos, surf, group, z=LAYERS["default"]):
-        # 调用超类使实例加入 group
         super().__init__(group)
         self.image = surf
         self.z = z
@@ -53,9 +53,11 @@ class Button(pygame.sprite.Sprite):
 
     def activate(self):
         self.active = True
+        Debug(True) << "Activated TextButton" << "\n"
 
     def deactivate(self):
         self.active = False
+        Debug(True) << "Deactivated TextButton" << "\n"
 
     def click(self):
         """
@@ -113,7 +115,7 @@ class TextButton(Button):
 
     def update(self, dt):
         super().update(dt)
-        self.image = render_text(self.text, FONT, self.size, self.color)
+        self.image = render_text(self.text, FONT_ZH, self.size, self.color)
         self.rect = self.image.get_rect(topleft=self.pos)
 
     def respond_mouse(self):
@@ -133,10 +135,11 @@ class TextButton(Button):
 class Fog(Generic):
     def __init__(self, pos, surf, group, z=LAYERS["fog"]):
         super().__init__(pos, surf, group, z)
+        self.image.set_alpha(250)
         self.start_x = pos[0]
         self.move_speed = 1
 
-    def move(self, dt):
+    def move(self):
         self.rect.x += self.move_speed
         if self.rect.x >= SCR_SIZE[0]:
             self.rect.x = -SCR_SIZE[0]

@@ -47,7 +47,7 @@ class Game:
 
             dt = self.clock.tick(FPS) / 1000
             self.check_scenes(dt)
-            self.switch_scenes(dt)
+            self.switch_scenes()
             pygame.display.update()
 
     def check_scenes(self, dt):
@@ -55,7 +55,7 @@ class Game:
             if scene.active:
                 scene.run(dt)
 
-    def switch_scenes(self, dt):
+    def switch_scenes(self):
         """
         场景转换的条件及控制
         """
@@ -63,6 +63,10 @@ class Game:
             self.scenes["start_menu"].deactivate()
             self.scenes["play_ground"].activate()
             self.scenes["start_menu"].start_button.clicked = False
+
+        if self.scenes["start_menu"].quit_button.clicked:
+            pygame.quit()
+            sys.exit()
 
 
 if __name__ == "__main__":
