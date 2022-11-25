@@ -34,15 +34,18 @@ def import_folder(path, size=(0, 0)):
     return surface_list
 
 
-def custom_load(image_path, size=(0, 0)):
+def custom_load(image_path, size=(0, 0), silent=False):
     """
     带缩放图片大小的导入
     保留 alpha通道
     """
     surf = pygame.image.load(image_path).convert_alpha()
+
     if size[0] != 0:
         surf = pygame.transform.scale(surf, size)
-    Debug(True) << "Imported" << image_path << "\n"
-    Debug(True).div()
+
+    if not silent:
+        Debug(True) << "Imported " << image_path << "\n"
+        Debug(True).div()
 
     return surf

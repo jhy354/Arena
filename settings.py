@@ -1,7 +1,8 @@
 # * Basic Settings * #
 SCR_SIZE = (1280, 960)
 FPS = 144
-FONT = "方正粗黑宋简体"
+# FONT_ZH = "方正粗黑宋简体"
+FONT_ZH = "dengxian"
 MOVEMENT_RATING = 100
 
 VERSION = "e0.0.4.1113"
