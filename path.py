@@ -52,4 +52,4 @@ SPECIAL_SKIN_DICT = {
 # * Weapon * #
 PATH_WEAPON_GUN_COMMON = r"./assets/game/weapon/gun/common/"
 PATH_WEAPON_GUN_SPECIAL = r"./assets/game/weapon/gun/special/"
-PATH_WEAPON_GUN_BULLET = r"./assets/game/weapon/gun/bullet"
+PATH_WEAPON_GUN_BULLET = r"./assets/game/weapon/gun/bullet/bullet.png"
