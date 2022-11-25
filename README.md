@@ -3,7 +3,7 @@
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/logo.png width=5% />
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/game_title.png width=17% />
 </div>
-Arena is a 2D platform game by [pygame](https://github.com/pygame/pygame)
+Arena is a 2D platform game by pygame
 
 ## Contents
 1. [Requirements](#requirements)
