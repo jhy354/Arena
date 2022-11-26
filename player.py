@@ -31,6 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.spawn_point = cfg.spawn_point
         self.active = False
         self.rect = self.image.get_rect(center=cfg.spawn_point)
+        self.hitbox = self.rect.copy()
 
         # * 移动参数 * #
         self.player_keys = cfg.player_keys
@@ -75,7 +76,7 @@ class Player(pygame.sprite.Sprite):
         super().update()
 
         if self.active:
-            # print(self.status)
+            # self.update_hitbox() 在 scene 中调用
             self.respond_input(dt)
             self.switch_status()
             self.switch_frame(dt)
@@ -177,6 +178,13 @@ class Player(pygame.sprite.Sprite):
             self.weapon.rect.x -= 5
         else:
             self.weapon.rect.x += 5
+
+    def update_hitbox(self):
+        """
+        called in scene
+        """
+        self.hitbox.x = self.rect.x
+        self.hitbox.y = self.rect.y
 
 
 class DefaultCfg:

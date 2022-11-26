@@ -195,27 +195,36 @@ class PlayGround(Scene):
         Debug(True) << "Inited PlayGround" << "\n"
 
     def horizontal_movement_coll(self, dt):
+        """
+        注意 update_hitbox() 在代码中的执行位置
+        否则碰撞会出错
+        """
         for player in self.player_group.sprites():
 
             player.rect.x += player.direction.x * dt * MOVEMENT_RATING
+            player.update_hitbox()
 
             for sprite in self.coll_rect_sprites:
-                if sprite.rect.colliderect(player.rect):
+                if sprite.rect.colliderect(player.hitbox):
                     if player.direction.x < 0:
                         player.rect.left = sprite.rect.right
+                        player.update_hitbox()
                     elif player.direction.x > 0:
                         player.rect.right = sprite.rect.left
+                        player.update_hitbox()
 
     def vertical_movement_coll(self, dt):
         for player in self.player_group.sprites():
             player.apply_gravity()
 
             player.rect.y += player.direction.y * dt * MOVEMENT_RATING
+            player.update_hitbox()
 
             for sprite in self.coll_rect_sprites:
-                if sprite.rect.colliderect(player.rect):
+                if sprite.rect.colliderect(player.hitbox):
                     if player.direction.y > 0:
                         player.rect.bottom = sprite.rect.top
+                        player.update_hitbox()
                         player.direction.y = 0
                         player.jump_cnt = 0
                         if not player.can_jump and not player.push_space:
@@ -223,6 +232,7 @@ class PlayGround(Scene):
                             Debug(DEBUG_MODE) << "(Player) Enabled Jump" << "\n"
                     elif player.direction.y < 0:
                         player.rect.top = sprite.rect.bottom
+                        player.update_hitbox()
                         player.direction.y = 0
                         player.can_jump = False
 
