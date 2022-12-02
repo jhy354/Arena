@@ -1,11 +1,11 @@
 import pygame
 
-import layout
-from settings import *
-from path import *
-from utils import Debug
-from support import import_folder
-from weapons import Pistol
+from engine.layout import *
+from engine.settings import *
+from engine.path import *
+from .weapons import Pistol
+from engine.utils import Debug
+from engine.utils import import_folder
 
 
 class Player(pygame.sprite.Sprite):
@@ -158,7 +158,7 @@ class Player(pygame.sprite.Sprite):
 
         for animation in self.animations.keys():
             full_path = PATH_PLAYER + self.skin + "/" + animation
-            self.animations[animation] = import_folder(full_path, layout.PLAYER_SIZE)
+            self.animations[animation] = import_folder(full_path, PLAYER_SIZE)
 
     def update_weapon(self):
         self.weapon.image = self.weapon.init_image
@@ -186,7 +186,7 @@ class DefaultCfg:
     """
     def __init__(self):
         # Default
-        self.spawn_point = layout.SCR_CENTER
+        self.spawn_point = SCR_CENTER
         self.hp = 100
         self.skin = "p_pale"
         self.player_keys = {

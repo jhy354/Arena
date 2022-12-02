@@ -67,4 +67,7 @@ echo ./dist/main/Arena.exe
 echo ---------------------------------------------
 
 rename main.exe Arena.exe
+cd ..
+rename main Arena
+
 pause

@@ -1,5 +1,3 @@
-from settings import *
-
 START_GAME = "Start Adventure"
 QUIT_GAME = "Quit Game"
 SETTINGS = "Settings"

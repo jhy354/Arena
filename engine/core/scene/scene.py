@@ -1,21 +1,20 @@
 from random import randint
 
 import pygame
-from pytmx.util_pygame import load_pygame
+from pytmx import load_pygame
 
-import layout
-import text_script
-from settings import *
-from path import *
-from utils import Debug
-from player import Player
-from player import DefaultCfg
-from player import P2Cfg
-from sprites import Generic
-from sprites import GameObject
-from sprites import TextButton
-from sprites import Fog
-from support import custom_load
+from engine import layout
+from engine.settings import *
+from engine.path import *
+from engine.widget.sprite import Player
+from engine.widget.sprite import DefaultCfg
+from engine.widget.sprite import P2Cfg
+from engine.utils import Debug
+from engine.utils import custom_load
+from engine.widget.sprite import Generic
+from engine.widget.sprite import GameObject
+from engine.widget.sprite import Fog
+from engine.core.camera import CameraGroup
 
 
 class Scene:
@@ -69,104 +68,16 @@ class Scene:
         self.all_sprites.update(dt)
 
 
-class StartMenu(Scene):
-    """
-    开始菜单界面
-    """
-
-    def __init__(self):
-        super().__init__()
-
-        self.background = Generic(
-            pos=layout.BG_POS,
-            surf=custom_load(PATH_UI_BG + "2_bg_night.png", layout.BG_SIZE),
-            group=[self.all_sprites],
-            z=LAYERS["background"]
-        )
-
-        self.game_title = Generic(
-            pos=layout.SM_TITLE,
-            surf=custom_load(PATH_UI_TEXT + "game_title.png", layout.SM_TITLE_SIZE),
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        # * Buttons * #
-
-        self.start_button = TextButton(
-            text=text_script.START_GAME,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_START,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        self.quit_button = TextButton(
-            text=text_script.QUIT_GAME,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_QUIT,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        self.settings_button = TextButton(
-            text=text_script.SETTINGS,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_SETTINGS,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        self.about_button = TextButton(
-            text=text_script.ABOUT,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_ABOUT,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        Debug(True) << "Inited StartMenu" << "\n"
-        Debug(True).div()
-
-    def activate(self):
-        super().activate()
-        Debug(True) << "Activated StartMenu" << "\n"
-
-    def deactivate(self):
-        super().deactivate()
-        Debug(True) << "Deactivated StartMenu" << "\n"
-        Debug(True).div()
-
-    def _setup(self):
-        super()._setup()
-        self.start_button.activate()
-        self.quit_button.activate()
-        self.settings_button.activate()
-        self.about_button.activate()
-
-    def _release(self):
-        super()._release()
-        self.start_button.deactivate()
-        self.quit_button.deactivate()
-        self.settings_button.deactivate()
-        self.about_button.deactivate()
-        Debug(True) << "Released StartMenu" << "\n"
-
-    def run(self, dt):
-        super().run(dt)
-
-
 class PlayGround(Scene):
     """
     玩家进行游戏的场景
     """
 
-    def __init__(self):
+    def __init__(self, map_index, background_index):
         super().__init__()
+
+        self.map_index = map_index
+        self.background_index = background_index
 
         self.background = None
 
@@ -250,14 +161,13 @@ class PlayGround(Scene):
         # * Load Background * #
         self.background = Generic(
             pos=layout.BG_POS,
-            surf=custom_load(PATH_UI_BG + "1_bg_dust.png", layout.BG_SIZE),
+            surf=custom_load(PATH_BACKGROUND[self.background_index], layout.BG_SIZE),
             group=[self.all_sprites],
             z=LAYERS["background"]
         )
 
         # * Load Map Data * #
-        rand_map = randint(0, len(PATH_MAP) - 1)
-        tmx_data = load_pygame(PATH_MAP[rand_map])
+        tmx_data = load_pygame(PATH_MAP[self.map_index])
 
         for x, y, surf in tmx_data.get_layer_by_name("edge").tiles():
             self.map_edges.append(
@@ -338,18 +248,3 @@ class PlayGround(Scene):
         self.check_bullet_coll()
         self.fog_1.move()
         self.fog_2.move()
-
-
-class CameraGroup(pygame.sprite.Group):
-    def __init__(self):
-        super().__init__()
-        self.display_surface = pygame.display.get_surface()
-
-    def custom_draw(self):
-        """
-        按图层顺序画出当前 Group 中所有 Sprite
-        """
-        for layer in LAYERS.values():
-            for sprite in self.sprites():
-                if sprite.z == layer:
-                    self.display_surface.blit(sprite.image, sprite.rect)

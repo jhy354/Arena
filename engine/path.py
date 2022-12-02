@@ -13,6 +13,14 @@ PATH_EFFECT_FOG = r"./assets/special_effect/fog/"
 # * Player * #
 PATH_PLAYER = r"./assets/game/player/"
 
+# * Background * #
+PATH_BACKGROUND = {
+    0: PATH_UI_BG + r"0_bg_dirt.png",
+    1: PATH_UI_BG + r"1_bg_dust.png",
+    2: PATH_UI_BG + r"2_bg_night.png",
+    3: PATH_UI_BG + r"3_bg_virus.png",
+}
+
 # * Map * #
 PATH_MAP = {
     0: r"./assets/game/map/du_arena/du_arena.tmx",

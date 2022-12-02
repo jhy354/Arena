@@ -1,11 +1,11 @@
 import pygame
 
-import layout
-from settings import *
-from path import *
-from utils import Debug
-from utils import Timer
-from support import custom_load
+from engine.layout import *
+from engine.settings import *
+from engine.path import *
+from engine.utils import Debug
+from engine.utils import Timer
+from engine.utils import custom_load
 
 
 class Weapon(pygame.sprite.Sprite):
@@ -44,7 +44,7 @@ class Weapon(pygame.sprite.Sprite):
 class Pistol(Weapon):
     def __init__(self, group):
         super().__init__(group)
-        self.init_image = custom_load(PATH_WEAPON_GUN_COMMON + "pistol.png", layout.WEAPON_SIZE)
+        self.init_image = custom_load(PATH_WEAPON_GUN_COMMON + "pistol.png", WEAPON_SIZE)
         self.image = self.init_image
         self.direction = "right"
         self.rect = self.image.get_rect()
@@ -85,7 +85,7 @@ class Pistol(Weapon):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, pos, group, direction, z=LAYERS["bullet"]):
         super().__init__(group)
-        self.image = custom_load(PATH_WEAPON_GUN_BULLET, layout.BULLET_SIZE, silent=True)
+        self.image = custom_load(PATH_WEAPON_GUN_BULLET, BULLET_SIZE, silent=True)
         self.direction = direction
         self.z = z
         self.rect = self.image.get_rect(center=pos)
