@@ -1,0 +1,9 @@
+from engine.settings import *
+
+# * StartMenu * #
+SM_TITLE_SIZE = (430, 90)
+SM_TITLE = (SCR_SIZE[0]/15, SCR_SIZE[1]/10)
+SM_START = (SCR_SIZE[0]/15, SCR_SIZE[1]/3)
+SM_SETTINGS = (SCR_SIZE[0]/15, SCR_SIZE[1]/3 + 50)
+SM_ABOUT = (SCR_SIZE[0]/15, SCR_SIZE[1]/3 + 100)
+SM_QUIT = (SCR_SIZE[0]/15, SCR_SIZE[1]/3 + 150)

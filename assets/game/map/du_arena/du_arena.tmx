@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" name="du_arena" tilewidth="64" tileheight="64" tilecount="100" columns="10">
+  <image source="du_arena.png" width="640" height="640"/>
+ </tileset>
+ <layer id="1" name="edge" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKIyphYYNW/UvFHzhr551MQAOycAhQ==
+  </data>
+ </layer>
+ <layer id="4" name="decoration" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDCYgCcRSJOqRQmU3UFv9YAEAT/sBnA==
+  </data>
+ </layer>
+ <layer id="3" name="floor" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJytU8sKg0AMjPRxsR5te2vtQ+jZH/DT/PRO6AaGJbpLycBAGOIkcRmReFwTe/AoshzAPWg6ankltlm/1WPmF7GTYVzt+s/vE+AHj8XqqaK3NHMivw7cEb1ez4+/6Ui/VOxXuoE9vPdtEm8i8x0cwAdoeo4n1W1hdg343j7Ar3Sv7nzK5nqa5+H56c7nNNfekLUtP86k/lfN6Vt+uTHdy63mGlnXzIdk1sMX46gMxA==
+  </data>
+ </layer>
+</map>
