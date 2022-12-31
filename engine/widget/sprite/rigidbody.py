@@ -180,11 +180,9 @@ class Player(pygame.sprite.Sprite):
             self.weapon.rect.x += 5
 
     def die(self):
-        # self.weapon.kill()
-        # self.kill()
-        self.hide()
-        self.weapon.hide()
         self.deactivate()
+        self.weapon.kill()
+        self.kill()
 
     def hide(self):
         Debug(DEBUG_MODE) << "(Player) Hide Player" << "\n"

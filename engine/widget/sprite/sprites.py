@@ -22,6 +22,7 @@ class Generic(pygame.sprite.Sprite):
     def show(self):
         self.image = self.source_image.copy()
 
+
 class GameObject(Generic):
     """
     矩形碰撞箱
