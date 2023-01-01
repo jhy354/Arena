@@ -41,6 +41,7 @@ class Weapon(pygame.sprite.Sprite):
             pass
 
 
+# noinspection PyTypeChecker
 class Pistol(Weapon):
     def __init__(self, group):
         super().__init__(group)
@@ -97,8 +98,8 @@ class Bullet(pygame.sprite.Sprite):
         self.direction = direction
         self.z = z
         self.rect = self.image.get_rect(center=pos)
-        self.speed = 300
-        self.damage = 100
+        self.speed = 600
+        self.damage = 50
         self.destroyed = False
         # self.shadow = custom_load(PATH_WEAPON_GUN_BULLET, layout.BULLET_SHADOW_SIZE)
 
