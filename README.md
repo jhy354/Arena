@@ -36,11 +36,14 @@ python main.py
 ```
 
 ## Build to Binary
-On Windows, you can build *Arena* by batchfile *`build.bat`*
+On Windows, you can build *Arena* by *`build.py`*
 ```shell
-build.bat
+python build.py
 ```
-<u>*It is recommended that you build this in a virtual environment*</u>
+On Linux, you can build *Arena* by *`build.py`*
+```shell
+python3 build.py
+```
 
 ## Screenshots
 Game Screen:
