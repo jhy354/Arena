@@ -150,19 +150,30 @@ class PlayGround(Scene):
     def check_bullet_coll(self):
         for group in self.bullet_groups:
             for bullet in group.sprites():
-                coll_wall_first = False
+
+                coll_flag = False
 
                 for sprite in self.coll_rect_sprites.sprites():
                     if sprite.rect.colliderect(bullet.rect):
                         bullet.destroy()
-                        coll_wall_first = True
+                        coll_flag = True
+                        break
+
+                if coll_flag:
+                    continue
 
                 for player in self.player_group.sprites():
                     if player.rect.colliderect(bullet.rect):
                         if bullet not in player.weapon.bullet_group:
+
+                            if player.get_shot(bullet.damage):
+                                for p in self.player_group.sprites():
+                                    if bullet in p.weapon.bullet_group:
+                                        p.kills += 1
+                                        Debug(DEBUG_MODE) << f"(Player) Kills: {p.kills}" << "\n"
+
                             bullet.destroy()
-                            if not coll_wall_first:
-                                player.get_shot(bullet.damage)
+                            break
 
     def activate(self):
         super().activate()

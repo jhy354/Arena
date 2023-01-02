@@ -3,6 +3,7 @@ import pygame
 from engine.settings import *
 from engine.utils import render_text
 from engine.utils import Debug
+from engine.utils import set_fonts
 
 
 class Button(pygame.sprite.Sprite):
@@ -92,7 +93,8 @@ class TextButton(Button):
 
     def update(self, dt):
         super().update(dt)
-        self.image = render_text(self.text, FONT_ZH, self.size, self.color)
+        font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
+        self.image = render_text(self.text, font_chs, self.size, self.color)
         self.rect = self.image.get_rect(topleft=self.pos)
 
     def respond_mouse(self):

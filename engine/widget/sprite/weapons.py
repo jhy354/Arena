@@ -64,9 +64,9 @@ class Pistol(Weapon):
             self.can_shoot = False
             self.timers["cd"].activate()
             if self.direction == "right":
-                self.bullet_group.add(Bullet(self.rect.midright, [self.groups()[0], self.bullet_group], 1))
+                Bullet(self.rect.midright, [self.groups()[0], self.bullet_group], 1)
             else:
-                self.bullet_group.add(Bullet(self.rect.midright, [self.groups()[0], self.bullet_group], -1))
+                Bullet(self.rect.midright, [self.groups()[0], self.bullet_group], -1)
 
     def update_timer(self):
         for timer in self.timers.values():
@@ -101,7 +101,6 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = 600
         self.damage = 50
         self.destroyed = False
-        # self.shadow = custom_load(PATH_WEAPON_GUN_BULLET, layout.BULLET_SHADOW_SIZE)
 
     def fly(self, dt):
         self.rect.x += self.direction * 0.01 * self.speed

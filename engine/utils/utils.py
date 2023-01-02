@@ -23,8 +23,8 @@ class Debug:
 
 class Timer:
 
-    def __init__(self, duration, func=None):
-        self.duration = duration
+    def __init__(self, duration_ms, func=None):
+        self.duration_ms = duration_ms
         self.func = func
         self.start_time = 0
         self.active = False
@@ -39,7 +39,7 @@ class Timer:
 
     def update(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.start_time >= self.duration and self.active:
+        if current_time - self.start_time >= self.duration_ms and self.active:
             self.deactivate()
             # if self.func is not None:
             if self.func:
@@ -99,3 +99,28 @@ def render_text(content, font_name, size, color):
     text = font.render(content, True, color)
     return text
 
+
+def set_fonts(chs_list, eng_list):
+    """
+    根据优先级设置字体
+    传入中英字体列表
+    传出最优先可用字体
+    """
+    chs = ""
+    eng = ""
+    fonts = pygame.font.get_fonts()
+
+    for c in chs_list:
+        if c in fonts:
+            chs = c
+            break
+
+    for e in eng_list:
+        if e in fonts:
+            eng = e
+            break
+
+    if chs == "" or eng == "":
+        raise Exception("Cannot Find Suitable Fonts")
+
+    return chs, eng

@@ -1,11 +1,12 @@
 import pygame
 
+from .weapons import Pistol
 from engine.layout import *
 from engine.settings import *
 from engine.path import *
-from .weapons import Pistol
 from engine.utils import Debug
 from engine.utils import import_folder
+from engine.utils import Timer
 
 
 class Player(pygame.sprite.Sprite):
@@ -29,7 +30,6 @@ class Player(pygame.sprite.Sprite):
         self.face_direction = "right"
 
         # * 角色判断参数 * #
-        self.spawn_point = cfg.spawn_point
         self.active = False
         self.rect = self.image.get_rect(center=cfg.spawn_point)
 
@@ -43,10 +43,17 @@ class Player(pygame.sprite.Sprite):
         self.jump_cnt = 0
         self.jump_time = 10
 
+        # * 游戏 * #
+        self.kills = 0
+
         # * 其他 * #
+        self.cfg = cfg
         self.hp = cfg.hp
         self.push_space = False
         self.weapon = Pistol([self.groups()[0]])
+        self.timers = {
+            "respawn": Timer(3000, self.call_respawn)
+        }
 
         Debug(True) << "Inited Player" << "\n"
 
@@ -74,6 +81,8 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, dt):
         super().update()
+
+        self.update_timer()
 
         if self.active:
             self.respond_input(dt)
@@ -179,10 +188,35 @@ class Player(pygame.sprite.Sprite):
         else:
             self.weapon.rect.x += 5
 
+    def update_timer(self):
+        for timer in self.timers.values():
+            timer.update()
+
     def die(self):
+        """
+        移出游戏后等待并复活
+        """
         self.deactivate()
-        self.weapon.kill()
-        self.kill()
+        # 暂时移出游戏
+        self.rect.x = -100
+        self.rect.y = -100
+
+        self.timers["respawn"].activate()
+
+    def call_respawn(self):
+        """
+        Timer 目前无法接受参数
+        故使用此函数实例化 Timer 来调用 respawn
+        """
+        self.respawn(self.cfg.spawn_point)
+
+    def respawn(self, pos):
+        self.timers["respawn"].deactivate()
+        self.direction.y = 0
+        self.hp = self.cfg.hp
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+        self.activate()
 
     def hide(self):
         Debug(DEBUG_MODE) << "(Player) Hide Player" << "\n"
@@ -195,8 +229,10 @@ class Player(pygame.sprite.Sprite):
     def get_shot(self, damage):
         if self.hp - damage <= 0:
             self.die()
+            return True
         else:
             self.hp -= damage
+            return False
 
 
 class DefaultCfg:
