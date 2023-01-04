@@ -40,7 +40,7 @@ On Windows, you can build *Arena* by *`build.py`*
 ```shell
 python build.py
 ```
-On Linux, you can build *Arena* by *`build.py`*
+On Linux
 ```shell
 python3 build.py
 ```
