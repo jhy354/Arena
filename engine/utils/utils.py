@@ -91,12 +91,16 @@ def custom_load(image_path, size=(0, 0), silent=False):
     return surf
 
 
-def render_text(content, font_name, size, color):
+def render_text(content, font_name, size, color_rgb, bold=False, italic=False, underline=False):
     """
     生成文本的 surface 对象
     """
     font = pygame.font.SysFont(font_name, size)
-    text = font.render(content, True, color)
+    font.set_bold(bold)
+    font.set_italic(italic)
+    font.set_underline(underline)
+
+    text = font.render(content, True, color_rgb)
     return text
 
 

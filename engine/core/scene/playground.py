@@ -4,14 +4,17 @@ import pygame
 from pytmx import load_pygame
 
 from .scene import Scene
+from engine import text_script
 from engine import layout
 from engine.settings import *
 from engine.path import *
 from engine.widget.sprite import Player
-from engine.widget.sprite import DefaultCfg
+from engine.widget.sprite import P1Cfg
 from engine.widget.sprite import P2Cfg
 from engine.utils import Debug
 from engine.utils import custom_load
+from engine.utils import render_text
+from engine.utils import set_fonts
 from engine.widget.sprite import Generic
 from engine.widget.sprite import GameObject
 from engine.widget.sprite import Fog
@@ -51,6 +54,11 @@ class PlayGround(Scene):
         # * Special Effects * #
         self.fog_1 = None
         self.fog_2 = None
+
+        # * Crown * #
+        self.crown = None
+        self.crown_text_sprite = None
+        self.crown_text = text_script.CONTESTED
 
         Debug(True) << "Inited PlayGround" << "\n"
 
@@ -119,6 +127,7 @@ class PlayGround(Scene):
                                 for p in self.player_group.sprites():
                                     if bullet in p.weapon.bullet_group:
                                         p.kills += 1
+                                        self.update_crown()
                                         Debug(DEBUG_MODE) << f"(Player) Kills: {p.kills}" << "\n"
 
                             bullet.destroy()
@@ -181,7 +190,7 @@ class PlayGround(Scene):
         # * Load Player * #
         p1_skin = SKIN_DICT[randint(0, len(SKIN_DICT) - 1)]
         p2_skin = SKIN_DICT[randint(0, len(SKIN_DICT) - 1)]
-        p1_cfg = DefaultCfg()
+        p1_cfg = P1Cfg()
         p1_cfg.skin = p1_skin
         p2_cfg = P2Cfg()
         p2_cfg.skin = p2_skin
@@ -212,10 +221,79 @@ class PlayGround(Scene):
             group=[self.all_sprites],
         )
 
-        # * Bullet Group * #
+        # * Init Bullet Group * #
         for player in self.player_group.sprites():
             self.bullet_groups.append(player.weapon.bullet_group)
+
+        # * Crown * #
+        self.crown = Generic(
+            pos=layout.CROWN_POS,
+            surf=custom_load(PATH_UI_ICON + "crown/crown_gray.png", layout.CROWN_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.crown_text_sprite = Generic(
+            pos=layout.CROWN_TEXT_POS,
+            surf=pygame.surface.Surface((1, 1)),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.update_crown()
+
+        # * Timer * #
+        self.timer = Generic(
+            pos=layout.TIMER_POS,
+            surf=custom_load(PATH_UI_ICON + "timer.png", layout.TIMER_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        Debug(True) << "Set PlayGround" << "\n"
 
     def _release(self):
         super()._release()
         Debug(True) << "Released PlayGround" << "\n"
+
+    def update_crown(self):
+
+        kills = {}
+        for player in self.player_group.sprites():
+            kills[player.name] = player.kills
+
+        contest_flag = True
+        max_k = kills[list(kills.keys())[0]]
+        max_name = "contested"
+        for k in kills.keys():
+            if kills[k] != max_k:
+                contest_flag = False
+            if kills[k] >= max_k:
+                max_k = kills[k]
+                max_name = k
+
+        if contest_flag:
+            max_name = "contested"
+            self.crown_text = text_script.CONTESTED
+        else:
+            self.crown_text = f"{text_script.PLAYER_IN_LEAD[0]} {max_name} {text_script.PLAYER_IN_LEAD[1]}"
+
+        font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
+        self.crown_text_sprite.image = render_text(
+            self.crown_text,
+            font_eng,
+            layout.CROWN_TEXT_FONT_SIZE,
+            layout.CROWN_TEXT_COLOR,
+            bold=True
+        )
+
+        size = (self.crown_text_sprite.image.get_rect().size[0] + 1, self.crown_text_sprite.image.get_rect().size[1] + 1)
+        self.crown_text_sprite.image = pygame.transform.smoothscale(
+            self.crown_text_sprite.image,
+            size
+        )
+
+        if max_name in CROWN_COLOR:
+            print(max_name)
+            path = PATH_UI_ICON + "crown/crown_" + CROWN_COLOR[max_name] + ".png"
+            self.crown.image = custom_load(path, layout.CROWN_SIZE)

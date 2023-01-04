@@ -31,3 +31,10 @@ LAYERS = {
     "fog": 8,
     "ui": 9,
 }
+
+# * Crown Color Settings * #
+CROWN_COLOR = {
+    "contested": "gray",
+    "1": "red",
+    "2": "blue"
+}

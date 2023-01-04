@@ -1,5 +1,5 @@
 from .rigidbody import Player
-from .rigidbody import DefaultCfg
+from .rigidbody import P1Cfg
 from .rigidbody import P2Cfg
 
 from .sprites import Generic

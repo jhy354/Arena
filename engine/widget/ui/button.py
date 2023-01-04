@@ -94,7 +94,7 @@ class TextButton(Button):
     def update(self, dt):
         super().update(dt)
         font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
-        self.image = render_text(self.text, font_chs, self.size, self.color)
+        self.image = render_text(self.text, font_eng, self.size, self.color)
         self.rect = self.image.get_rect(topleft=self.pos)
 
     def respond_mouse(self):

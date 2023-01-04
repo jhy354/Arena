@@ -44,6 +44,8 @@ class Player(pygame.sprite.Sprite):
         self.jump_time = 10
 
         # * 游戏 * #
+        self.name = cfg.name
+        print(self.name)
         self.kills = 0
 
         # * 其他 * #
@@ -244,6 +246,7 @@ class DefaultCfg:
         # Default
         self.spawn_point = SCR_CENTER
         self.hp = 100
+        self.name = "Default"
         self.skin = "p_pale"
         self.player_keys = {
             "jump": pygame.K_w,
@@ -256,9 +259,22 @@ class DefaultCfg:
         self.jump_speed = -16
 
 
+class P1Cfg(DefaultCfg):
+    def __init__(self):
+        super().__init__()
+        self.name = "1"
+        self.player_keys = {
+            "jump": pygame.K_w,
+            "left": pygame.K_a,
+            "right": pygame.K_d,
+            "shoot": pygame.K_s
+        }
+
+
 class P2Cfg(DefaultCfg):
     def __init__(self):
         super().__init__()
+        self.name = "2"
         self.player_keys = {
             "jump": pygame.K_UP,
             "left": pygame.K_LEFT,

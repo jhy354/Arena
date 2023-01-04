@@ -5,6 +5,7 @@ PATH_UI_BG = r"./assets/ui/background/"
 PATH_UI_BUTTON = r"./assets/ui/button/"
 PATH_UI_ETC = r"./assets/ui/etc/"
 PATH_UI_TEXT = r"./assets/ui/text/"
+PATH_UI_ICON = r"./assets/ui/icon/"
 
 # * Effect * #
 PATH_EFFECT = r"./assets/special_effect/"

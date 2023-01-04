@@ -1,5 +1,5 @@
 import game.layout as layout
-import game.text_script as text_script
+from engine import text_script
 from engine.layout import *
 from engine.path import *
 from engine.settings import *
