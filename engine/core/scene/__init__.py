@@ -1,2 +1,2 @@
 from .scene import Scene
-from .scene import PlayGround
+from .playground import PlayGround
