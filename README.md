@@ -18,42 +18,29 @@ Arena is a 2D platform game by pygame
 - [pip](https://github.com/pypa/pip)
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
+- [pyinstaller](https://github.com/bitcraft/pyinstaller)
 
 ## Getting Started
 1. Make sure you are running this on Python3.4+
-On Windows
 ```shell
 # check your python version
 python --version
-```
-On Linux
-```shell
-# check your python version
-python3 --version
 ```
 2. Make sure you already installed following packages in your python environment
 ```shell
 pip install pygame
 pip install pytmx
+pip install pyinstaller
 ```
 3. Just run it
-On Windows
 ```shell
 python main.py
 ```
-On Linux
-```shell
-python3 main.py
-```
 
 ## Build to Binary
-On Windows, you can build *Arena* by *`build.py`*
+You can build *Arena* by *`build.py`*
 ```shell
 python build.py
-```
-On Linux
-```shell
-python3 build.py
 ```
 
 ## Screenshots
