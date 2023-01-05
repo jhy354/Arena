@@ -18,7 +18,7 @@ Arena is a 2D platform game by pygame
 - [pip](https://github.com/pypa/pip)
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
-- [pyinstaller](https://github.com/bitcraft/pyinstaller)
+- [pyinstaller](https://github.com/pyinstaller/pyinstaller)
 
 ## Getting Started
 1. Make sure you are running this on Python3.4+
