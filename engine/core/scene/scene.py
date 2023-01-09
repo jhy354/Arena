@@ -13,7 +13,6 @@ class Scene:
         # * General * #
         self.active = False
         self.display_surface = pygame.display.get_surface()
-        self.background = pygame.surface.Surface(SCR_SIZE)
 
         # * Groups * #
         self.all_sprites = CameraGroup()
@@ -24,25 +23,23 @@ class Scene:
         激活场景
         """
         self.active = True
-        self._setup()
+        self.setup()
 
     def deactivate(self):
         """
         停用场景
         """
         self.active = False
-        self._release()
+        self.release()
 
-    def _setup(self):
+    def setup(self):
         """
         调用 activate() 时运行
-        protected function
         """
 
-    def _release(self):
+    def release(self):
         """
         调用 deactivate() 时运行
-        protected function
         """
         self.all_sprites.empty()
 

@@ -18,6 +18,7 @@ from engine.utils import set_fonts
 from engine.widget.sprite import Generic
 from engine.widget.sprite import GameObject
 from engine.widget.sprite import Fog
+from engine.widget.sprite import TimerUI
 
 
 class PlayGround(Scene):
@@ -32,6 +33,9 @@ class PlayGround(Scene):
         self.background_index = background_index
 
         self.background = None
+
+        # * TimerUI * #
+        self.timer_ui = None
 
         # * Map Tiles * #
         self.map_edges = []
@@ -67,6 +71,7 @@ class PlayGround(Scene):
         self.horizontal_movement_coll(dt)
         self.vertical_movement_coll(dt)
         self.check_bullet_coll()
+        self.timer_ui.update()
         self.fog_1.move()
         self.fog_2.move()
 
@@ -143,8 +148,8 @@ class PlayGround(Scene):
         Debug(True) << "Deactivated PlayGround" << "\n"
         Debug(True).div()
 
-    def _setup(self):
-        super()._setup()
+    def setup(self):
+        super().setup()
 
         # * Load Background * #
         self.background = Generic(
@@ -242,18 +247,15 @@ class PlayGround(Scene):
 
         self.update_crown()
 
-        # * Timer * #
-        self.timer = Generic(
-            pos=layout.TIMER_POS,
-            surf=custom_load(PATH_UI_ICON + "timer.png", layout.TIMER_SIZE),
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
+        # * TimerUI * #
+        self.timer_ui = TimerUI(self.all_sprites, 180)
+        self.timer_ui.activate()
 
-        Debug(True) << "Set PlayGround" << "\n"
+        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
+        Debug(True) << "Loaded PlayGround" << "\n"
 
-    def _release(self):
-        super()._release()
+    def release(self):
+        super().release()
         Debug(True) << "Released PlayGround" << "\n"
 
     def update_crown(self):
@@ -287,13 +289,15 @@ class PlayGround(Scene):
             bold=True
         )
 
+        '''
+        # anti-alias
         size = (self.crown_text_sprite.image.get_rect().size[0] + 1, self.crown_text_sprite.image.get_rect().size[1] + 1)
         self.crown_text_sprite.image = pygame.transform.smoothscale(
             self.crown_text_sprite.image,
             size
         )
+        '''
 
         if max_name in CROWN_COLOR:
-            print(max_name)
             path = PATH_UI_ICON + "crown/crown_" + CROWN_COLOR[max_name] + ".png"
             self.crown.image = custom_load(path, layout.CROWN_SIZE)

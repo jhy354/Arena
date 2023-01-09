@@ -82,15 +82,17 @@ class StartMenu(Scene):
         Debug(True) << "Deactivated StartMenu" << "\n"
         Debug(True).div()
 
-    def _setup(self):
-        super()._setup()
+    def setup(self):
+        super().setup()
         self.start_button.activate()
         self.quit_button.activate()
         self.settings_button.activate()
         self.about_button.activate()
+        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
+        Debug(True) << "Loaded StartMenu" << "\n"
 
-    def _release(self):
-        super()._release()
+    def release(self):
+        super().release()
         self.start_button.deactivate()
         self.quit_button.deactivate()
         self.settings_button.deactivate()

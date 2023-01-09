@@ -45,7 +45,6 @@ class Player(pygame.sprite.Sprite):
 
         # * 游戏 * #
         self.name = cfg.name
-        print(self.name)
         self.kills = 0
 
         # * 其他 * #
@@ -60,25 +59,23 @@ class Player(pygame.sprite.Sprite):
         Debug(True) << "Inited Player" << "\n"
 
     def activate(self):
-        self._setup()
+        self.setup()
         self.active = True
         Debug(True) << "Activated Player" << "\n"
 
     def deactivate(self):
-        self._release()
+        self.release()
         self.active = False
         Debug(True) << "Deactivated Player" << "\n"
 
-    def _setup(self):
+    def setup(self):
         """
         调用 activate() 时运行
-        protected function
         """
 
-    def _release(self):
+    def release(self):
         """
         调用 deactivate() 时运行
-        protected function
         """
 
     def update(self, dt):
@@ -133,7 +130,8 @@ class Player(pygame.sprite.Sprite):
             self.can_jump = False
 
     def apply_gravity(self):
-        self.direction.y += self.gravity
+        if self.active:
+            self.direction.y += self.gravity
 
     def switch_frame(self, dt):
         # 常数 4 控制动画帧速度
@@ -200,8 +198,8 @@ class Player(pygame.sprite.Sprite):
         """
         self.deactivate()
         # 暂时移出游戏
-        self.rect.x = -100
-        self.rect.y = -100
+        self.rect.x = -1000
+        self.rect.y = -1000
 
         self.timers["respawn"].activate()
 

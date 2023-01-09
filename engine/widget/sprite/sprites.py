@@ -33,14 +33,33 @@ class GameObject(Generic):
         self.hitbox = self.rect.copy()
 
 
-class Fog(Generic):
-    def __init__(self, pos, surf, group, z=LAYERS["fog"]):
-        super().__init__(pos, surf, group, z)
-        self.image.set_alpha(250)
-        self.start_x = pos[0]
-        self.move_speed = 1
+class UIGroup:
+    """
+    UI 控件组
+    集中管理若干个有联系的 UI 控件 (surface)
+    """
 
-    def move(self):
-        self.rect.x += self.move_speed
-        if self.rect.x >= SCR_SIZE[0]:
-            self.rect.x = -SCR_SIZE[0]
+    def __init__(self, group):
+        """
+        在子类初始化 sprite 对象时记得加入 all_sprite 组
+        """
+        self.active = False
+        self.group = group
+
+    def activate(self):
+        self.setup()
+        self.active = True
+
+    def deactivate(self):
+        self.deactivate()
+        self.active = False
+
+    def setup(self):
+        """
+        调用 activate() 时运行
+        """
+
+    def release(self):
+        """
+        调用 deactivate() 时运行
+        """

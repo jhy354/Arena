@@ -4,8 +4,12 @@ from .rigidbody import P2Cfg
 
 from .sprites import Generic
 from .sprites import GameObject
-from .sprites import Fog
+from .sprites import UIGroup
 
 from .weapons import Weapon
 from .weapons import Pistol
 from .weapons import Bullet
+
+from .game import Fog
+
+from .ui import TimerUI
