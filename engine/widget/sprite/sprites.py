@@ -51,7 +51,7 @@ class UIGroup:
         self.active = True
 
     def deactivate(self):
-        self.deactivate()
+        self.release()
         self.active = False
 
     def setup(self):

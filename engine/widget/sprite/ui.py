@@ -22,7 +22,10 @@ class TimerUI(UIGroup):
         self.finish = False
         self.cntdown_seconds = cntdown_seconds
         self.current_seconds = cntdown_seconds
+        self.current_start_time = None
         self.start_time = None
+        self.finish_time = None
+        self.time_error = None
         self.time_str = ""
 
         self.timer_icon = None
@@ -30,8 +33,13 @@ class TimerUI(UIGroup):
 
     def activate(self):
         super().activate()
+        self.current_start_time = pygame.time.get_ticks()  # ms
         self.start_time = pygame.time.get_ticks()  # ms
-        Debug(True) << f"(TimerUI) Count Down Started on {pygame.time.get_ticks()}" << "\n"
+
+        Debug(True).div()
+        Debug(True) << f"(TimerUI) Count Down Started on {self.start_time}" << "\n"
+        Debug(True).div()
+
         self.set_time_str()
         self.render_str_surf()
 
@@ -60,7 +68,13 @@ class TimerUI(UIGroup):
 
     def cntdown_finish(self):
         self.finish = True
-        Debug(True) << f"(TimerUI) Count Down Finished on {pygame.time.get_ticks()}" << "\n"
+        self.finish_time = pygame.time.get_ticks()  # ms
+
+        Debug(True).div()
+        Debug(True) << f"(TimerUI) Count Down Finished on {self.finish_time}" << "\n"
+        self.time_error = self.finish_time - self.start_time - self.cntdown_seconds * 1000
+        Debug(True) << f"(TimerUI) Time Error: {self.time_error} ms" << "\n"
+        Debug(True).div()
 
     def set_time_str(self):
         m = self.current_seconds // 60
@@ -83,10 +97,10 @@ class TimerUI(UIGroup):
 
         if self.active:
             t = pygame.time.get_ticks()
-            if t - self.start_time >= 1000:
+            if t - self.current_start_time >= 1000:
                 self.current_seconds -= 1
                 if self.current_seconds <= 0:
                     self.cntdown_finish()
                 self.set_time_str()
-                self.start_time = pygame.time.get_ticks()  # ms
+                self.current_start_time = pygame.time.get_ticks()  # ms
                 self.render_str_surf()

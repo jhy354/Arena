@@ -285,8 +285,7 @@ class PlayGround(Scene):
             self.crown_text,
             font_eng,
             layout.CROWN_TEXT_FONT_SIZE,
-            layout.CROWN_TEXT_COLOR,
-            bold=True
+            layout.CROWN_TEXT_COLOR
         )
 
         '''
