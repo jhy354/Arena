@@ -4,8 +4,10 @@ from game import layout as glayout
 from engine import layout
 from engine import text_script
 from engine.core.scene import Scene
-from engine.utils import custom_load
 from engine.utils import Debug
+from engine.utils import custom_load
+from engine.utils import set_fonts
+from engine.utils import render_text
 from engine.widget.ui import TextButton
 from engine.widget.sprite import Generic
 
@@ -20,6 +22,7 @@ class StartMenu(Scene):
 
         self.background = None
         self.game_title = None
+        self.version_text = None
 
         # * Buttons * #
         self.start_button = None
@@ -65,6 +68,14 @@ class StartMenu(Scene):
         self.game_title = Generic(
             pos=glayout.SM_TITLE_POS,
             surf=custom_load(PATH_UI_TEXT + "game_title.png", glayout.SM_TITLE_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
+        self.version_text = Generic(
+            pos=glayout.SM_VERSION_POS,
+            surf=render_text(text_script.SM_VERSION_TEXT, font_eng, glayout.SM_TEXT_SIZE, glayout.SM_TEXT_COLOR),
             group=[self.all_sprites],
             z=LAYERS["ui"]
         )

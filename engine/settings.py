@@ -1,5 +1,7 @@
 # * Basic Settings * #
+AUTHOR_NAME = "jhy354(Romulus)"
 GITHUB_URL = r"https://github.com/jhy354/Arena"
+AUTHOR_URL = r"https://github.com/jhy354/"
 SCR_SIZE = (1280, 960)
 FPS = 144
 MOVEMENT_RATING = 100

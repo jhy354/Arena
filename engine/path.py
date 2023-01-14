@@ -54,10 +54,6 @@ SKIN_DICT = {
     20: "p_wizard",
 }
 
-SPECIAL_SKIN_DICT = {
-    0: "p_kun"
-}
-
 # * Weapon * #
 PATH_WEAPON_GUN_COMMON = r"./assets/game/weapon/gun/common/"
 PATH_WEAPON_GUN_SPECIAL = r"./assets/game/weapon/gun/special/"

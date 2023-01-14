@@ -5,6 +5,7 @@ import pygame
 
 from engine.settings import *
 from engine.utils import Debug
+from engine.utils import custom_load
 from game.scenes import StartMenu
 from game.scenes import AboutPage
 from game.scenes import StartPlayGround
@@ -18,6 +19,7 @@ class Game:
         pygame.font.init()
         pygame.display.set_caption(CAPTION)
         self.screen = pygame.display.set_mode(SCR_SIZE)
+        pygame.display.set_icon(custom_load(r"./logo.ico", (16, 16)))
         self.clock = pygame.time.Clock()
         Debug(DEBUG_MODE).div()
 

@@ -1,3 +1,5 @@
+import webbrowser
+
 import pygame
 
 from engine.settings import *
@@ -114,9 +116,10 @@ class TextButton(Button):
 
 class UrlButton(TextButton):
 
-    def __init__(self, text, size, color, pos, group, z=LAYERS["ui"]):
+    def __init__(self, text, size, color, pos, group, url, z=LAYERS["ui"]):
         super().__init__(text, size, color, pos, group, z)
         self.target_color = (102, 178, 255)
+        self.url = url
 
     def update(self, dt):
         super().update(dt)
@@ -124,6 +127,10 @@ class UrlButton(TextButton):
             font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
             self.image = render_text(self.text, font_eng, self.size, self.color, underline=True)
             self.rect = self.image.get_rect(topleft=self.pos)
+
+            if self.clicked:
+                webbrowser.open(self.url)
+                self.clicked = False
 
     def hovered_effect(self):
         self.color = self.target_color

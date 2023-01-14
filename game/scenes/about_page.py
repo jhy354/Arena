@@ -36,7 +36,8 @@ class AboutPage(Scene):
         self.title = None
 
         self.version_text = None
-        self.author = None
+        self.author_text = None
+        self.author_url = None
 
         self.setup()
 
@@ -71,7 +72,7 @@ class AboutPage(Scene):
         font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
         self.url_text = Generic(
             pos=glayout.AP_URL_TEXT_POS,
-            surf=render_text(text_script.AP_URL_TEXT, font_eng, glayout.AP_TEXT_SIZE, glayout.AP_URL_TEXT_COLOR),
+            surf=render_text(text_script.AP_URL_TEXT, font_eng, glayout.AP_TEXT_SIZE, glayout.AP_TEXT_COLOR),
             group=[self.all_sprites],
             z=LAYERS["ui"]
         )
@@ -82,6 +83,45 @@ class AboutPage(Scene):
             color=glayout.AP_URL_COLOR,
             pos=glayout.AP_URL_POS,
             group=[self.all_sprites],
+            url=GITHUB_URL,
+            z=LAYERS["ui"]
+        )
+
+        self.logo = Generic(
+            pos=glayout.AP_LOGO_POS,
+            surf=custom_load(PATH_UI_ICON + "logo.png", glayout.AP_LOGO_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.title = Generic(
+            pos=glayout.AP_TITLE_POS,
+            surf=custom_load(PATH_UI_TEXT + "game_title.png", glayout.AP_TITLE_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.version_text = Generic(
+            pos=glayout.AP_VERSION_POS,
+            surf=render_text(text_script.AP_VERSION_TEXT, font_eng, glayout.AP_TEXT_SIZE, glayout.AP_TEXT_COLOR),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.author_text = Generic(
+            pos=glayout.AP_AUTHOR_TEXT_POS,
+            surf=render_text(text_script.AP_AUTHOR_TEXT, font_eng, glayout.AP_TEXT_SIZE, glayout.AP_TEXT_COLOR),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.author_url = UrlButton(
+            text=AUTHOR_NAME,
+            size=glayout.AP_TEXT_SIZE,
+            color=glayout.AP_URL_COLOR,
+            pos=glayout.AP_AUTHOR_URL_POS,
+            group=[self.all_sprites],
+            url=AUTHOR_URL,
             z=LAYERS["ui"]
         )
 
@@ -99,6 +139,7 @@ class AboutPage(Scene):
 
         self.back_button.activate()
         self.url.activate()
+        self.author_url.activate()
 
         Debug(True) << "Activated AboutPage" << "\n"
         Debug(True).div()
@@ -108,15 +149,7 @@ class AboutPage(Scene):
 
         self.back_button.deactivate()
         self.url.deactivate()
+        self.author_url.deactivate()
 
         Debug(True) << "Deactivated AboutPage" << "\n"
         Debug(True).div()
-
-    def update_url(self):
-        if self.url.clicked:
-            webbrowser.open(GITHUB_URL)
-            self.url.clicked = False
-
-    def run(self, dt):
-        super().run(dt)
-        self.update_url()
