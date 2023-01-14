@@ -1,8 +1,8 @@
-import game.layout as layout
-from engine import text_script
-from engine.layout import *
 from engine.path import *
 from engine.settings import *
+from game import layout as glayout
+from engine import layout
+from engine import text_script
 from engine.core.scene import Scene
 from engine.utils import custom_load
 from engine.utils import Debug
@@ -18,86 +18,99 @@ class StartMenu(Scene):
     def __init__(self):
         super().__init__()
 
-        self.background = Generic(
-            pos=BG_POS,
-            surf=custom_load(PATH_UI_BG + "2_bg_night.png", BG_SIZE),
-            group=[self.all_sprites],
-            z=LAYERS["background"]
-        )
-
-        self.game_title = Generic(
-            pos=layout.SM_TITLE,
-            surf=custom_load(PATH_UI_TEXT + "game_title.png", layout.SM_TITLE_SIZE),
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
+        self.background = None
+        self.game_title = None
 
         # * Buttons * #
-
-        self.start_button = TextButton(
-            text=text_script.START_GAME,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_START,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        self.quit_button = TextButton(
-            text=text_script.QUIT_GAME,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_QUIT,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        self.settings_button = TextButton(
-            text=text_script.SETTINGS,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_SETTINGS,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
-
-        self.about_button = TextButton(
-            text=text_script.ABOUT,
-            size=35,
-            color=(169, 169, 169),
-            pos=layout.SM_ABOUT,
-            group=[self.all_sprites],
-            z=LAYERS["ui"]
-        )
+        self.start_button = None
+        self.quit_button = None
+        self.settings_button = None
+        self.about_button = None
 
         Debug(True) << "Inited StartMenu" << "\n"
         Debug(True).div()
 
     def activate(self):
         super().activate()
+
+        self.start_button.activate()
+        self.quit_button.activate()
+        self.settings_button.activate()
+        self.about_button.activate()
+
         Debug(True) << "Activated StartMenu" << "\n"
+        Debug(True).div()
 
     def deactivate(self):
         super().deactivate()
+
+        self.start_button.deactivate()
+        self.quit_button.deactivate()
+        self.settings_button.deactivate()
+        self.about_button.deactivate()
+
         Debug(True) << "Deactivated StartMenu" << "\n"
         Debug(True).div()
 
     def setup(self):
         super().setup()
-        self.start_button.activate()
-        self.quit_button.activate()
-        self.settings_button.activate()
-        self.about_button.activate()
+
+        self.background = Generic(
+            pos=layout.BG_POS,
+            surf=custom_load(PATH_UI_BG + "2_bg_night.png", layout.BG_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["background"]
+        )
+
+        self.game_title = Generic(
+            pos=glayout.SM_TITLE_POS,
+            surf=custom_load(PATH_UI_TEXT + "game_title.png", glayout.SM_TITLE_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        # * Buttons * #
+        self.start_button = TextButton(
+            text=text_script.SM_START_GAME,
+            size=glayout.SM_BUTTON_TEXT_SIZE,
+            color=glayout.SM_BUTTON_COLOR,
+            pos=glayout.SM_START_POS,
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.quit_button = TextButton(
+            text=text_script.SM_QUIT_GAME,
+            size=glayout.SM_BUTTON_TEXT_SIZE,
+            color=glayout.SM_BUTTON_COLOR,
+            pos=glayout.SM_QUIT_POS,
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.settings_button = TextButton(
+            text=text_script.SM_SETTINGS,
+            size=glayout.SM_BUTTON_TEXT_SIZE,
+            color=glayout.SM_BUTTON_COLOR,
+            pos=glayout.SM_SETTINGS_POS,
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.about_button = TextButton(
+            text=text_script.SM_ABOUT,
+            size=glayout.SM_BUTTON_TEXT_SIZE,
+            color=glayout.SM_BUTTON_COLOR,
+            pos=glayout.SM_ABOUT_POS,
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
         Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
         Debug(True) << "Loaded StartMenu" << "\n"
 
     def release(self):
         super().release()
-        self.start_button.deactivate()
-        self.quit_button.deactivate()
-        self.settings_button.deactivate()
-        self.about_button.deactivate()
-        Debug(True) << "Released StartMenu" << "\n"
 
-    def run(self, dt):
-        super().run(dt)
+        Debug(True) << "Released StartMenu" << "\n"
+        Debug(True).div()

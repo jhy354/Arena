@@ -5,8 +5,9 @@ import pygame
 
 from engine.settings import *
 from engine.utils import Debug
-from game.scenes import StartPlayGround
 from game.scenes import StartMenu
+from game.scenes import AboutPage
+from game.scenes import StartPlayGround
 
 
 class Game:
@@ -31,10 +32,13 @@ class Game:
         scenes = {}
 
         start_menu = StartMenu()
+        about_page = AboutPage()
         play_ground = StartPlayGround(randint(0, 2), randint(0, 3))
 
         scenes["start_menu"] = start_menu
-        scenes["start_play_ground"] = play_ground
+        scenes["about_page"] = about_page
+        scenes["play_ground"] = play_ground
+        print(scenes)
 
         return scenes
 
@@ -62,8 +66,18 @@ class Game:
         """
         if self.scenes["start_menu"].start_button.clicked:
             self.scenes["start_menu"].deactivate()
-            self.scenes["start_play_ground"].activate()
+            self.scenes["play_ground"].activate()
             self.scenes["start_menu"].start_button.clicked = False
+
+        if self.scenes["start_menu"].about_button.clicked:
+            self.scenes["start_menu"].deactivate()
+            self.scenes["about_page"].activate()
+            self.scenes["start_menu"].about_button.clicked = False
+
+        if self.scenes["about_page"].back_button.clicked:
+            self.scenes["about_page"].deactivate()
+            self.scenes["start_menu"].activate()
+            self.scenes["about_page"].back_button.clicked = False
 
         if self.scenes["start_menu"].quit_button.clicked:
             pygame.quit()

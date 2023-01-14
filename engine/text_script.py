@@ -1,9 +1,13 @@
-# * Start Menu * #
-START_GAME = "Start Adventure"
-QUIT_GAME = "Quit Game"
-SETTINGS = "Settings"
-ABOUT = "About"
+# * StartMenu * #
+SM_START_GAME = "Start Adventure"
+SM_QUIT_GAME = "Quit Game"
+SM_SETTINGS = "Settings"
+SM_ABOUT = "About"
 
-# * Play Ground * #
+# * PlayGround * #
 CONTESTED = "Contested!"
 PLAYER_IN_LEAD = ["Player", "in lead!"]
+
+# * AboutPage * #
+AP_BACK = "Back"
+AP_URL_TEXT = "Github Repository:"

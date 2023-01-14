@@ -42,7 +42,7 @@ class Button(pygame.sprite.Sprite):
         左键单机时调用
         """
         self.clicked = True
-        self.deactivate()
+        # self.deactivate()
 
     def _clicked(self):
         self.clicked = False
@@ -93,9 +93,10 @@ class TextButton(Button):
 
     def update(self, dt):
         super().update(dt)
-        font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
-        self.image = render_text(self.text, font_eng, self.size, self.color)
-        self.rect = self.image.get_rect(topleft=self.pos)
+        if self.active:
+            font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
+            self.image = render_text(self.text, font_eng, self.size, self.color)
+            self.rect = self.image.get_rect(topleft=self.pos)
 
     def respond_mouse(self):
         super().respond_mouse()
@@ -109,3 +110,20 @@ class TextButton(Button):
         super().cancel_hover()
         self.size = self.former_size
         self.color = self.former_color
+
+
+class UrlButton(TextButton):
+
+    def __init__(self, text, size, color, pos, group, z=LAYERS["ui"]):
+        super().__init__(text, size, color, pos, group, z)
+        self.target_color = (102, 178, 255)
+
+    def update(self, dt):
+        super().update(dt)
+        if self.active:
+            font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
+            self.image = render_text(self.text, font_eng, self.size, self.color, underline=True)
+            self.rect = self.image.get_rect(topleft=self.pos)
+
+    def hovered_effect(self):
+        self.color = self.target_color

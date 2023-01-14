@@ -1,4 +1,5 @@
 # * Basic Settings * #
+GITHUB_URL = r"https://github.com/jhy354/Arena"
 SCR_SIZE = (1280, 960)
 FPS = 144
 MOVEMENT_RATING = 100
@@ -21,15 +22,16 @@ DEBUG_MODE = True
 # * Layer Settings * #
 LAYERS = {
     "background": 0,
-    "bullet": 1,
-    "weapon": 2,
-    "map_floor": 3,
-    "default": 4,
-    "player": 5,
-    "map_decoration": 6,
-    "prop": 7,
-    "fog": 8,
-    "ui": 9,
+    "background_shadow": 1,
+    "bullet": 10,
+    "weapon": 11,
+    "map_floor": 20,
+    "default": 30,
+    "player": 40,
+    "map_decoration": 50,
+    "prop": 60,
+    "fog": 70,
+    "ui": 100,
 }
 
 # * Crown Color Settings * #
