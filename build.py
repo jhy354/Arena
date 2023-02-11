@@ -1,5 +1,6 @@
 import os
 from shutil import copytree
+from shutil import copyfile
 from shutil import rmtree
 from pathlib import Path
 
@@ -50,6 +51,7 @@ if __name__ == "__main__":
 
     print("Copying files...")
     copytree(r"./assets", str(path) + "\\" + "assets")
+    copyfile(r"./logo.ico", "./dist/main/logo.ico")
     print("DONE")
 
     print("Renaming files...")
