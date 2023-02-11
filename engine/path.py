@@ -6,9 +6,10 @@ PATH_UI_BUTTON = r"./assets/ui/button/"
 PATH_UI_ETC = r"./assets/ui/etc/"
 PATH_UI_TEXT = r"./assets/ui/text/"
 PATH_UI_ICON = r"./assets/ui/icon/"
+PATH_UI_P_DISPLAY_CASE = r"./assets/ui/player_display_case/"
 
 # * Effect * #
-PATH_EFFECT = r"./assets/special_effect/"
+PATH_EFFECT_NOISE = r"./assets/special_effect/noise/0.png"
 PATH_EFFECT_FOG = r"./assets/special_effect/fog/"
 
 # * Player * #

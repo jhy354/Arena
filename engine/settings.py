@@ -6,7 +6,7 @@ SCR_SIZE = (1280, 960)
 FPS = 144
 MOVEMENT_RATING = 100
 
-VERSION = "e0.0.7.0109"
+VERSION = "e0.0.8.0211"
 CAPTION = "Arena - " + VERSION
 
 FONT_CHS_LIST = [
@@ -25,15 +25,24 @@ DEBUG_MODE = True
 LAYERS = {
     "background": 0,
     "background_shadow": 1,
+
     "bullet": 10,
     "weapon": 11,
+
     "map_floor": 20,
+
     "default": 30,
+
     "player": 40,
+
     "map_decoration": 50,
+
     "prop": 60,
+
     "fog": 70,
+
     "ui": 100,
+    "noise": 101,
 }
 
 # * Crown Color Settings * #

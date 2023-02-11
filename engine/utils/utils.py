@@ -46,7 +46,7 @@ class Timer:
                 self.func()
 
 
-def import_folder(path, size=(0, 0)):
+def import_folder(path, size=(0, 0), silent=False):
     """
     将目录中所有图片文件导入为 surface 对象
     在需要使用目录中所有图片时使用
@@ -57,7 +57,8 @@ def import_folder(path, size=(0, 0)):
     for folder_name, sub_folder, img_files in walk(path):
         for image in img_files:
             full_path = path + "/" + image
-            Debug(DEBUG_MODE) << full_path << "\n"
+            if not silent:
+                Debug(DEBUG_MODE) << full_path << "\n"
 
             # convert_alpha() 优化性能 保留 alpha通道
             image_surf = pygame.image.load(full_path).convert_alpha()
@@ -68,8 +69,9 @@ def import_folder(path, size=(0, 0)):
 
             surface_list.append(image_surf)
 
-        Debug(DEBUG_MODE) << "Imported Folder " << path << "\n"
-        Debug(DEBUG_MODE).div()
+        if not silent:
+            Debug(DEBUG_MODE) << "Imported Folder " << path << "\n"
+            Debug(DEBUG_MODE).div()
 
     return surface_list
 

@@ -31,35 +31,3 @@ class GameObject(Generic):
     def __init__(self, pos, surf, group, z=LAYERS["default"]):
         super().__init__(pos, surf, group, z)
         self.hitbox = self.rect.copy()
-
-
-class UIGroup:
-    """
-    UI 控件组
-    集中管理若干个有联系的 UI 控件 (surface)
-    """
-
-    def __init__(self, group):
-        """
-        在子类初始化 sprite 对象时记得加入 all_sprite 组
-        """
-        self.active = False
-        self.group = group
-
-    def activate(self):
-        self.setup()
-        self.active = True
-
-    def deactivate(self):
-        self.release()
-        self.active = False
-
-    def setup(self):
-        """
-        调用 activate() 时运行
-        """
-
-    def release(self):
-        """
-        调用 deactivate() 时运行
-        """

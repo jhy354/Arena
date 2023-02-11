@@ -6,9 +6,12 @@ from engine import text_script
 from engine.core.scene import Scene
 from engine.utils import Debug
 from engine.utils import custom_load
+from engine.utils import import_folder
 from engine.utils import set_fonts
 from engine.utils import render_text
 from engine.widget.ui import TextButton
+from engine.widget.ui import DisplayCase
+from engine.widget.sprite import Noise
 from engine.widget.sprite import Generic
 
 
@@ -23,6 +26,8 @@ class StartMenu(Scene):
         self.background = None
         self.game_title = None
         self.version_text = None
+        self.noise = None
+        self.player_display_case = None
 
         # * Buttons * #
         self.start_button = None
@@ -36,6 +41,8 @@ class StartMenu(Scene):
     def activate(self):
         super().activate()
 
+        self.player_display_case.activate()
+
         self.start_button.activate()
         self.quit_button.activate()
         self.settings_button.activate()
@@ -46,6 +53,8 @@ class StartMenu(Scene):
 
     def deactivate(self):
         super().deactivate()
+
+        self.player_display_case.deactivate()
 
         self.start_button.deactivate()
         self.quit_button.deactivate()
@@ -76,6 +85,21 @@ class StartMenu(Scene):
         self.version_text = Generic(
             pos=glayout.SM_VERSION_POS,
             surf=render_text(text_script.SM_VERSION_TEXT, font_eng, glayout.SM_TEXT_SIZE, glayout.SM_TEXT_COLOR),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        # * Noise * #
+        self.noise = Noise(
+            pos=(0, 0),
+            surf=custom_load(PATH_EFFECT_NOISE, SCR_SIZE),
+            group=[self.all_sprites]
+        )
+
+        # * Player Display Case * #
+        self.player_display_case = DisplayCase(
+            start_pos=(900, 0),
+            surf_list=import_folder(PATH_UI_P_DISPLAY_CASE, glayout.SM_P_DISPLAY_CASE_SIZE),
             group=[self.all_sprites],
             z=LAYERS["ui"]
         )
@@ -123,5 +147,17 @@ class StartMenu(Scene):
     def release(self):
         super().release()
 
+        self.player_display_case.deactivate()
+
+        self.start_button.deactivate()
+        self.quit_button.deactivate()
+        self.settings_button.deactivate()
+        self.about_button.deactivate()
+
         Debug(True) << "Released StartMenu" << "\n"
         Debug(True).div()
+
+    def run(self, dt):
+        super().run(dt)
+
+        self.player_display_case.update()
