@@ -13,6 +13,7 @@ from engine.utils import render_text
 from engine.utils import set_fonts
 from engine.core.scene import Scene
 from engine.widget.sprite import Generic
+from engine.widget.sprite import Noise
 from engine.widget.ui import TextButton
 from engine.widget.ui import UrlButton
 
@@ -25,6 +26,7 @@ class AboutPage(Scene):
     def __init__(self):
         super().__init__()
 
+        self.noise = None
         self.background = None
         self.shadow = None
         self.back_button = None
@@ -43,6 +45,13 @@ class AboutPage(Scene):
 
     def setup(self):
         super().setup()
+
+        # * Noise * #
+        self.noise = Noise(
+            pos=(0, 0),
+            surf=custom_load(PATH_EFFECT_NOISE, SCR_SIZE),
+            group=[self.all_sprites]
+        )
 
         self.background = Generic(
             pos=layout.BG_POS,

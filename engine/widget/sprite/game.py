@@ -24,4 +24,4 @@ class Noise(Generic):
     """
     def __init__(self, pos, surf, group, z=LAYERS["noise"]):
         super().__init__(pos, surf, group, z)
-        self.image.set_alpha(127)
+        self.image.set_alpha(100)
