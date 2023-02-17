@@ -68,6 +68,7 @@ class PlayGround(Scene):
 
     def run(self, dt):
         super().run(dt)
+        self.all_sprites.custom_draw()
         self.horizontal_movement_coll(dt)
         self.vertical_movement_coll(dt)
         self.check_bullet_coll()

@@ -28,7 +28,10 @@ if __name__ == "__main__":
     if os.path.exists("./build"):
         rmtree("./build")
     if os.path.exists("./dist"):
-        rmtree("./dist")
+        try:
+            rmtree("./dist")
+        except OSError:
+            pass
     print("DONE")
 
     print("Building...")
@@ -46,6 +49,8 @@ if __name__ == "__main__":
                 try:
                     os.remove(str(path) + "\\" + str(file_name))
                 except FileNotFoundError:
+                    pass
+                except PermissionError:
                     pass
     print("DONE")
 

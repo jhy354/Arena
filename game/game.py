@@ -9,6 +9,7 @@ from engine.utils import custom_load
 from game.scenes import StartMenu
 from game.scenes import AboutPage
 from game.scenes import StartPlayGround
+from game.scenes import StartLevel
 
 
 class Game:
@@ -36,10 +37,12 @@ class Game:
         start_menu = StartMenu()
         about_page = AboutPage()
         play_ground = StartPlayGround(randint(0, 2), randint(0, 3))
+        level = StartLevel(0, 0)
 
         scenes["start_menu"] = start_menu
         scenes["about_page"] = about_page
         scenes["play_ground"] = play_ground
+        scenes["level"] = level
         print(scenes)
 
         return scenes
@@ -80,6 +83,11 @@ class Game:
             self.scenes["about_page"].deactivate()
             self.scenes["start_menu"].activate()
             self.scenes["about_page"].back_button.clicked = False
+
+        if self.scenes["start_menu"].test_level_button.clicked:
+            self.scenes["start_menu"].deactivate()
+            self.scenes["level"].activate()
+            self.scenes["start_menu"].test_level_button.clicked = False
 
         if self.scenes["start_menu"].quit_button.clicked:
             pygame.quit()

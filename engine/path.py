@@ -30,6 +30,10 @@ PATH_MAP = {
     2: r"./assets/game/map/du_nefort/du_nefort.tmx",
 }
 
+PATH_MAP_LEVEL = {
+    0: r"./assets/game/map/le_test/le_test.tmx",
+}
+
 # * Skin * #
 SKIN_DICT = {
     0: "p_pale",

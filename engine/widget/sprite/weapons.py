@@ -106,8 +106,11 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.x += self.direction * 0.01 * self.speed
 
     def update(self, dt):
+        '''
         if any([self.rect.x <= 0, self.rect.y <= 0, self.rect.x >= SCR_SIZE[0], self.rect.y >= SCR_SIZE[1]]):
             self.destroy()
+        '''
+        pass
 
     def destroy(self):
         self.kill()

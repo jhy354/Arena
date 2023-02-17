@@ -48,5 +48,4 @@ class Scene:
         在 self.active == True 时循环运行
         """
         self.display_surface.fill("white")
-        self.all_sprites.custom_draw()
         self.all_sprites.update(dt)

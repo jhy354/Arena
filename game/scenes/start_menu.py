@@ -34,6 +34,7 @@ class StartMenu(Scene):
         self.quit_button = None
         self.settings_button = None
         self.about_button = None
+        self.test_level_button = None
 
         Debug(True) << "Inited StartMenu" << "\n"
         Debug(True).div()
@@ -47,6 +48,7 @@ class StartMenu(Scene):
         self.quit_button.activate()
         self.settings_button.activate()
         self.about_button.activate()
+        self.test_level_button.activate()
 
         Debug(True) << "Activated StartMenu" << "\n"
         Debug(True).div()
@@ -60,6 +62,7 @@ class StartMenu(Scene):
         self.quit_button.deactivate()
         self.settings_button.deactivate()
         self.about_button.deactivate()
+        self.test_level_button.deactivate()
 
         Debug(True) << "Deactivated StartMenu" << "\n"
         Debug(True).div()
@@ -141,23 +144,25 @@ class StartMenu(Scene):
             z=LAYERS["ui"]
         )
 
+        self.test_level_button = TextButton(
+            text=text_script.SM_LEVEL,
+            size=glayout.SM_BUTTON_TEXT_SIZE,
+            color=glayout.SM_BUTTON_COLOR,
+            pos=glayout.SM_LEVEL_POS,
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
         Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
         Debug(True) << "Loaded StartMenu" << "\n"
 
     def release(self):
         super().release()
 
-        self.player_display_case.deactivate()
-
-        self.start_button.deactivate()
-        self.quit_button.deactivate()
-        self.settings_button.deactivate()
-        self.about_button.deactivate()
-
         Debug(True) << "Released StartMenu" << "\n"
         Debug(True).div()
 
     def run(self, dt):
         super().run(dt)
-
+        self.all_sprites.custom_draw()
         self.player_display_case.update()
