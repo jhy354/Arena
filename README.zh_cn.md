@@ -17,7 +17,7 @@ Arena 是一个基于pygame编写的2D平台类游戏
 6. [License GPL-3.0](#license-gpl-30)
 
 ## 运行环境
-- python (已在*python3.6+*中测试运行)
+- python (已在python3.6+中测试运行)
 - [pip](https://github.com/pypa/pip)
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
