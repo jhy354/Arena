@@ -3,8 +3,10 @@
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/logo.png width=5% />
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/game_title.png width=17% />
 </div>
-<center>[简体中文](README.zh_cn.md) | [English](README.md)</center>
-<center>*Arena* 是一个基于pygame编写的2D平台类游戏</center>
+Arena 是一个基于pygame编写的2D平台类游戏
+
+## 语言
+[简体中文](README.zh_cn.md) | [English](README.md)
 
 ## 目录
 1. [运行环境](#运行环境)
