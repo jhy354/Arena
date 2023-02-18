@@ -3,7 +3,8 @@
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/logo.png width=5% />
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/game_title.png width=17% />
 </div>
-Arena is a 2D platform game by pygame
+<center>[简体中文](README.zh_cn.md) | [English](README.md)</center>
+<center>*Arena* is a 2D platform game by pygame</center>
 
 ## Contents
 1. [Requirements](#requirements)
@@ -14,7 +15,7 @@ Arena is a 2D platform game by pygame
 6. [License GPL-3.0](#license-gpl-30)
 
 ## Requirements
-- python (3.4+)
+- python (Tested on 3.6+)
 - [pip](https://github.com/pypa/pip)
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
