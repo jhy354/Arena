@@ -181,12 +181,12 @@ class Player(pygame.sprite.Sprite):
         elif self.face_direction == "right":
             self.weapon.direction = "right"
             self.weapon.rect.topleft = self.rect.midright
-            self.weapon.rect.y -= 5
+            self.weapon.rect.y -= 4
 
         if self.face_direction == "right":
-            self.weapon.rect.x -= 5
+            self.weapon.rect.x -= 4
         else:
-            self.weapon.rect.x += 5
+            self.weapon.rect.x += 4
 
     def update_timer(self):
         for timer in self.timers.values():

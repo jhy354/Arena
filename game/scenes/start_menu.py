@@ -34,7 +34,7 @@ class StartMenu(Scene):
         self.quit_button = None
         self.settings_button = None
         self.about_button = None
-        self.test_level_button = None
+        self.arena_button = None
 
         Debug(True) << "Inited StartMenu" << "\n"
         Debug(True).div()
@@ -48,7 +48,7 @@ class StartMenu(Scene):
         self.quit_button.activate()
         self.settings_button.activate()
         self.about_button.activate()
-        self.test_level_button.activate()
+        self.arena_button.activate()
 
         Debug(True) << "Activated StartMenu" << "\n"
         Debug(True).div()
@@ -62,7 +62,7 @@ class StartMenu(Scene):
         self.quit_button.deactivate()
         self.settings_button.deactivate()
         self.about_button.deactivate()
-        self.test_level_button.deactivate()
+        self.arena_button.deactivate()
 
         Debug(True) << "Deactivated StartMenu" << "\n"
         Debug(True).div()
@@ -112,7 +112,7 @@ class StartMenu(Scene):
             text=text_script.SM_START_GAME,
             size=glayout.SM_BUTTON_TEXT_SIZE,
             color=glayout.SM_BUTTON_COLOR,
-            pos=glayout.SM_START_POS,
+            pos=glayout.SM_START_ADVENTURE_POS,
             group=[self.all_sprites],
             z=LAYERS["ui"]
         )
@@ -144,11 +144,11 @@ class StartMenu(Scene):
             z=LAYERS["ui"]
         )
 
-        self.test_level_button = TextButton(
+        self.arena_button = TextButton(
             text=text_script.SM_LEVEL,
             size=glayout.SM_BUTTON_TEXT_SIZE,
             color=glayout.SM_BUTTON_COLOR,
-            pos=glayout.SM_LEVEL_POS,
+            pos=glayout.SM_START_ARENA_POS,
             group=[self.all_sprites],
             z=LAYERS["ui"]
         )

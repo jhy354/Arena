@@ -41,8 +41,6 @@ class AboutPage(Scene):
         self.author_text = None
         self.author_url = None
 
-        self.setup()
-
     def setup(self):
         super().setup()
 
@@ -162,3 +160,7 @@ class AboutPage(Scene):
 
         Debug(True) << "Deactivated AboutPage" << "\n"
         Debug(True).div()
+
+    def run(self, dt):
+        super().run(dt)
+        self.all_sprites.custom_draw()

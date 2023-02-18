@@ -6,7 +6,7 @@ SCR_SIZE = (1280, 960)
 FPS = 144
 MOVEMENT_RATING = 100
 
-VERSION = "e0.0.8.0211"
+VERSION = "e0.0.9.0218"
 CAPTION = "Arena - " + VERSION
 
 FONT_CHS_LIST = [
@@ -33,9 +33,12 @@ LAYERS = {
 
     "default": 30,
 
+    "map_background": 39,
     "player": 40,
 
     "map_decoration": 50,
+    "map_decoration2": 51,
+    "map_decoration3": 52,
 
     "prop": 60,
 

@@ -37,7 +37,7 @@ class Game:
         start_menu = StartMenu()
         about_page = AboutPage()
         play_ground = StartPlayGround(randint(0, 2), randint(0, 3))
-        level = StartLevel(0, 0)
+        level = StartLevel(1, 0)
 
         scenes["start_menu"] = start_menu
         scenes["about_page"] = about_page
@@ -69,9 +69,10 @@ class Game:
         """
         场景转换的条件及控制
         """
+
         if self.scenes["start_menu"].start_button.clicked:
             self.scenes["start_menu"].deactivate()
-            self.scenes["play_ground"].activate()
+            self.scenes["level"].activate()
             self.scenes["start_menu"].start_button.clicked = False
 
         if self.scenes["start_menu"].about_button.clicked:
@@ -79,15 +80,16 @@ class Game:
             self.scenes["about_page"].activate()
             self.scenes["start_menu"].about_button.clicked = False
 
-        if self.scenes["about_page"].back_button.clicked:
-            self.scenes["about_page"].deactivate()
-            self.scenes["start_menu"].activate()
-            self.scenes["about_page"].back_button.clicked = False
+        if self.scenes["about_page"].active:
+            if self.scenes["about_page"].back_button.clicked:
+                self.scenes["about_page"].deactivate()
+                self.scenes["start_menu"].activate()
+                self.scenes["about_page"].back_button.clicked = False
 
-        if self.scenes["start_menu"].test_level_button.clicked:
+        if self.scenes["start_menu"].arena_button.clicked:
             self.scenes["start_menu"].deactivate()
-            self.scenes["level"].activate()
-            self.scenes["start_menu"].test_level_button.clicked = False
+            self.scenes["play_ground"].activate()
+            self.scenes["start_menu"].arena_button.clicked = False
 
         if self.scenes["start_menu"].quit_button.clicked:
             pygame.quit()

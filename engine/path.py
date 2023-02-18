@@ -32,6 +32,7 @@ PATH_MAP = {
 
 PATH_MAP_LEVEL = {
     0: r"./assets/game/map/le_test/le_test.tmx",
+    1: r"./assets/game/map/le_guidance/le_guidance.tmx",
 }
 
 # * Skin * #

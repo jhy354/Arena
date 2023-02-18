@@ -6,7 +6,7 @@ SM_START_GAME = "Start Adventure"
 SM_QUIT_GAME = "Quit Game"
 SM_SETTINGS = "Settings"
 SM_ABOUT = "About"
-SM_LEVEL = "TEST_LEVEL"
+SM_LEVEL = "Start Arena"
 
 # * PlayGround * #
 CONTESTED = "Contested!"
