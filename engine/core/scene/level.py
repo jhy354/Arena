@@ -32,7 +32,7 @@ class Level(ArenaScene):
         p1_cfg.skin = p1_skin
 
         self.player_1 = Player(
-            [self.all_sprites, self.player_group],
+            [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
             p1_cfg
         )
 

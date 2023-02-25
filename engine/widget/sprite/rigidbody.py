@@ -129,7 +129,7 @@ class Player(pygame.sprite.Sprite):
             self.jump_cnt = 0
             self.can_jump = False
 
-    def apply_gravity(self):
+    def apply_gravity(self, dt):  # dt can not be removed due to ArenaScene.gravity_group
         if self.active:
             self.direction.y += self.gravity
 

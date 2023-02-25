@@ -84,12 +84,12 @@ class PlayGround(ArenaScene):
         p2_cfg.skin = p2_skin
 
         self.player_1 = Player(
-            [self.all_sprites, self.player_group],
+            [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
             p1_cfg
         )
 
         self.player_2 = Player(
-            [self.all_sprites, self.player_group],
+            [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
             p2_cfg
         )
 

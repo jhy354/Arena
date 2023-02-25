@@ -31,3 +31,42 @@ class GameObject(Generic):
     def __init__(self, pos, surf, group, z=LAYERS["default"]):
         super().__init__(pos, surf, group, z)
         self.hitbox = self.rect.copy()
+
+
+class GravityObj(GameObject):
+    """
+    有重力
+    """
+
+    def __init__(self, pos, surf, group, gravity, max_gravity, z=LAYERS["map_gravity"]):
+        super().__init__(pos, surf, group, z)
+        self.active = True
+        self.gravity = gravity
+        self.max_gravity = max_gravity
+        self.direction = pygame.math.Vector2(0, 0)
+
+    def activate(self):
+        self.active = True
+
+    def deactivate(self):
+        self.active = False
+
+    def apply_gravity(self, dt):
+        if self.active:
+            self.direction.y += self.gravity
+            self.rect.y += self.direction.y * dt * MOVEMENT_RATING
+
+
+class BreakObj(GameObject):
+    """
+    可破坏
+    """
+
+    def __init__(self, pos, surf, group, bullet_cnt=1, z=LAYERS["map_break"]):
+        super().__init__(pos, surf, group, z)
+        self.bullet_cnt = bullet_cnt
+
+    def update_bullet_cnt(self):
+        self.bullet_cnt -= 1
+        if self.bullet_cnt <= 0:
+            self.kill()

@@ -26,15 +26,17 @@ LAYERS = {
     "background": 0,
     "background_shadow": 1,
 
-    "bullet": 10,
-    "weapon": 11,
-
+    "map_background": 18,
+    "map_edge": 19,
     "map_floor": 20,
+    "map_break": 21,
+    "map_gravity": 22,
 
     "default": 30,
 
-    "map_background": 39,
+    "bullet": 39,
     "player": 40,
+    "weapon": 41,
 
     "map_decoration": 50,
     "map_decoration2": 51,

@@ -2,11 +2,11 @@ from engine.settings import *
 
 # * StartMenu * #
 SM_VERSION_TEXT = f"{VERSION}"
-SM_START_GAME = "Start Adventure"
+SM_START_GAME = "Adventure"
 SM_QUIT_GAME = "Quit Game"
 SM_SETTINGS = "Settings"
 SM_ABOUT = "About"
-SM_LEVEL = "Start Arena"
+SM_LEVEL = "Arena"
 
 # * PlayGround * #
 CONTESTED = "Contested!"

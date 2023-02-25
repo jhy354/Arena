@@ -7,6 +7,8 @@ from engine import layout
 from engine.core.camera import CameraGroup
 from engine.widget.sprite import Generic
 from engine.widget.sprite import GameObject
+from engine.widget.sprite import GravityObj
+from engine.widget.sprite import BreakObj
 from engine.utils import Debug
 
 
@@ -71,17 +73,28 @@ class ArenaScene(Scene):
         self.background_index = background_index
 
         # * Groups * #
+        self.creature_group = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
+        self.break_group = pygame.sprite.Group()
+        self.gravity_group = pygame.sprite.Group()
+        self.shoot_group = pygame.sprite.Group()
         self.bullet_groups = []
 
         # * Map Tiles * #
         self.map_edges = []
         self.map_floors = []
+        self.map_background = []
+        self.map_decoration = []
+        self.map_decoration2 = []
+        self.map_decoration3 = []
+        self.map_break = []
+        self.map_gravity = []
 
     def run(self, dt):
         super().run(dt)
         self.horizontal_movement_coll(dt)
         self.vertical_movement_coll(dt)
+        self.apply_sprite_gravity(dt)
         self.check_bullet_coll()
         self.update_player_weapon()
 
@@ -119,7 +132,7 @@ class ArenaScene(Scene):
             )
 
         for x, y, surf in tmx_data.get_layer_by_name("decoration").tiles():
-            self.map_floors.append(
+            self.map_decoration.append(
                 GameObject(
                     pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
                     surf=surf,
@@ -129,7 +142,7 @@ class ArenaScene(Scene):
             )
         try:
             for x, y, surf in tmx_data.get_layer_by_name("decoration2").tiles():
-                self.map_floors.append(
+                self.map_decoration2.append(
                     GameObject(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
                         surf=surf,
@@ -142,7 +155,7 @@ class ArenaScene(Scene):
 
         try:
             for x, y, surf in tmx_data.get_layer_by_name("decoration3").tiles():
-                self.map_floors.append(
+                self.map_decoration3.append(
                     GameObject(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
                         surf=surf,
@@ -155,7 +168,7 @@ class ArenaScene(Scene):
 
         try:
             for x, y, surf in tmx_data.get_layer_by_name("background").tiles():
-                self.map_floors.append(
+                self.map_background.append(
                     GameObject(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
                         surf=surf,
@@ -166,41 +179,80 @@ class ArenaScene(Scene):
         except ValueError:
             pass
 
+        try:
+            for x, y, surf in tmx_data.get_layer_by_name("break").tiles():
+                self.map_break.append(
+                    BreakObj(
+                        pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
+                        surf=surf,
+                        group=[self.all_sprites, self.coll_rect_sprites, self.break_group],
+                        z=LAYERS["map_break"]
+                    )
+                )
+        except ValueError:
+            pass
+
+        try:
+            for x, y, surf in tmx_data.get_layer_by_name("gravity").tiles():
+                self.map_gravity.append(
+                    GravityObj(
+                        pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
+                        surf=surf,
+                        group=[self.all_sprites, self.coll_rect_sprites, self.gravity_group],
+                        gravity=0.8,
+                        max_gravity=8,
+                        z=LAYERS["map_gravity"]
+                    )
+                )
+        except ValueError:
+            pass
+
     def update_player_weapon(self):
         for player in self.player_group.sprites():
             player.update_weapon()
 
     def horizontal_movement_coll(self, dt):
-        for player in self.player_group.sprites():
+        for creature in self.creature_group.sprites():
 
-            player.rect.x += player.direction.x * dt * MOVEMENT_RATING
+            creature.rect.x += creature.direction.x * dt * MOVEMENT_RATING
 
-            for sprite in self.coll_rect_sprites:
-                if sprite.rect.colliderect(player.rect):
-                    if player.direction.x < 0:
-                        player.rect.left = sprite.rect.right
-                    elif player.direction.x > 0:
-                        player.rect.right = sprite.rect.left
+            for sprite in self.coll_rect_sprites.sprites():
+                if sprite.rect.colliderect(creature.rect):
+                    if creature.direction.x < 0:
+                        creature.rect.left = sprite.rect.right
+                    elif creature.direction.x > 0:
+                        creature.rect.right = sprite.rect.left
 
     def vertical_movement_coll(self, dt):
-        for player in self.player_group.sprites():
-            player.apply_gravity()
+        for creature in self.creature_group.sprites():
 
-            player.rect.y += player.direction.y * dt * MOVEMENT_RATING
+            creature.rect.y += creature.direction.y * dt * MOVEMENT_RATING
 
-            for sprite in self.coll_rect_sprites:
-                if sprite.rect.colliderect(player.rect):
-                    if player.direction.y > 0:
-                        player.rect.bottom = sprite.rect.top
-                        player.direction.y = 0
-                        player.jump_cnt = 0
-                        if not player.can_jump and not player.push_space:
-                            player.can_jump = True
+            for sprite in self.coll_rect_sprites.sprites():
+                if sprite.rect.colliderect(creature.rect):
+                    if creature.direction.y > 0:
+                        creature.rect.bottom = sprite.rect.top
+                        creature.direction.y = 0
+                        creature.jump_cnt = 0
+                        if not creature.can_jump and not creature.push_space:
+                            creature.can_jump = True
                             Debug(DEBUG_MODE) << "(Player) Enabled Jump" << "\n"
-                    elif player.direction.y < 0:
-                        player.rect.top = sprite.rect.bottom
-                        player.direction.y = 0
-                        player.can_jump = False
+                    elif creature.direction.y < 0:
+                        creature.rect.top = sprite.rect.bottom
+                        creature.direction.y = 0
+                        creature.can_jump = False
+
+    def apply_sprite_gravity(self, dt):
+        for obj in self.gravity_group.sprites():
+            obj.apply_gravity(dt)
+            if not self.creature_group.has(obj):  # is not creature
+                for sprite in self.coll_rect_sprites.sprites():
+                    if sprite.rect.colliderect(obj.rect):
+                        if obj.direction.y > 0:
+                            obj.rect.bottom = sprite.rect.top
+                        elif obj.direction.y < 0:
+                            obj.rect.top = sprite.rect.bottom
+                            obj.direction.y = 0
 
     def check_bullet_coll(self):
         for group in self.bullet_groups:
@@ -208,8 +260,21 @@ class ArenaScene(Scene):
 
                 coll_flag = False
 
-                for sprite in self.coll_rect_sprites.sprites():
-                    if sprite.rect.colliderect(bullet.rect):
+                # * BreakObj * #
+                for obj in self.break_group.sprites():
+                    if coll_flag:
+                        break
+                    if obj.rect.colliderect(bullet.rect):
+                        obj.update_bullet_cnt()
+                        bullet.destroy()
+                        coll_flag = True
+                        break
+
+                # * RectObj * #
+                for obj in self.coll_rect_sprites.sprites():
+                    if coll_flag:
+                        break
+                    if obj.rect.colliderect(bullet.rect):
                         bullet.destroy()
                         coll_flag = True
                         break
@@ -217,11 +282,15 @@ class ArenaScene(Scene):
                 if coll_flag:
                     continue
 
-                for player in self.player_group.sprites():
-                    if player.rect.colliderect(bullet.rect):
-                        if bullet not in player.weapon.bullet_group:
+                for obj in self.shoot_group.sprites():
+                    if obj.rect.colliderect(bullet.rect):
 
-                            if player.get_shot(bullet.damage):
+                        # * Player * #
+                        if self.player_group.has(obj):
+                            if bullet in obj.weapon.bullet_group:
+                                continue
+
+                            if obj.get_shot(bullet.damage):
                                 for p in self.player_group.sprites():
                                     if bullet in p.weapon.bullet_group:
                                         p.kills += 1

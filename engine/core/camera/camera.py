@@ -11,6 +11,7 @@ class CameraGroup(pygame.sprite.Group):
 
     def custom_draw(self):
         """
+        地图固定
         按图层顺序画出当前 Group 中所有 Sprite
         """
         for layer in LAYERS.values():
@@ -19,6 +20,9 @@ class CameraGroup(pygame.sprite.Group):
                     self.display_surface.blit(sprite.image, sprite.rect)
 
     def custom_draw_level(self, offset_x, offset_y):
+        """
+        长地图
+        """
         self.offset.x = offset_x
         self.offset.y = offset_y
 

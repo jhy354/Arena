@@ -4,6 +4,8 @@ from .rigidbody import P2Cfg
 
 from .sprites import Generic
 from .sprites import GameObject
+from .sprites import GravityObj
+from .sprites import BreakObj
 
 from .weapons import Weapon
 from .weapons import Pistol
