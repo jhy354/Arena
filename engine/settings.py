@@ -6,7 +6,7 @@ SCR_SIZE = (1280, 960)
 FPS = 144
 MOVEMENT_RATING = 100
 
-VERSION = "e0.0.9.0218"
+VERSION = "e0.1.0.0429"
 CAPTION = "Arena - " + VERSION
 
 FONT_CHS_LIST = [
@@ -17,6 +17,14 @@ FONT_ENG_LIST = [
     "calibri",
     "arial",
 ]
+
+# Server Settings #
+SERVER_IP = '127.0.0.1'
+SERVER_PORT = 1453
+HEADER = 1024  # Default header length
+SERVER_TIMEOUT = 0.001
+CLIENT_TIMEOUT = 0.001
+MAX_LISTEN = 5
 
 # * Game Settings * #
 DEBUG_MODE = True
