@@ -10,13 +10,18 @@ import pickle
 import threading
 
 from engine.settings import *
+from engine.utils import Debug
 
 
 class ResponseHandler:
+    """
+    处理客户端回复
+    该类所有函数均在 GameServer.handler() 中调用
+    """
 
     def handle_commands(self, status, response):
 
-        for command in response["command"]:
+        for command in response["commands"]:
             cmd = list(command.keys())[0]
 
             # * Call Handler * #
@@ -25,20 +30,23 @@ class ResponseHandler:
             if callable(handler):
                 status = handler(status, command[cmd])
             else:
-                print(f'No handler for {cmd}')
+                print(f'no handler for {cmd}')
 
         return status
 
     @staticmethod
     def handle_movement(status, command):
+        print(command)
         return status
 
     @staticmethod
     def handle_animation(status, command):
+        print(command)
         return status
 
     @staticmethod
     def handle_attack(status, command):
+        print(command)
         return status
 
 
@@ -47,6 +55,7 @@ class GameServer:
     def __init__(self, host, port, response_handler: ResponseHandler):
         self.HOST = host
         self.PORT = port
+        # 发送给客户端
         self.status = {
             "players": []
         }
@@ -55,6 +64,7 @@ class GameServer:
         self.response_handler = response_handler
         self.tot_player_cnt = 0
 
+        Debug(True).div()
         try:
             self.sk_server.bind((self.HOST, self.PORT))
             self.sk_server.listen(MAX_LISTEN)
@@ -65,14 +75,16 @@ class GameServer:
             print(f"[SERVER IS LISTENING] @ {host}:{port}")
 
     def establish_conn(self, address, connect_time):
-        print(f"Connection has been established with: {address} at {connect_time}. Welcome :)")
+        print(f"[CONN ESTABLISHED] @ {address[0]}:{str(address[1])} at {connect_time}. Welcome :)")
 
         self.status["players"].append({
             "id": str(self.tot_player_cnt),
         })
 
     def handler(self, conn: socket.socket, status):
-
+        """
+        接受客户端回复并回复客户端
+        """
         while True:
             ready_sockets, _, _ = select.select([conn], [], [], SERVER_TIMEOUT)
 
@@ -86,12 +98,19 @@ class GameServer:
 
                 if callable(handler):
                     status = handler(status, response["value"])
+                    print(status)
                     conn.send(pickle.dumps(status))
                 else:
-                    print(f'[WARNING] No handler for {response["action"]}')
+                    print(f'[WARNING] no handler for {response["action"]}')
+
+            # 客户端强制断开
+            except ConnectionResetError as error:
+                print(error)
+                print(f"[CLIENT] client connection reset")
+                break
 
             except Exception as error:
-                print(f"[WARNING IN SENDING DATA] {error}")
+                print(f"[WARNING IN RECEIVING DATA] {error}")
                 break
 
     @property
@@ -104,6 +123,7 @@ class GameServer:
                 print(line, end="")
         print("")
         print(VERSION)
+        Debug(True).div()
 
         # MAIN LOOP #
         while True:
@@ -111,7 +131,7 @@ class GameServer:
             try:
                 client, address = self.sk_server.accept()
                 self.tot_player_cnt += 1
-                self.establish_conn(address, time.time())
+                self.establish_conn(address, time.strftime("%H:%M:%S", time.localtime()))
 
                 client.send(pickle.dumps(str(self.tot_player_cnt)))
                 conn_thread = threading.Thread(target=self.handler, args=(client, self.status))
@@ -123,7 +143,11 @@ class GameServer:
 
             except socket.timeout:
                 # print(f"[WARNING] {socket.timeout}")
-                continue
+                try:
+                    continue
+                except KeyboardInterrupt:
+                    self.sk_server.close()
+                    sys.exit(f"[WARNING] {KeyboardInterrupt}")
 
             except BaseException as error:
                 print(f'[ERROR] {error}')
