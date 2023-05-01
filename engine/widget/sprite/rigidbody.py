@@ -34,6 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=cfg.spawn_point)
 
         # * 移动参数 * #
+        self.enable_keys = cfg.enable_keys
         self.player_keys = cfg.player_keys
         self.speed = cfg.speed
         self.gravity = cfg.gravity
@@ -91,34 +92,36 @@ class Player(pygame.sprite.Sprite):
             self.weapon.update(dt)
 
     def respond_input(self, dt):
-        keys = pygame.key.get_pressed()
+        if self.enable_keys:
 
-        # * Horizontal Movement * #
-        if keys[self.player_keys["left"]]:
-            self.status = "walk"
-            self.face_direction = "left"
-            self.direction.x = -1 * self.speed
+            keys = pygame.key.get_pressed()
 
-        elif keys[self.player_keys["right"]]:
-            self.status = "walk"
-            self.face_direction = "right"
-            self.direction.x = 1 * self.speed
+            # * Horizontal Movement * #
+            if keys[self.player_keys["left"]]:
+                self.status = "walk"
+                self.face_direction = "left"
+                self.direction.x = -1 * self.speed
 
-        else:
-            self.direction.x = 0
+            elif keys[self.player_keys["right"]]:
+                self.status = "walk"
+                self.face_direction = "right"
+                self.direction.x = 1 * self.speed
 
-        # * Other Movement * #
-        if keys[self.player_keys["jump"]]:
-            self.push_space = True
-            if self.can_jump:
-                self.jump(dt)
+            else:
+                self.direction.x = 0
 
-        else:
-            self.push_space = False
+            # * Other Movement * #
+            if keys[self.player_keys["jump"]]:
+                self.push_space = True
+                if self.can_jump:
+                    self.jump(dt)
 
-        # * Game * #
-        if keys[self.player_keys["shoot"]]:
-            self.weapon.shoot()
+            else:
+                self.push_space = False
+
+            # * Game * #
+            if keys[self.player_keys["shoot"]]:
+                self.weapon.shoot()
 
     def jump(self, dt):
         if self.jump_cnt == 0:
@@ -235,13 +238,53 @@ class Player(pygame.sprite.Sprite):
             return False
 
 
+'''
+class LAN_Player(Player):
+
+    def respond_input(self, dt):
+        keys = pygame.key.get_pressed()
+
+        # * Horizontal Movement * #
+        if keys[self.player_keys["left"]]:
+            self.status = "walk"
+            self.face_direction = "left"
+            self.direction.x = -1 * self.speed
+
+        elif keys[self.player_keys["right"]]:
+            self.status = "walk"
+            self.face_direction = "right"
+            self.direction.x = 1 * self.speed
+
+        else:
+            self.direction.x = 0
+
+        # * Other Movement * #
+        if keys[self.player_keys["jump"]]:
+            self.push_space = True
+            if self.can_jump:
+                self.jump(dt)
+
+        else:
+            self.push_space = False
+
+        # * Game * #
+        if keys[self.player_keys["shoot"]]:
+            self.weapon.shoot()
+
+    def jump(self, dt):
+        pass
+'''
+
+
 class DefaultCfg:
     """
     玩家配置类
     用于实例化 Player 对象
     """
+
     def __init__(self):
         # Default
+        self.enable_keys = True
         self.spawn_point = SCR_CENTER
         self.hp = 100
         self.name = "Default"
@@ -260,22 +303,25 @@ class DefaultCfg:
 class P1Cfg(DefaultCfg):
     def __init__(self):
         super().__init__()
-        self.name = "1"
-        self.player_keys = {
-            "jump": pygame.K_w,
-            "left": pygame.K_a,
-            "right": pygame.K_d,
-            "shoot": pygame.K_s
-        }
+        self.name = "P1"
 
 
 class P2Cfg(DefaultCfg):
     def __init__(self):
         super().__init__()
-        self.name = "2"
+        self.name = "P2"
         self.player_keys = {
             "jump": pygame.K_UP,
             "left": pygame.K_LEFT,
             "right": pygame.K_RIGHT,
             "shoot": pygame.K_DOWN
         }
+
+
+class LANPlayerCfg(DefaultCfg):
+
+    def __init__(self):
+        super().__init__()
+        self.name = "LAN"
+        self.enable_keys = False
+        self.skin = "p_soldier"

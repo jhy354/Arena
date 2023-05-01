@@ -31,9 +31,10 @@ if __name__ == "__main__":
                 elif isinstance(data, str) and data == "":
                     pass
 
+                '''
                 # 回应服务端
                 response = {
-                    'commands': [
+                    "commands": [
                         {
                             "animation": {
                                 "aaa": 1,
@@ -51,10 +52,10 @@ if __name__ == "__main__":
                     ],
                     'id': -1
                 }
-                response = {'action': 'commands', 'value': response}
+                response = {"action": "commands", "value": response}
                 print(response)
-                sk_server.send(pickle.dumps(response))
-                exit(-1)
+                '''
+                # sk_server.send(pickle.dumps(response))
 
         except Exception as error:
             print(f"[GLOBAL ERROR] {error}")

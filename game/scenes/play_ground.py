@@ -1,5 +1,5 @@
-from engine.core.scene import PlayGround
+from engine.core.scene import LAN_PlayGround
 
 
-class StartPlayGround(PlayGround):
+class StartPlayGround(LAN_PlayGround):
     pass

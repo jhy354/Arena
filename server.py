@@ -8,6 +8,7 @@ import socket
 import select
 import pickle
 import threading
+import random
 
 from engine.settings import *
 from engine.utils import Debug
@@ -52,11 +53,13 @@ class ResponseHandler:
 
 class GameServer:
 
-    def __init__(self, host, port, response_handler: ResponseHandler):
+    def __init__(self, host, port, _map_index, _bg_index, response_handler: ResponseHandler):
         self.HOST = host
         self.PORT = port
         # 发送给客户端
         self.status = {
+            "map": _map_index,
+            "bg": _bg_index,
             "players": []
         }
 
@@ -90,6 +93,9 @@ class GameServer:
 
             if not ready_sockets:
                 conn.send(pickle.dumps(status))
+                print(f"[SENDING] not ready")
+                print(status)
+                Debug(True).div()
                 continue
 
             try:
@@ -98,8 +104,10 @@ class GameServer:
 
                 if callable(handler):
                     status = handler(status, response["value"])
-                    print(status)
                     conn.send(pickle.dumps(status))
+                    print(f"[SENDING]")
+                    print(status)
+                    Debug(True).div()
                 else:
                     print(f'[WARNING] no handler for {response["action"]}')
 
@@ -133,7 +141,13 @@ class GameServer:
                 self.tot_player_cnt += 1
                 self.establish_conn(address, time.strftime("%H:%M:%S", time.localtime()))
 
-                client.send(pickle.dumps(str(self.tot_player_cnt)))
+                # 建立连接后首次发送数据
+                d = str(self.tot_player_cnt)
+                client.send(pickle.dumps(d))
+                print(f"[SENDING]")
+                print(d)
+                Debug(True).div()
+
                 conn_thread = threading.Thread(target=self.handler, args=(client, self.status))
                 conn_thread.start()
 
@@ -156,8 +170,10 @@ class GameServer:
 
 
 if __name__ == "__main__":
+    map_index = random.randint(0, 2)
+    bg_index = random.randint(0, 3)
 
-    server = GameServer(SERVER_IP, SERVER_PORT, ResponseHandler())
+    server = GameServer(SERVER_IP, SERVER_PORT, map_index, bg_index, ResponseHandler())
     server.run()
 
     sys.exit(0)

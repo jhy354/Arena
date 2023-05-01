@@ -88,6 +88,7 @@ class Game:
 
         if self.scenes["start_menu"].arena_button.clicked:
             self.scenes["start_menu"].deactivate()
+            self.scenes["play_ground"].connect_server()
             self.scenes["play_ground"].activate()
             self.scenes["start_menu"].arena_button.clicked = False
 

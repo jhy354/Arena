@@ -1,6 +1,8 @@
 from .rigidbody import Player
+# from .rigidbody import LAN_Player
 from .rigidbody import P1Cfg
 from .rigidbody import P2Cfg
+from .rigidbody import LANPlayerCfg
 
 from .sprites import Generic
 from .sprites import GameObject
