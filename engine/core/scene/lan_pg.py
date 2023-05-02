@@ -22,7 +22,7 @@ class LAN_PlayGround(PlayGround):
 
         super().__init__(map_index, background_index)
 
-        self.player_id = None
+        self.player_id = None  # str
         self.player_obj = {}
         self.sk_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connected = False
@@ -67,14 +67,14 @@ class LAN_PlayGround(PlayGround):
 
     def setup_player(self, data):
 
-        if data is None:
+        if not isinstance(data, dict):
             return
 
         for p_data in data["players"]:
 
             if not p_data["id"] in self.player_obj.keys():
 
-                if self.player_id == int(p_data["id"]):
+                if self.player_id == p_data["id"]:
                     self.player_obj[p_data["id"]] = Player(
                         [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
                         P1Cfg()
@@ -87,17 +87,6 @@ class LAN_PlayGround(PlayGround):
                     )
 
                 self.player_obj[p_data["id"]].activate()
-
-    '''
-    def vertical_movement_coll(self, dt):
-        pass
-
-    def horizontal_movement_coll(self, dt):
-        pass
-
-    def apply_sprite_gravity(self, dt):
-        pass
-    '''
 
     def connect_server(self):
         """
@@ -112,7 +101,7 @@ class LAN_PlayGround(PlayGround):
             # 后发送正常数据
             if isinstance(data, str):
                 if data.isdigit():
-                    self.player_id = int(data)
+                    self.player_id = data
                 else:
                     print(f"[WARNING] incorrect data form")
                     Debug(True).div()
@@ -140,8 +129,8 @@ class LAN_PlayGround(PlayGround):
                     data = pickle.loads(self.sk_server.recv(HEADER))
                     if data is None:
                         print(f"[WARNING] receiving None data")
-                    #print(f"[RECEIVING]")
-                    #print(data)
+                    print(f"[RECEIVING]")
+                    print(data)
                     return data
                 except Exception as error:
                     print(f"[GLOBAL WARNING] {error}")
@@ -157,33 +146,43 @@ class LAN_PlayGround(PlayGround):
             # traceback.print_exc()
             exit(0)
 
-    def respond_server(self, data):
+    def respond_server(self):
+        me = self.player_obj[self.player_id]
+
         response = {
             "commands": [
                 {
-                    "animation": {
-                        "aaa": 1,
-                        "bbb": 2,
-                        "ccc": 3
-                    }
-                },
-                {
-                    "attack": {
-                        "fk": 666,
-                        "st": 888,
-                        "ah": 999
+                    "movement": {
+                        "id": self.player_id,
+                        "pos": (me.rect.x, me.rect.y),
                     }
                 }
             ],
-            'id': -1
+            "id": self.player_id
         }
         response = {"action": "commands", "value": response}
-        #print(f"[SENDING]")
-        #print(response)
+        # print(f"[SENDING]")
+        # print(response)
         try:
             self.sk_server.send(pickle.dumps(response))
         except OSError:
             exit(OSError)
+
+    def update_from_server(self, data):
+
+        if not isinstance(data, dict):
+            return
+
+        for player in data["players"]:
+
+            if player["id"] == self.player_id:
+                return
+
+            try:
+                self.player_obj[player["id"]].rect.x = player["pos"][0]
+                self.player_obj[player["id"]].rect.y = player["pos"][1]
+            except Exception as error:
+                print(f"[WARNING IN UPDATE FROM SERVER] {error}")
 
     def run(self, dt):
 
@@ -202,7 +201,11 @@ class LAN_PlayGround(PlayGround):
 
         self.setup_player(data)
 
-        self.respond_server(data)
         # 没有继承, 故需要手动更新 all_sprites
         self.all_sprites.update(dt)
+        for p in self.player_obj.values():
+            p.update(dt)
+
+        self.respond_server()
+        self.update_from_server(data)
         self.all_sprites.custom_draw()

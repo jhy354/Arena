@@ -37,7 +37,11 @@ class ResponseHandler:
 
     @staticmethod
     def handle_movement(status, command):
-        print(command)
+
+        for player in status["players"]:
+            if player["id"] == command["id"]:
+                player["pos"] = command["pos"]
+
         return status
 
     @staticmethod
