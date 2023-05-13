@@ -174,7 +174,7 @@ class GameServer:
 
 
 if __name__ == "__main__":
-    map_index = random.randint(0, 2)
+    map_index = random.randint(0, 3)
     bg_index = random.randint(0, 3)
 
     server = GameServer(SERVER_IP, SERVER_PORT, map_index, bg_index, ResponseHandler())

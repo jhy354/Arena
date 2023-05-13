@@ -28,6 +28,7 @@ PATH_MAP = {
     0: r"./assets/game/map/du_arena/du_arena.tmx",
     1: r"./assets/game/map/du_dust/du_dust.tmx",
     2: r"./assets/game/map/du_nefort/du_nefort.tmx",
+    3: r"./assets/game/map/du_starfield/du_starfield.tmx",
 }
 
 PATH_MAP_LEVEL = {

@@ -112,6 +112,7 @@ class ArenaScene(Scene):
             exit()
 
         for x, y, surf in tmx_data.get_layer_by_name("edge").tiles():
+            surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
             self.map_edges.append(
                 Generic(
                     pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
@@ -122,6 +123,7 @@ class ArenaScene(Scene):
             )
 
         for x, y, surf in tmx_data.get_layer_by_name("floor").tiles():
+            surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
             self.map_floors.append(
                 GameObject(
                     pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
@@ -132,6 +134,7 @@ class ArenaScene(Scene):
             )
 
         for x, y, surf in tmx_data.get_layer_by_name("decoration").tiles():
+            surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
             self.map_decoration.append(
                 GameObject(
                     pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
@@ -142,6 +145,7 @@ class ArenaScene(Scene):
             )
         try:
             for x, y, surf in tmx_data.get_layer_by_name("decoration2").tiles():
+                surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
                 self.map_decoration2.append(
                     GameObject(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
@@ -155,6 +159,7 @@ class ArenaScene(Scene):
 
         try:
             for x, y, surf in tmx_data.get_layer_by_name("decoration3").tiles():
+                surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
                 self.map_decoration3.append(
                     GameObject(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
@@ -168,6 +173,7 @@ class ArenaScene(Scene):
 
         try:
             for x, y, surf in tmx_data.get_layer_by_name("background").tiles():
+                surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
                 self.map_background.append(
                     GameObject(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
@@ -181,6 +187,7 @@ class ArenaScene(Scene):
 
         try:
             for x, y, surf in tmx_data.get_layer_by_name("break").tiles():
+                surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
                 self.map_break.append(
                     BreakObj(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
@@ -194,6 +201,7 @@ class ArenaScene(Scene):
 
         try:
             for x, y, surf in tmx_data.get_layer_by_name("gravity").tiles():
+                surf = pygame.transform.scale(surf, (layout.TILE_SIZE, layout.TILE_SIZE))
                 self.map_gravity.append(
                     GravityObj(
                         pos=(x * layout.TILE_SIZE, y * layout.TILE_SIZE),
