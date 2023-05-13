@@ -51,6 +51,8 @@ class LAN_PlayGround(PlayGround):
         )
 
         data = self.receive_server()
+        while not isinstance(data, dict):
+            data = self.receive_server()
 
         self.map_index = data["map"]
         self.background_index = data["bg"]
@@ -109,6 +111,7 @@ class LAN_PlayGround(PlayGround):
             else:
                 print(f"[WARNING] incorrect data form")
                 Debug(True).div()
+                self.connect_server()
 
         except Exception as error:
             print(f"[WARNING] {error}")
@@ -129,8 +132,8 @@ class LAN_PlayGround(PlayGround):
                     data = pickle.loads(self.sk_server.recv(HEADER))
                     if data is None:
                         print(f"[WARNING] receiving None data")
-                    print(f"[RECEIVING]")
-                    print(data)
+                    # print(f"[RECEIVING]")
+                    # print(data)
                     return data
                 except Exception as error:
                     print(f"[GLOBAL WARNING] {error}")
@@ -169,6 +172,9 @@ class LAN_PlayGround(PlayGround):
             exit(OSError)
 
     def update_from_server(self, data):
+        """
+        根据服务端数据修改客户端 player 数据
+        """
 
         if not isinstance(data, dict):
             return
@@ -176,7 +182,7 @@ class LAN_PlayGround(PlayGround):
         for player in data["players"]:
 
             if player["id"] == self.player_id:
-                return
+                continue
 
             try:
                 self.player_obj[player["id"]].rect.x = player["pos"][0]
@@ -189,17 +195,16 @@ class LAN_PlayGround(PlayGround):
         self.display_surface.fill("white")
 
         data = self.receive_server()
+        self.setup_player(data)
 
         self.horizontal_movement_coll(dt)
         self.vertical_movement_coll(dt)
         self.apply_sprite_gravity(dt)
         self.check_bullet_coll()
 
-        self.update_player_weapon()
+        # self.update_player_weapon()
         self.fog_1.move()
         self.fog_2.move()
-
-        self.setup_player(data)
 
         # 没有继承, 故需要手动更新 all_sprites
         self.all_sprites.update(dt)

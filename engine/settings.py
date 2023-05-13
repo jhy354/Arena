@@ -19,7 +19,8 @@ FONT_ENG_LIST = [
 ]
 
 # Server Settings #
-SERVER_IP = '127.0.0.1'
+# SERVER_IP = '127.0.0.1'
+SERVER_IP = '192.168.86.4'
 SERVER_PORT = 1453
 HEADER = 1024  # Default header length
 SERVER_TIMEOUT = 0.001

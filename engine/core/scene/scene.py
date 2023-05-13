@@ -212,35 +212,35 @@ class ArenaScene(Scene):
             player.update_weapon()
 
     def horizontal_movement_coll(self, dt):
-        for creature in self.creature_group.sprites():
+        for player in self.player_group.sprites():
 
-            creature.rect.x += creature.direction.x * dt * MOVEMENT_RATING
+            player.rect.x += player.direction.x * dt * MOVEMENT_RATING
 
             for sprite in self.coll_rect_sprites.sprites():
-                if sprite.rect.colliderect(creature.rect):
-                    if creature.direction.x < 0:
-                        creature.rect.left = sprite.rect.right
-                    elif creature.direction.x > 0:
-                        creature.rect.right = sprite.rect.left
+                if sprite.rect.colliderect(player.rect):
+                    if player.direction.x < 0:
+                        player.rect.left = sprite.rect.right
+                    elif player.direction.x > 0:
+                        player.rect.right = sprite.rect.left
 
     def vertical_movement_coll(self, dt):
-        for creature in self.creature_group.sprites():
+        for player in self.player_group.sprites():
 
-            creature.rect.y += creature.direction.y * dt * MOVEMENT_RATING
+            player.rect.y += player.direction.y * dt * MOVEMENT_RATING
 
             for sprite in self.coll_rect_sprites.sprites():
-                if sprite.rect.colliderect(creature.rect):
-                    if creature.direction.y > 0:
-                        creature.rect.bottom = sprite.rect.top
-                        creature.direction.y = 0
-                        creature.jump_cnt = 0
-                        if not creature.can_jump and not creature.push_space:
-                            creature.can_jump = True
+                if sprite.rect.colliderect(player.rect):
+                    if player.direction.y > 0:
+                        player.rect.bottom = sprite.rect.top
+                        player.direction.y = 0
+                        player.jump_cnt = 0
+                        if not player.can_jump and not player.push_space:
+                            player.can_jump = True
                             Debug(DEBUG_MODE) << "(Player) Enabled Jump" << "\n"
-                    elif creature.direction.y < 0:
-                        creature.rect.top = sprite.rect.bottom
-                        creature.direction.y = 0
-                        creature.can_jump = False
+                    elif player.direction.y < 0:
+                        player.rect.top = sprite.rect.bottom
+                        player.direction.y = 0
+                        player.can_jump = False
 
     def apply_sprite_gravity(self, dt):
         for obj in self.gravity_group.sprites():
