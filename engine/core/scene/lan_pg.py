@@ -95,8 +95,11 @@ class LAN_PlayGround(PlayGround):
         当前客户端首次连接到服务端时调用
         """
         try:
-            self.sk_server.connect((SERVER_IP, SERVER_PORT))
-            self.connected = True
+
+            if not self.connected:
+                self.sk_server.connect((SERVER_IP, SERVER_PORT))
+                self.connected = True
+
             data = self.receive_server()
 
             # 服务端在首次发送数据为 玩家id: str
