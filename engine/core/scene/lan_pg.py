@@ -3,7 +3,6 @@ import pickle
 import select
 
 from .playground import PlayGround
-from .scene import Scene
 from engine.settings import *
 from engine.path import *
 from engine import layout
@@ -18,18 +17,25 @@ from engine.widget.sprite import Fog
 
 class LAN_PlayGround(PlayGround):
 
-    def __init__(self, map_index, background_index):
+    def __init__(self, server_ip, map_index, background_index):
 
         super().__init__(map_index, background_index)
+
+        if server_ip is not None:
+            self.server_ip = server_ip
+        else:
+            self.server_ip = DEFAULT_SERVER_IP
 
         self.player_id = None  # str
         self.player_obj = {}
         self.sk_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sk_server.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, True)
+        self.sk_server.ioctl(socket.SIO_KEEPALIVE_VALS, (1, 60 * 1000, 30 * 1000))
         self.connected = False
 
         if self.active:
             try:
-                self.sk_server.connect((SERVER_IP, SERVER_PORT))
+                self.sk_server.connect((self.server_ip, DEFAULT_SERVER_PORT))
             except Exception as error:
                 print(f"[WARNING] {error}")
                 Debug(True).div()
@@ -97,7 +103,8 @@ class LAN_PlayGround(PlayGround):
         try:
 
             if not self.connected:
-                self.sk_server.connect((SERVER_IP, SERVER_PORT))
+                print(f"Connecting {self.server_ip}:{DEFAULT_SERVER_PORT}")
+                self.sk_server.connect((self.server_ip, DEFAULT_SERVER_PORT))
                 self.connected = True
 
             data = self.receive_server()
@@ -162,13 +169,20 @@ class LAN_PlayGround(PlayGround):
                         "id": self.player_id,
                         "pos": (me.rect.x, me.rect.y),
                     }
+                },
+
+                {
+                    "animation": {
+                        "id": self.player_id,
+                        "face_direction": me.face_direction,
+                    }
                 }
             ],
             "id": self.player_id
         }
         response = {"action": "commands", "value": response}
-        # print(f"[SENDING]")
-        # print(response)
+        print(f"[SENDING]")
+        print(response)
         try:
             self.sk_server.send(pickle.dumps(response))
         except OSError:
@@ -184,14 +198,15 @@ class LAN_PlayGround(PlayGround):
 
         for player in data["players"]:
 
-            if player["id"] == self.player_id:
+            # 只有一个元素 (id) 则跳过
+            if player["id"] == self.player_id or len(player.keys()) <= 1:
                 continue
 
-            try:
-                self.player_obj[player["id"]].rect.x = player["pos"][0]
-                self.player_obj[player["id"]].rect.y = player["pos"][1]
-            except Exception as error:
-                print(f"[WARNING IN UPDATE FROM SERVER] {error}")
+            self.player_obj[player["id"]].rect.x = player["pos"][0]
+            self.player_obj[player["id"]].rect.y = player["pos"][1]
+
+            # animation
+            self.player_obj[player["id"]].face_direction = player["face_direction"]
 
     def run(self, dt):
 

@@ -15,6 +15,9 @@ class Player(pygame.sprite.Sprite):
     """
 
     def __init__(self, group, cfg):
+        """
+        由于需要在内部实例化类 所以 group[0] 必须为 all_sprites
+        """
         super().__init__(group)
 
         # * 图像参数 * #

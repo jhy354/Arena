@@ -1,8 +1,5 @@
-# response format:
-# for commands: {'action': 'commands', 'value': {'commands': ...}}
-# for errors: {'action': 'error', 'value': {'error': ...}}
-
 import sys
+import getopt
 import time
 import socket
 import select
@@ -12,6 +9,8 @@ import random
 
 from engine.settings import *
 from engine.utils import Debug
+
+usage = "usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]"
 
 
 class ResponseHandler:
@@ -46,7 +45,11 @@ class ResponseHandler:
 
     @staticmethod
     def handle_animation(status, command):
-        print(command)
+
+        for player in status["players"]:
+            if player["id"] == command["id"]:
+                player["face_direction"] = command["face_direction"]
+
         return status
 
     @staticmethod
@@ -97,9 +100,9 @@ class GameServer:
 
             if not ready_sockets:
                 conn.send(pickle.dumps(status))
-                print(f"[SENDING] not ready")
-                print(status)
-                Debug(True).div()
+                # print(f"[SENDING] not ready")
+                # print(status)
+                # Debug(True).div()
                 continue
 
             try:
@@ -109,9 +112,9 @@ class GameServer:
                 if callable(handler):
                     status = handler(status, response["value"])
                     conn.send(pickle.dumps(status))
-                    print(f"[SENDING]")
-                    print(status)
-                    Debug(True).div()
+                    # print(f"[SENDING]")
+                    # print(status)
+                    # Debug(True).div()
                 else:
                     print(f'[WARNING] no handler for {response["action"]}')
 
@@ -123,6 +126,10 @@ class GameServer:
 
             except Exception as error:
                 print(f"[WARNING IN RECEIVING DATA] {error}")
+                print("Response:")
+                Debug(True).div()
+                print(response)
+                Debug(True).div()
                 break
 
     @property
@@ -148,9 +155,9 @@ class GameServer:
                 # 建立连接后首次发送数据
                 d = str(self.tot_player_cnt)
                 client.send(pickle.dumps(d))
-                print(f"[SENDING]")
-                print(d)
-                Debug(True).div()
+                # print(f"[SENDING]")
+                # print(d)
+                # Debug(True).div()
 
                 conn_thread = threading.Thread(target=self.handler, args=(client, self.status))
                 conn_thread.start()
@@ -174,10 +181,34 @@ class GameServer:
 
 
 if __name__ == "__main__":
-    map_index = random.randint(0, 3)
+    server_ip = DEFAULT_SERVER_IP
+    server_port = DEFAULT_SERVER_PORT
+    map_index = random.randint(0, 2)
     bg_index = random.randint(0, 3)
 
-    server = GameServer(SERVER_IP, SERVER_PORT, map_index, bg_index, ResponseHandler())
+    argv = sys.argv
+    opts = None
+    args = None
+
+    try:
+        opts, args = getopt.getopt(argv[1:], "-a:-m:-b:", ["address=", "map_index=", "background_index="])
+    except getopt.GetoptError:
+        print(usage)
+        exit(1)
+
+    for opt, arg in opts:
+        if opt in ("-a", "--address"):
+            server_ip = str(arg)
+        elif opt == ("-m", "--map_index"):
+            map_index = int(arg)
+        elif opt == ("-b", "--background_index"):
+            bg_index = int(arg)
+        else:
+            print(f"unknown option: {opt}")
+            print(usage)
+            exit(1)
+
+    server = GameServer(server_ip, server_port, map_index, bg_index, ResponseHandler())
     server.run()
 
     sys.exit(0)

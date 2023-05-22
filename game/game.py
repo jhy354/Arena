@@ -14,7 +14,9 @@ from game.scenes import StartLevel
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, server_ip):
+        self.server_ip = server_ip
+
         # * Pygame Init * #
         pygame.init()
         pygame.font.init()
@@ -30,13 +32,12 @@ class Game:
         Debug(True) << "Inited Game" << "\n"
         Debug(True).div()
 
-    @staticmethod
-    def load_scenes():
+    def load_scenes(self):
         scenes = {}
 
         start_menu = StartMenu()
         about_page = AboutPage()
-        play_ground = StartPlayGround(randint(0, 2), randint(0, 3))
+        play_ground = StartPlayGround(self.server_ip, randint(0, 2), randint(0, 3))
         level = StartLevel(1, 0)
 
         scenes["start_menu"] = start_menu
