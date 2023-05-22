@@ -3,7 +3,7 @@
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/logo.png width=5% />
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/game_title.png width=17% />
 </div>
-Arena 是一个基于pygame编写的2D平台类游戏
+Arena是一个基于pygame编写的局域网2D平台类游戏
 
 ## 语言
 [简体中文](README.zh_cn.md) | [English](README.md)
@@ -24,24 +24,39 @@ Arena 是一个基于pygame编写的2D平台类游戏
 - [pyinstaller](https://github.com/pyinstaller/pyinstaller)
 
 ## 着手开始
-1. 确保你的*python*版本高于3.4
+
+### 准备工作
+
+1. 确保你在 python3.4+ 上运行
 ```shell
 # 检查python版本
 python --version
 ```
-2. 确保你的环境中已经安装了以下包
+
+2. 确保你已经在环境中安装了以下第三方包
 ```shell
 pip install pygame
 pip install pytmx
 pip install pyinstaller
 ```
-3. 运行
+
+### 运行游戏
+
+1. 运行服务端
 ```shell
-python main.py
+# usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]
+python server.py -address [YOUR IP]
 ```
 
-## 编译
-你可以通过 *`build.py`* 编译 *Arena*  
+2. 运行客户端
+```shell
+# usage: python server.py [-a | --address]
+python main.py -address [YOUR IP]
+```
+
+### 编译项目
+
+你可以通过 *`build.py`* 编译 *Arena* 
 ```shell
 python build.py
 ```

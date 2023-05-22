@@ -3,7 +3,7 @@
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/logo.png width=5% />
 	<img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/game_title.png width=17% />
 </div>
-Arena is a 2D platform game by pygame
+Arena is a 2D platform LAN game based on pygame and socket
 
 ## Language
 [简体中文](README.zh_cn.md) | [English](README.md)
@@ -24,23 +24,38 @@ Arena is a 2D platform game by pygame
 - [pyinstaller](https://github.com/pyinstaller/pyinstaller)
 
 ## Getting Started
+
+### Preparation
+
 1. Make sure you are running this on Python3.4+
 ```shell
 # check your python version
 python --version
 ```
+
 2. Make sure you already installed following packages in your python environment
 ```shell
 pip install pygame
 pip install pytmx
 pip install pyinstaller
 ```
-3. Just run it
+
+### Run Game
+
+1. Run server
 ```shell
-python main.py
+# usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]
+python server.py -address [YOUR IP]
 ```
 
-## Build to Binary
+2. Run client
+```shell
+# usage: python server.py [-a | --address]
+python main.py -address [YOUR IP]
+```
+
+### Build Project
+
 You can build *Arena* by *`build.py`*
 ```shell
 python build.py
