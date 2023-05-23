@@ -94,7 +94,8 @@ class Pistol(Weapon):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, pos, group, direction, z=LAYERS["bullet"]):
         super().__init__(group)
-        self.image = custom_load(PATH_WEAPON_GUN_BULLET, BULLET_SIZE, silent=True)
+        self.image_path = PATH_WEAPON_GUN_BULLET
+        self.image = custom_load(self.image_path, BULLET_SIZE, silent=True)
         self.direction = direction
         self.z = z
         self.rect = self.image.get_rect(center=pos)

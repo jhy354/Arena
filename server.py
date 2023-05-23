@@ -56,8 +56,12 @@ class ResponseHandler:
         return status
 
     @staticmethod
-    def handle_attack(status, command):
-        print(command)
+    def handle_bullet(status, command):
+
+        for player in status["players"]:
+            if player["id"] == command["id"]:
+                player["bullet_list"] = command["bullet_list"]
+
         return status
 
 

@@ -43,6 +43,7 @@ class LAN_PlayGround(PlayGround):
                     exit(1)
 
     def setup(self):
+
         # * Load Fog * #
         self.fog_1 = Fog(
             pos=(0, 0),
@@ -94,6 +95,8 @@ class LAN_PlayGround(PlayGround):
                         LANPlayerCfg()
                     )
 
+                # * Init Bullet Group * #
+                self.bullet_groups.append(self.player_obj[p_data["id"]].weapon.bullet_group)
                 self.player_obj[p_data["id"]].activate()
 
     def connect_server(self):
@@ -161,6 +164,14 @@ class LAN_PlayGround(PlayGround):
 
     def respond_server(self):
         me = self.player_obj[self.player_id]
+        bullet_list = []
+        for b in me.weapon.bullet_group.sprites():
+            cur_status = {
+                "pos": (b.rect.x, b.rect.y),
+                "image_path": b.image_path,
+                "damage": b.damage,
+            }
+            bullet_list.append(cur_status)
 
         response = {
             "commands": [
@@ -176,16 +187,23 @@ class LAN_PlayGround(PlayGround):
                         "id": self.player_id,
                         "skin": me.skin,
                         "status": me.status,
-                        "frame_index": me.frame_index,
+                        "frame_index": round(me.frame_index, 2),
                         "face_direction": me.face_direction,
                     }
-                }
+                },
+
+                {
+                    "bullet": {
+                        "id": self.player_id,
+                        "bullet_list": bullet_list,
+                    }
+                },
             ],
             "id": self.player_id
         }
         response = {"action": "commands", "value": response}
-        print(f"[SENDING]")
-        print(response)
+        # print(f"[SENDING]")
+        # print(response)
         try:
             self.sk_server.send(pickle.dumps(response))
         except OSError:
@@ -205,6 +223,7 @@ class LAN_PlayGround(PlayGround):
             if player["id"] == self.player_id or len(player.keys()) <= 1:
                 continue
 
+            # movement
             self.player_obj[player["id"]].rect.x = player["pos"][0]
             self.player_obj[player["id"]].rect.y = player["pos"][1]
 
@@ -213,6 +232,12 @@ class LAN_PlayGround(PlayGround):
             self.player_obj[player["id"]].status = player["status"]
             self.player_obj[player["id"]].frame_index = player["frame_index"]
             self.player_obj[player["id"]].face_direction = player["face_direction"]
+
+            # bullet
+            self.update_bullet_from_server(player["id"], player["bullet_list"])
+
+    def update_bullet_from_server(self, player_id, bullet_list):
+        pass
 
     def run(self, dt):
 
@@ -234,6 +259,7 @@ class LAN_PlayGround(PlayGround):
         self.all_sprites.update(dt)
         for p in self.player_obj.values():
             p.update(dt)
+            p.update_weapon()
 
         self.respond_server()
         self.update_from_server(data)

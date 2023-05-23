@@ -265,7 +265,6 @@ class ArenaScene(Scene):
     def check_bullet_coll(self):
         for group in self.bullet_groups:
             for bullet in group.sprites():
-
                 coll_flag = False
 
                 # * BreakObj * #
