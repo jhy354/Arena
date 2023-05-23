@@ -45,13 +45,13 @@ pip install pyinstaller
 1. 运行服务端
 ```shell
 # usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]
-python server.py -address [YOUR IP]
+python server.py -address [服务端IP]
 ```
 
 2. 运行客户端
 ```shell
 # usage: python server.py [-a | --address]
-python main.py -address [YOUR IP]
+python main.py -address [服务端IP]
 ```
 
 ### 编译项目
@@ -83,6 +83,8 @@ python build.py
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/Player/soldier.png width=5% />
 </div>
 
+## 警告
+本项目目前使用 *pickle* 实现, 请不要在公共网络中运行
 
 ## 参与项目
 参见 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)

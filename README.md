@@ -45,13 +45,13 @@ pip install pyinstaller
 1. Run server
 ```shell
 # usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]
-python server.py -address [YOUR IP]
+python server.py -address [SERVER IP]
 ```
 
 2. Run client
 ```shell
 # usage: python server.py [-a | --address]
-python main.py -address [YOUR IP]
+python main.py -address [SERVER IP]
 ```
 
 ### Build Project
@@ -83,6 +83,8 @@ Player:
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/Player/soldier.png width=5% />
 </div>
 
+## Warning
+This project is using *pickle*, so DO NOT run it under public network
 
 ## Developing
 See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
