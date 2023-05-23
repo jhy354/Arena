@@ -140,11 +140,13 @@ class Player(pygame.sprite.Sprite):
             self.direction.y += self.gravity
 
     def switch_frame(self, dt):
-        # 常数 4 控制动画帧速度
-        self.frame_index += 4 * dt
 
-        if self.frame_index >= len(self.animations[self.status]):
-            self.frame_index = 0
+        if not self.enable_lan:
+            # 常数 4 控制动画帧速度
+            self.frame_index += 4 * dt
+
+            if self.frame_index >= len(self.animations[self.status]):
+                self.frame_index = 0
 
         # 必须在下一行使用 int()
         self.image = self.animations[self.status][int(self.frame_index)]
@@ -152,6 +154,9 @@ class Player(pygame.sprite.Sprite):
             self.image = pygame.transform.flip(self.image, True, False)
 
     def switch_status(self):
+        if self.enable_lan:
+            return
+
         # 注意优先级
 
         # * Jump * #
@@ -239,44 +244,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.hp -= damage
             return False
-
-
-'''
-class LAN_Player(Player):
-
-    def respond_input(self, dt):
-        keys = pygame.key.get_pressed()
-
-        # * Horizontal Movement * #
-        if keys[self.player_keys["left"]]:
-            self.status = "walk"
-            self.face_direction = "left"
-            self.direction.x = -1 * self.speed
-
-        elif keys[self.player_keys["right"]]:
-            self.status = "walk"
-            self.face_direction = "right"
-            self.direction.x = 1 * self.speed
-
-        else:
-            self.direction.x = 0
-
-        # * Other Movement * #
-        if keys[self.player_keys["jump"]]:
-            self.push_space = True
-            if self.can_jump:
-                self.jump(dt)
-
-        else:
-            self.push_space = False
-
-        # * Game * #
-        if keys[self.player_keys["shoot"]]:
-            self.weapon.shoot()
-
-    def jump(self, dt):
-        pass
-'''
 
 
 class DefaultCfg:
