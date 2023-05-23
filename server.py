@@ -48,6 +48,9 @@ class ResponseHandler:
 
         for player in status["players"]:
             if player["id"] == command["id"]:
+                player["skin"] = command["skin"]
+                player["status"] = command["status"]
+                player["frame_index"] = command["frame_index"]
                 player["face_direction"] = command["face_direction"]
 
         return status

@@ -174,6 +174,9 @@ class LAN_PlayGround(PlayGround):
                 {
                     "animation": {
                         "id": self.player_id,
+                        "skin": me.skin,
+                        "status": me.status,
+                        "frame_index": me.frame_index,
                         "face_direction": me.face_direction,
                     }
                 }
