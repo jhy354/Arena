@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=cfg.spawn_point)
 
         # * 移动参数 * #
-        self.enable_keys = cfg.enable_keys
+        self.enable_lan = cfg.enable_lan
         self.player_keys = cfg.player_keys
         self.speed = cfg.speed
         self.gravity = cfg.gravity
@@ -95,7 +95,7 @@ class Player(pygame.sprite.Sprite):
             self.weapon.update(dt)
 
     def respond_input(self, dt):
-        if self.enable_keys:
+        if not self.enable_lan:
 
             keys = pygame.key.get_pressed()
 
@@ -287,7 +287,7 @@ class DefaultCfg:
 
     def __init__(self):
         # Default
-        self.enable_keys = True
+        self.enable_lan = False
         self.spawn_point = SCR_CENTER
         self.hp = 100
         self.name = "Default"
@@ -326,5 +326,5 @@ class LANPlayerCfg(DefaultCfg):
     def __init__(self):
         super().__init__()
         self.name = "LAN"
-        self.enable_keys = False
+        self.enable_lan = True
         self.skin = "p_soldier"

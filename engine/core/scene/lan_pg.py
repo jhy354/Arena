@@ -209,6 +209,9 @@ class LAN_PlayGround(PlayGround):
             self.player_obj[player["id"]].rect.y = player["pos"][1]
 
             # animation
+            self.player_obj[player["id"]].skin = player["skin"]
+            self.player_obj[player["id"]].status = player["status"]
+            self.player_obj[player["id"]].frame_index = player["frame_index"]
             self.player_obj[player["id"]].face_direction = player["face_direction"]
 
     def run(self, dt):
