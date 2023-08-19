@@ -94,4 +94,4 @@ Project License can be found [here](LICENSE.md).
 
 ---
 
-Made With ❤️ by [jhy354(Romulus)](https://github.com/jhy354/)
+Made With ❤️ by [jhy354](https://github.com/jhy354/)
