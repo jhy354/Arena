@@ -45,13 +45,13 @@ pip install pyinstaller
 1. Run server
 ```shell
 # usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]
-python server.py -address [SERVER IP]
+python server.py --address [SERVER IP]
 ```
 
 2. Run client
 ```shell
 # usage: python server.py [-a | --address]
-python main.py -address [SERVER IP]
+python main.py --address [SERVER IP]
 ```
 
 ### Build Project
