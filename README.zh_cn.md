@@ -45,13 +45,13 @@ pip install pyinstaller
 1. 运行服务端
 ```shell
 # usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]
-python server.py -address [服务端IP]
+python server.py --address [服务端IP]
 ```
 
 2. 运行客户端
 ```shell
 # usage: python server.py [-a | --address]
-python main.py -address [服务端IP]
+python main.py --address [服务端IP]
 ```
 
 ### 编译项目
