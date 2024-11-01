@@ -33,7 +33,8 @@ class Level(ArenaScene):
 
         self.player_1 = Player(
             [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
-            p1_cfg
+            p1_cfg,
+            all_sprite_group=self.all_sprites
         )
 
         for player in self.player_group.sprites():

@@ -13,6 +13,7 @@ from engine.widget.sprite import LANPlayerCfg
 from engine.widget.sprite import Player
 from engine.widget.sprite import Generic
 from engine.widget.sprite import Fog
+from engine.widget.sprite import TimerUI
 
 
 class LAN_PlayGround(PlayGround):
@@ -32,6 +33,8 @@ class LAN_PlayGround(PlayGround):
         self.sk_server.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, True)
         self.sk_server.ioctl(socket.SIO_KEEPALIVE_VALS, (1, 60 * 1000, 30 * 1000))
         self.connected = False
+
+        self.timer_ui = None
 
         if self.active:
             try:
@@ -74,6 +77,10 @@ class LAN_PlayGround(PlayGround):
 
         self.load_map(map_type="playground")
 
+        # * TimerUI * #
+        self.timer_ui = TimerUI(self.all_sprites, 180)
+        self.timer_ui.activate()
+
     def setup_player(self, data):
 
         if not isinstance(data, dict):
@@ -86,13 +93,15 @@ class LAN_PlayGround(PlayGround):
                 if self.player_id == p_data["id"]:
                     self.player_obj[p_data["id"]] = Player(
                         [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
-                        P1Cfg()
+                        P1Cfg(),
+                        all_sprite_group=self.all_sprites
                     )
 
                 else:
                     self.player_obj[p_data["id"]] = Player(
                         [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
-                        LANPlayerCfg()
+                        LANPlayerCfg(),
+                        all_sprite_group=self.all_sprites
                     )
 
                 # * Init Bullet Group * #

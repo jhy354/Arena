@@ -74,12 +74,18 @@ class GameServer:
         self.status = {
             "map": _map_index,
             "bg": _bg_index,
-            "players": []
+            "players": [],
+            "timer": None
         }
 
         self.sk_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.response_handler = response_handler
         self.tot_player_cnt = 0
+
+        # Timer
+        self.is_start_time = False
+        self.start_time = None
+        self.current_time = None
 
         Debug(True).div()
         try:
@@ -92,11 +98,15 @@ class GameServer:
             print(f"[SERVER IS LISTENING] @ {host}:{port}")
 
     def establish_conn(self, address, connect_time):
-        print(f"[CONN ESTABLISHED] @ {address[0]}:{str(address[1])} at {connect_time}. Welcome :)")
+        print(f"[CONN ESTABLISHED] @ {address[0]}:{str(address[1])} at {connect_time}. Enjoy Yourself in Arena :)")
 
         self.status["players"].append({
             "id": str(self.tot_player_cnt),
         })
+
+        if self.tot_player_cnt and not self.is_start_time >= 2:
+            self.start_timer()
+            self.is_start_time = True
 
     def handler(self, conn: socket.socket, status):
         """
@@ -118,10 +128,11 @@ class GameServer:
 
                 if callable(handler):
                     status = handler(status, response["value"])
+                    status["timer"] = self.get_updated_timer()
                     conn.send(pickle.dumps(status))
-                    # print(f"[SENDING]")
-                    # print(status)
-                    # Debug(True).div()
+                    print(f"[SENDING]")
+                    print(status)
+                    Debug(True).div()
                 else:
                     print(f'[WARNING] no handler for {response["action"]}')
 
@@ -186,6 +197,16 @@ class GameServer:
                 self.sk_server.close()
                 sys.exit()
 
+    def start_timer(self):
+        self.start_time = time.time()  # 浮点秒数
+
+    def get_updated_timer(self):
+        self.current_time = time.time() - self.start_time
+        if self.current_time >= ARENA_MODE_TIME:
+            return -1
+        else:
+            return int(self.current_time)
+
 
 if __name__ == "__main__":
     server_ip = DEFAULT_SERVER_IP
@@ -206,9 +227,9 @@ if __name__ == "__main__":
     for opt, arg in opts:
         if opt in ("-a", "--address"):
             server_ip = str(arg)
-        elif opt == ("-m", "--map_index"):
+        elif opt in ("-m", "--map_index"):
             map_index = int(arg)
-        elif opt == ("-b", "--background_index"):
+        elif opt in ("-b", "--background_index"):
             bg_index = int(arg)
         else:
             print(f"unknown option: {opt}")

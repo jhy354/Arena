@@ -14,9 +14,10 @@ class Player(pygame.sprite.Sprite):
     控制玩家的行为
     """
 
-    def __init__(self, group, cfg):
+    def __init__(self, group, cfg, all_sprite_group=None):
         """
-        由于需要在内部实例化类 所以 group[0] 必须为 all_sprites
+        由于需要在内部实例化类 所以 group[0] 必须为 all_sprites (x)
+        group[] 内部的元素是随机排序的, 不能用 [0] 来传参
         """
         super().__init__(group)
 
@@ -55,7 +56,15 @@ class Player(pygame.sprite.Sprite):
         self.cfg = cfg
         self.hp = cfg.hp
         self.push_space = False
-        self.weapon = Pistol([self.groups()[0]])
+        if all_sprite_group is not None:
+            self.weapon = Pistol([all_sprite_group])
+        else:
+            Debug(True) << "Cannot add Pistol into all_sprite group" << "\n"
+            raise Exception(f"Cannot add Pistol into all_sprite group in {__file__}")
+
+        # print(f"!!!\n{self.groups()}\n!!!")
+        # print(f"!!!\n{self.groups()[0]}\n!!!")
+
         self.timers = {
             "respawn": Timer(3000, self.call_respawn)
         }
@@ -149,7 +158,12 @@ class Player(pygame.sprite.Sprite):
                 self.frame_index = 0
 
         # 必须在下一行使用 int()
-        self.image = self.animations[self.status][int(self.frame_index)]
+        try:
+            self.image = self.animations[self.status][int(self.frame_index)]
+        except IndexError:
+            print(f"stat:{self.status}")
+            print(f"ani:{self.animations}")
+
         if self.face_direction == "left":
             self.image = pygame.transform.flip(self.image, True, False)
 

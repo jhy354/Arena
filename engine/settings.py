@@ -3,7 +3,7 @@ AUTHOR_NAME = "jhy354(Romulus)"
 GITHUB_URL = r"https://github.com/jhy354/Arena"
 AUTHOR_URL = r"https://github.com/jhy354/"
 SCR_SIZE = (1280, 960)
-FPS = 144
+FPS = 90
 MOVEMENT_RATING = 100
 
 VERSION = "e0.1.0.0429"
@@ -20,7 +20,7 @@ FONT_ENG_LIST = [
 
 # Server Settings #
 # SERVER_IP = '127.0.0.1'
-DEFAULT_SERVER_IP = '192.168.124.15'
+DEFAULT_SERVER_IP = '0.0.0.0'
 DEFAULT_SERVER_PORT = 1453
 HEADER = 1024  # Default header length
 SERVER_TIMEOUT = 0.001
@@ -29,6 +29,7 @@ MAX_LISTEN = 5
 
 # * Game Settings * #
 DEBUG_MODE = True
+ARENA_MODE_TIME = 180  # 秒
 
 # * Layer Settings * #
 LAYERS = {

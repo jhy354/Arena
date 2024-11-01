@@ -1,3 +1,38 @@
+'''
+Socket传输数据样例
+'''
+# Server Send
+status = {
+    'map': 1,  # 地图编号
+    'bg': 2,  # 背景编号
+    'players':  # 游戏中的玩家角色
+    [
+        {
+            'id': '1',  # 角色编号
+            'pos': (608, 653),  # 角色坐标
+            'skin': 'p_pale',  # 角色皮肤
+            'status': 'idle',  # 角色状态机
+            'frame_index': 0.86,  # 状态机动画帧索引(取整)
+            'face_direction': 'right',  # 角色面向的方向
+            'bullet_list':  # 场景中存在的子弹
+            [
+                {
+                    'pos': (1129, 682),  # 子弹坐标
+                    'image_path': './assets/game/weapon/gun/bullet/bullet.png',  # 子弹贴图
+                    'damage': 50  # 子弹伤害
+                }
+            ]  
+        }
+    ], 
+    'timer': 3  # 游戏倒计时时间
+}
+
+
+'''
+OLD FASHION(老版本用的)
+'''
+
+# data sent from client 
 client_send = {
     'action': 'commands',
     'value': {
@@ -52,6 +87,7 @@ client_send = {
     }
 }
 
+# data received from server
 client_receive = {
     'enemies': [],
     'players': [

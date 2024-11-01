@@ -21,7 +21,7 @@ from engine.widget.sprite import TimerUI
 
 class PlayGround(ArenaScene):
     """
-    玩家进行游戏的场景
+    玩家进行游戏的场景(对战模式)
     """
 
     def __init__(self, map_index, background_index):
@@ -85,12 +85,14 @@ class PlayGround(ArenaScene):
 
         self.player_1 = Player(
             [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
-            p1_cfg
+            p1_cfg,
+            all_sprite_group=self.all_sprites
         )
 
         self.player_2 = Player(
             [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
-            p2_cfg
+            p2_cfg,
+            all_sprite_group=self.all_sprites
         )
 
         for player in self.player_group.sprites():
