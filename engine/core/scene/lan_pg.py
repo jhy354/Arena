@@ -200,6 +200,8 @@ class LAN_PlayGround(PlayGround):
             exit(0)
 
     def respond_server(self):
+        self.update_crown()
+
         me = self.player_obj[self.player_id]
         bullet_list = []
         for b in me.weapon.bullet_group.sprites():
@@ -246,6 +248,7 @@ class LAN_PlayGround(PlayGround):
             "id": self.player_id,
         }
         response = {"action": "commands", "value": response}
+        # print(self.player_id, me.kills)
         # print(f"[SENDING]")
         # print(response)
         try:
@@ -270,42 +273,70 @@ class LAN_PlayGround(PlayGround):
 
         for player in data["players"]:
 
-            # 只有一个元素 (id) 则跳过
-            if player["id"] == self.player_id or len(player.keys()) <= 1:
+            # 只有一个元素时跳过
+            if len(player.keys()) <= 1:
                 continue
 
-            # movement
-            self.player_obj[player["id"]].rect.x = player["pos"][0]
-            self.player_obj[player["id"]].rect.y = player["pos"][1]
-
-            # animation
-            self.player_obj[player["id"]].skin = player["skin"]
-            self.player_obj[player["id"]].status = player["status"]
-            self.player_obj[player["id"]].frame_index = player["frame_index"]
-            self.player_obj[player["id"]].face_direction = player["face_direction"]
-
-            # bullet
-            self.update_bullet_from_server(player["id"], player["bullet_list"])
-
-            # score
+            # 不跳过自己 #
             self.score_dist[player["id"]] = player["score"]
+
+            # 跳过自己 #
+            if player["id"] == self.player_id:
+                continue
+
+            try:
+                # movement
+                self.player_obj[player["id"]].rect.x = player["pos"][0]
+                self.player_obj[player["id"]].rect.y = player["pos"][1]
+
+                # animation
+                self.player_obj[player["id"]].skin = player["skin"]
+                self.player_obj[player["id"]].status = player["status"]
+                self.player_obj[player["id"]].frame_index = player["frame_index"]
+                self.player_obj[player["id"]].face_direction = player["face_direction"]
+
+                # bullet
+                self.update_bullet_from_server(player["id"], player["bullet_list"])
+
+            except Exception as error:
+                print(f"[ERROR] {error}")
+                Debug(True).div()
 
     def update_bullet_from_server(self, player_id, bullet_list):
         pass
 
     def update_crown(self):
+        if not self.score_dist:  # 检查 score_dist 是否为空
+            self.crown_text = "No players"
+            return  # 提前返回，不进行后续处理
 
-        score_map = {}
-        max_name = None
+        score_counts = {}
+        max_score = float('-inf')
+        leaders = []
 
-        for i in range(len(self.score_dist)):
-            score_map[i] = 0
-        for score in self.score_dist.values():
-            score_map[score] += 1
-        if max(score_map, key=score_map.get) >= 2:  # 存在平局现象
+        # 统计每个分数出现的次数并寻找最高分数
+        for player_id, score in self.score_dist.items():
+            # 更新分数计数
+            if score in score_counts:
+                score_counts[score] += 1
+            else:
+                score_counts[score] = 1
+
+            # 查找最高分
+            if score > max_score:
+                max_score = score
+                leaders = [player_id]  # 新的最高分, 重置leaders列表
+            elif score == max_score:
+                leaders.append(player_id)  # 同样的最高分, 添加到leaders列表
+
+        # 检查是否存在平局
+        has_tie = any(count > 1 for count in score_counts.values())
+
+        if has_tie:  # 存在平局现象
             self.crown_text = text_script.CONTESTED
+            max_name = "contested"
         else:
-            max_name = max(self.score_dist, key=self.score_dist.get)
+            max_name = leaders[0]
             self.crown_text = f"{text_script.PLAYER_IN_LEAD[0]} {max_name} {text_script.PLAYER_IN_LEAD[1]}"
 
         font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
@@ -317,7 +348,7 @@ class LAN_PlayGround(PlayGround):
         )
 
         if max_name in CROWN_COLOR_LAN:
-            path = PATH_UI_ICON + "crown/crown_" + CROWN_COLOR[max_name] + ".png"
+            path = PATH_UI_ICON + "crown/crown_" + CROWN_COLOR_LAN[max_name] + ".png"
             self.crown.image = custom_load(path, layout.CROWN_SIZE)
 
     def run(self, dt):

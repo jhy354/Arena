@@ -221,12 +221,19 @@ class Player(pygame.sprite.Sprite):
         """
         移出游戏后等待并复活
         """
-        self.deactivate()
-        # 暂时移出游戏
-        self.rect.x = -1000
-        self.rect.y = -1000
+        if self.enable_lan:
+            # 暂时移出游戏
+            self.rect.x = -1000
+            self.rect.y = -1000
 
-        self.timers["respawn"].activate()
+            self.timers["respawn"].activate()
+        else:
+            self.deactivate()
+            # 暂时移出游戏
+            self.rect.x = -1000
+            self.rect.y = -1000
+
+            self.timers["respawn"].activate()
 
     def call_respawn(self):
         """
@@ -236,12 +243,19 @@ class Player(pygame.sprite.Sprite):
         self.respawn(self.cfg.spawn_point)
 
     def respawn(self, pos):
-        self.timers["respawn"].deactivate()
-        self.direction.y = 0
-        self.hp = self.cfg.hp
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
-        self.activate()
+        if self.enable_lan:
+            self.timers["respawn"].deactivate()
+            self.direction.y = 0
+            self.hp = self.cfg.hp
+            self.rect.x = pos[0]
+            self.rect.y = pos[1]
+        else:
+            self.timers["respawn"].deactivate()
+            self.direction.y = 0
+            self.hp = self.cfg.hp
+            self.rect.x = pos[0]
+            self.rect.y = pos[1]
+            self.activate()
 
     def hide(self):
         Debug(DEBUG_MODE) << "(Player) Hide Player"
