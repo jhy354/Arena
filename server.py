@@ -30,7 +30,7 @@ class ResponseHandler:
             if callable(handler):
                 status = handler(status, command[cmd])
             else:
-                print(f'no handler for {cmd}')
+                print(f'[WARNING] no handler for {cmd}')
 
         return status
 
@@ -98,10 +98,17 @@ class GameServer:
         except Exception as error:
             sys.exit(f"[ERROR IN CREATING A SERVER] {error}")
         else:
-            print(f"[SERVER IS LISTENING] @ {host}:{port}")
+            print(f"\033[1;36m[SERVER IS LISTENING]\033[0m "
+                  f"@ "
+                  f"\033[1;32m{host}:{port}\033[0m")
 
     def establish_conn(self, address, connect_time):
-        print(f"[CONN ESTABLISHED] @ {address[0]}:{str(address[1])} at {connect_time}. Enjoy Yourself in Arena :)")
+        print(f"\033[1;36m[CONN ESTABLISHED]\033[0m "
+              f"@ "
+              f"\033[1;32m{address[0]}:{str(address[1])}\033[0m "
+              f"at "
+              f"\033[1;34m{connect_time}\033[0m "
+              f"\033[3;33mEnjoy Yourself in Arena :)\033[0m")
 
         self.status["players"].append({
             "id": str(self.tot_player_cnt),
@@ -168,9 +175,9 @@ class GameServer:
     def run(self):
         with open("ascii_logo.txt") as f:
             for line in f.readlines():
-                print(line, end="")
+                print(f"\033[1;34m{line}\033[0m", end="")
         print("")
-        print(VERSION)
+        print(f"\033[1;33m{VERSION}\033[0m")
         Debug(True).div()
 
         # MAIN LOOP #
