@@ -1,6 +1,7 @@
-'''
+"""
 Socket传输数据样例
-'''
+"""
+
 # Server Send
 status = {
     'map': 1,  # 地图编号
@@ -27,6 +28,39 @@ status = {
     'timer': 3  # 游戏倒计时时间
 }
 
+# Client Send
+response = {  # 在./server.py/ResponseHandler(CLASS)中处理
+    'action': 'commands',  # 调用handle_commands()
+    'value': 
+    {
+        'commands': 
+        [
+            {'movement': {  # 调用handle_movement()
+                'id': '1', 
+                'pos': (531, 781)
+            }},
+            
+            {'animation': {  # 调用handle_animation()
+                'id': '1', 
+                'skin': 'p_pale', 
+                'status': 'idle', 
+                'frame_index': 0.79, 
+                'face_direction': 'right'
+            }}, 
+            
+            {'bullet': {  # 调用handle_bullet()
+                'id': '1', 
+                'bullet_list': 
+                [{
+                    'pos': (124, 750), 
+                    'image_path': './assets/game/weapon/gun/bullet/bullet.png', 
+                    'damage': 50
+                }]
+            }}
+        ], 
+        'id': '1'  # data sender
+    }
+}
 
 '''
 OLD FASHION(老版本用的)

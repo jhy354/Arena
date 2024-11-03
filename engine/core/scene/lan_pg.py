@@ -212,7 +212,7 @@ class LAN_PlayGround(PlayGround):
         }
         response = {"action": "commands", "value": response}
         # print(f"[SENDING]")
-        # print(response)
+        print(response)
         try:
             self.sk_server.send(pickle.dumps(response))
         except OSError:

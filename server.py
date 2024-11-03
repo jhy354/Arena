@@ -130,9 +130,9 @@ class GameServer:
                     status = handler(status, response["value"])
                     status["timer"] = self.get_updated_timer()
                     conn.send(pickle.dumps(status))
-                    print(f"[SENDING]")
-                    print(status)
-                    Debug(True).div()
+                    # print(f"[SENDING]")
+                    # print(status)
+                    # Debug(True).div()
                 else:
                     print(f'[WARNING] no handler for {response["action"]}')
 
