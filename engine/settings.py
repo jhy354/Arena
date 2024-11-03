@@ -5,6 +5,7 @@ AUTHOR_URL = r"https://github.com/jhy354/"
 SCR_SIZE = (1280, 960)
 FPS = 90
 MOVEMENT_RATING = 100
+ARENA_MODE_TIME = 180  # 秒
 
 VERSION = "e0.1.0.0429"
 CAPTION = "Arena - " + VERSION
@@ -29,7 +30,6 @@ MAX_LISTEN = 5
 
 # * Game Settings * #
 DEBUG_MODE = True
-ARENA_MODE_TIME = 180  # 秒
 
 # * Layer Settings * #
 LAYERS = {

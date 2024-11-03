@@ -25,7 +25,11 @@ status = {
             ]  
         }
     ], 
-    'timer': 3  # 游戏倒计时时间
+    'timer':  # 游戏倒计时时间
+    {
+        "time": 1,
+        "finished": False  # False/True
+    }
 }
 
 # Client Send

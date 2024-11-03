@@ -71,8 +71,8 @@ class TimerUI(UIGroup):
         Debug(True) << f"(TimerUI) Count Down Started on {self.start_time}"
         Debug(True).div()
 
-        self.set_time_str()
-        self.render_str_surf()
+        self.set_time_str(self.current_seconds)
+        self.render_str_surf(self.time_str)
 
     def setup(self):
         super().setup()
@@ -107,16 +107,16 @@ class TimerUI(UIGroup):
         Debug(True) << f"(TimerUI) Time Error: {self.time_error} ms"
         Debug(True).div()
 
-    def set_time_str(self):
-        m = self.current_seconds // 60
+    def set_time_str(self, current_seconds):
+        m = current_seconds // 60
         self.time_str = f"0{m}:" if m < 10 else f"{m}:"
-        s = int(self.current_seconds % 60)
+        s = int(current_seconds % 60)
         self.time_str += f"0{s}" if s < 10 else f"{s}"
 
-    def render_str_surf(self):
+    def render_str_surf(self, txt):
         font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
         self.time_surf.image = render_text(
-            self.time_str,
+            txt,
             font_eng,
             layout.TIMER_TEXT_SIZE,
             layout.TIMER_TEXT_COLOR
@@ -132,6 +132,6 @@ class TimerUI(UIGroup):
                 self.current_seconds -= 1
                 if self.current_seconds <= 0:
                     self.cntdown_finish()
-                self.set_time_str()
+                self.set_time_str(self.current_seconds)
                 self.current_start_time = pygame.time.get_ticks()  # ms
-                self.render_str_surf()
+                self.render_str_surf(self.time_str)

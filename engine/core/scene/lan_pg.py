@@ -212,7 +212,7 @@ class LAN_PlayGround(PlayGround):
         }
         response = {"action": "commands", "value": response}
         # print(f"[SENDING]")
-        print(response)
+        # print(response)
         try:
             self.sk_server.send(pickle.dumps(response))
         except OSError:
@@ -225,6 +225,13 @@ class LAN_PlayGround(PlayGround):
 
         if not isinstance(data, dict):
             return
+
+        # Timer
+        if data["timer"]["time"] is not None and not data["timer"]["finished"]:
+            self.timer_ui.set_time_str(ARENA_MODE_TIME - data["timer"]["time"])
+            self.timer_ui.render_str_surf(self.timer_ui.time_str)
+        if data["timer"]["finished"]:
+            self.timer_ui.render_str_surf("77:77")  # finished
 
         for player in data["players"]:
 

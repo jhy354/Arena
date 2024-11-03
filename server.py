@@ -75,7 +75,10 @@ class GameServer:
             "map": _map_index,
             "bg": _bg_index,
             "players": [],
-            "timer": None
+            "timer": {
+                "time": None,
+                "finished": False
+            }
         }
 
         self.sk_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -83,7 +86,7 @@ class GameServer:
         self.tot_player_cnt = 0
 
         # Timer
-        self.is_start_time = False
+        self.is_timer_started = False
         self.start_time = None
         self.current_time = None
 
@@ -104,9 +107,9 @@ class GameServer:
             "id": str(self.tot_player_cnt),
         })
 
-        if self.tot_player_cnt and not self.is_start_time >= 2:
+        if self.tot_player_cnt >= 2 and not self.is_timer_started:
             self.start_timer()
-            self.is_start_time = True
+            self.is_timer_started = True
 
     def handler(self, conn: socket.socket, status):
         """
@@ -129,7 +132,14 @@ class GameServer:
 
                 if callable(handler):
                     status = handler(status, response["value"])
-                    status["timer"] = self.get_updated_timer()
+
+                    if self.is_timer_started:
+                        status["timer"]["time"] = self.get_updated_time()
+                        if self.get_updated_time() < ARENA_MODE_TIME:
+                            status["timer"]["finished"] = False
+                        else:
+                            status["timer"]["finished"] = True
+
                     conn.send(pickle.dumps(status))
                     # print(f"[SENDING]")
                     # print(status)
@@ -201,7 +211,7 @@ class GameServer:
     def start_timer(self):
         self.start_time = time.time()  # 浮点秒数
 
-    def get_updated_timer(self):
+    def get_updated_time(self):
         self.current_time = time.time() - self.start_time
         if self.current_time >= ARENA_MODE_TIME:
             return -1
