@@ -1,3 +1,5 @@
+import inspect
+import time
 from os import walk
 
 import pygame
@@ -7,12 +9,39 @@ from engine.settings import *
 
 class Debug:
 
-    def __init__(self, debug_mode=False):
-        self.debug_mode = debug_mode
+    def __init__(self, debug_mode=False, show_time=True, show_detail=False, highlight=False):
+        stack = inspect.stack()
 
-    def __lshift__(self, other):
+        self.debug_mode = debug_mode
+        self.show_time = show_time
+        self.show_detail = show_detail
+        self.highlight = highlight
+        self.log_time_txt = \
+            (f"\033[1;32m{time.strftime("%H:%M:%S")}\033[0m "
+             f"\033[1;36m./../{stack[1].filename.split("\\")[-2]}/{stack[1].filename.split("\\")[-1]} \033[0m "
+             f"\033[1;34mLine:{stack[1].lineno}\033[0m "
+             f"\033[1;30m{"INFO "}\033[0m")
+        self.log_time_txt_detailed = \
+            (f"\033[1;32m{time.strftime("%D %H:%M:%S")}\033[0m "
+             f"\033[1;36m{stack[1].filename} \033[0m "
+             f"\033[1;34mLine:{stack[1].lineno}\033[0m "
+             f"\033[1;30m{"INFO "}\033[0m")
+
+        if self.show_detail:
+            self.show_time = True
+
+    def __lshift__(self, txt):
         if self.debug_mode:
-            print(other, end="")
+            if self.show_time:
+                if self.show_detail:
+                    print(self.log_time_txt_detailed, end="")
+                else:
+                    print(self.log_time_txt, end="")
+
+            if self.highlight:
+                print(f"\033[1;35m{txt}\033[0m")
+            else:
+                print(txt)
 
         return self
 
@@ -58,7 +87,7 @@ def import_folder(path, size=(0, 0), silent=False):
         for image in img_files:
             full_path = path + "/" + image
             if not silent:
-                Debug(DEBUG_MODE) << full_path << "\n"
+                Debug(DEBUG_MODE) << f"Importing Image {full_path}"
 
             # convert_alpha() 优化性能 保留 alpha通道
             image_surf = pygame.image.load(full_path).convert_alpha()
@@ -70,7 +99,7 @@ def import_folder(path, size=(0, 0), silent=False):
             surface_list.append(image_surf)
 
         if not silent:
-            Debug(DEBUG_MODE) << "Imported Folder " << path << "\n"
+            Debug(DEBUG_MODE, highlight=True) << f"Imported Folder {path}"
             Debug(DEBUG_MODE).div()
 
     return surface_list
@@ -87,7 +116,7 @@ def custom_load(image_path, size=(0, 0), silent=False):
         surf = pygame.transform.scale(surf, size)
 
     if not silent:
-        Debug(True) << "Imported " << image_path << "\n"
+        Debug(True) << f"Importing Image {image_path}"
         Debug(True).div()
 
     return surf

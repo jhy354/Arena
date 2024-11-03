@@ -19,17 +19,17 @@ class Game:
 
         # * Pygame Init * #
         pygame.init()
+        Debug(True).div()
         pygame.font.init()
         pygame.display.set_caption(CAPTION)
         self.screen = pygame.display.set_mode(SCR_SIZE)
         pygame.display.set_icon(custom_load(r"./logo.ico", (16, 16)))
         self.clock = pygame.time.Clock()
-        Debug(DEBUG_MODE).div()
 
         self.scenes = self.load_scenes()
         self.scenes["start_menu"].activate()
 
-        Debug(True) << "Inited Game" << "\n"
+        Debug(True, highlight=True) << "Game Inited"
         Debug(True).div()
 
     def load_scenes(self):
@@ -44,7 +44,9 @@ class Game:
         scenes["about_page"] = about_page
         scenes["play_ground"] = play_ground
         scenes["level"] = level
-        print(scenes)
+        Debug(DEBUG_MODE, highlight=True) << f"{len(scenes)} SCENE HAS BEEN INITED"
+        Debug(DEBUG_MODE).div()
+        # print(scenes)
 
         return scenes
 

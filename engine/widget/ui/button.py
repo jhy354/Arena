@@ -33,11 +33,11 @@ class Button(pygame.sprite.Sprite):
 
     def activate(self):
         self.active = True
-        Debug(True) << "Activated TextButton" << "\n"
+        Debug(True) << "Activated TextButton"
 
     def deactivate(self):
         self.active = False
-        Debug(True) << "Deactivated TextButton" << "\n"
+        Debug(True) << "Deactivated TextButton"
 
     def click(self):
         """

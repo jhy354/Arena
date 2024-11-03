@@ -59,7 +59,7 @@ class Player(pygame.sprite.Sprite):
         if all_sprite_group is not None:
             self.weapon = Pistol([all_sprite_group])
         else:
-            Debug(True) << "Cannot add Pistol into all_sprite group" << "\n"
+            Debug(True) << "Cannot add Pistol into all_sprite group"
             raise Exception(f"Cannot add Pistol into all_sprite group in {__file__}")
 
         # print(f"!!!\n{self.groups()}\n!!!")
@@ -69,17 +69,17 @@ class Player(pygame.sprite.Sprite):
             "respawn": Timer(3000, self.call_respawn)
         }
 
-        Debug(True) << "Inited Player" << "\n"
+        Debug(True) << "Inited Player"
 
     def activate(self):
         self.setup()
         self.active = True
-        Debug(True) << "Activated Player" << "\n"
+        Debug(True) << "Activated Player"
 
     def deactivate(self):
         self.release()
         self.active = False
-        Debug(True) << "Deactivated Player" << "\n"
+        Debug(True) << "Deactivated Player"
 
     def setup(self):
         """
@@ -137,7 +137,7 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self, dt):
         if self.jump_cnt == 0:
-            Debug(DEBUG_MODE) << "(Player) Player Jump" << "\n"
+            Debug(DEBUG_MODE) << "(Player) Player Jump"
         self.direction.y = self.jump_speed
         self.jump_cnt += dt * MOVEMENT_RATING
         if self.jump_cnt >= self.jump_time:
@@ -244,11 +244,11 @@ class Player(pygame.sprite.Sprite):
         self.activate()
 
     def hide(self):
-        Debug(DEBUG_MODE) << "(Player) Hide Player" << "\n"
+        Debug(DEBUG_MODE) << "(Player) Hide Player"
         self.image = pygame.surface.Surface((1, 1))
 
     def show(self):
-        Debug(DEBUG_MODE) << "(Player) Show Player" << "\n"
+        Debug(DEBUG_MODE) << "(Player) Show Player"
         self.image = self.source_image.copy()
 
     def get_shot(self, damage):

@@ -79,11 +79,11 @@ class Pistol(Weapon):
             bullet.fly(dt)
 
     def hide(self):
-        Debug(DEBUG_MODE) << "(Pistol) Hide Pistol" << "\n"
+        Debug(DEBUG_MODE) << "(Pistol) Hide Pistol"
         self.image = pygame.surface.Surface((1, 1))
 
     def show(self):
-        Debug(DEBUG_MODE) << "(Pistol) Show Pistol" << "\n"
+        Debug(DEBUG_MODE) << "(Pistol) Show Pistol"
         self.image = self.source_image.copy()
     
     def update(self, dt):
@@ -116,4 +116,4 @@ class Bullet(pygame.sprite.Sprite):
     def destroy(self):
         self.kill()
         self.destroyed = True
-        Debug(DEBUG_MODE) << "(Bullet) Destroyed" << "\n"
+        Debug(DEBUG_MODE) << "(Bullet) Destroyed"

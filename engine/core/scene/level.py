@@ -19,7 +19,7 @@ class Level(ArenaScene):
         # * Players * #
         self.player_1 = None
 
-        Debug(True) << "Inited PlayGround" << "\n"
+        Debug(True) << "Inited PlayGround"
 
     def setup(self):
         super().setup()
@@ -44,12 +44,12 @@ class Level(ArenaScene):
         for player in self.player_group.sprites():
             self.bullet_groups.append(player.weapon.bullet_group)
 
-        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
-        Debug(True) << "Loaded Level" << "\n"
+        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites)
+        Debug(True) << "Loaded Level"
 
     def release(self):
         super().release()
-        Debug(True) << "Released Level" << "\n"
+        Debug(True) << "Released Level"
 
     def run(self, dt):
         super().run(dt)
@@ -59,10 +59,10 @@ class Level(ArenaScene):
 
     def activate(self):
         super().activate()
-        Debug(True) << "Activated PlayGround" << "\n"
+        Debug(True) << "Activated PlayGround"
         Debug(True).div()
 
     def deactivate(self):
         super().deactivate()
-        Debug(True) << "Deactivated PlayGround" << "\n"
+        Debug(True) << "Deactivated PlayGround"
         Debug(True).div()

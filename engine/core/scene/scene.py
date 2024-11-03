@@ -108,7 +108,7 @@ class ArenaScene(Scene):
         elif map_type == "level":
             tmx_data = load_pygame(PATH_MAP_LEVEL[self.map_index])
         else:
-            Debug(True) << "ERROR: Unexpected Map Type" << "\n"
+            Debug(True) << "ERROR: Unexpected Map Type"
             exit()
 
         for x, y, surf in tmx_data.get_layer_by_name("edge").tiles():
@@ -244,7 +244,7 @@ class ArenaScene(Scene):
                         player.jump_cnt = 0
                         if not player.can_jump and not player.push_space:
                             player.can_jump = True
-                            Debug(DEBUG_MODE) << "(Player) Enabled Jump" << "\n"
+                            Debug(DEBUG_MODE) << "(Player) Enabled Jump"
                     elif player.direction.y < 0:
                         player.rect.top = sprite.rect.bottom
                         player.direction.y = 0
@@ -302,7 +302,7 @@ class ArenaScene(Scene):
                                     if bullet in p.weapon.bullet_group:
                                         p.kills += 1
                                         self.update_crown()
-                                        Debug(DEBUG_MODE) << f"(Player) Kills: {p.kills}" << "\n"
+                                        Debug(DEBUG_MODE) << f"(Player) Kills: {p.kills}"
 
                             bullet.destroy()
                             break

@@ -43,7 +43,7 @@ class PlayGround(ArenaScene):
         self.crown_text_sprite = None
         self.crown_text = text_script.CONTESTED
 
-        Debug(True) << "Inited PlayGround" << "\n"
+        Debug(True) << "Inited PlayGround"
 
     def run(self, dt):
         super().run(dt)
@@ -54,12 +54,12 @@ class PlayGround(ArenaScene):
 
     def activate(self):
         super().activate()
-        Debug(True) << "Activated PlayGround" << "\n"
+        Debug(True) << "Activated PlayGround"
         Debug(True).div()
 
     def deactivate(self):
         super().deactivate()
-        Debug(True) << "Deactivated PlayGround" << "\n"
+        Debug(True) << "Deactivated PlayGround"
         Debug(True).div()
 
     def setup(self):
@@ -136,12 +136,12 @@ class PlayGround(ArenaScene):
         self.timer_ui = TimerUI(self.all_sprites, 180)
         self.timer_ui.activate()
 
-        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
-        Debug(True) << "Loaded PlayGround" << "\n"
+        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites)
+        Debug(True) << "Loaded PlayGround"
 
     def release(self):
         super().release()
-        Debug(True) << "Released PlayGround" << "\n"
+        Debug(True) << "Released PlayGround"
 
     def update_crown(self):
 

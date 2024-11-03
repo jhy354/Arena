@@ -36,8 +36,7 @@ class StartMenu(Scene):
         self.about_button = None
         self.arena_button = None
 
-        Debug(True) << "Inited StartMenu" << "\n"
-        Debug(True).div()
+        Debug(True) << "Inited StartMenu"
 
     def activate(self):
         super().activate()
@@ -50,7 +49,7 @@ class StartMenu(Scene):
         self.about_button.activate()
         self.arena_button.activate()
 
-        Debug(True) << "Activated StartMenu" << "\n"
+        Debug(True) << "Activated StartMenu"
         Debug(True).div()
 
     def deactivate(self):
@@ -64,7 +63,7 @@ class StartMenu(Scene):
         self.about_button.deactivate()
         self.arena_button.deactivate()
 
-        Debug(True) << "Deactivated StartMenu" << "\n"
+        Debug(True) << "Deactivated StartMenu"
         Debug(True).div()
 
     def setup(self):
@@ -153,13 +152,13 @@ class StartMenu(Scene):
             z=LAYERS["ui"]
         )
 
-        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
-        Debug(True) << "Loaded StartMenu" << "\n"
+        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites)
+        Debug(True) << "Loaded StartMenu"
 
     def release(self):
         super().release()
 
-        Debug(True) << "Released StartMenu" << "\n"
+        Debug(True) << "Released StartMenu"
         Debug(True).div()
 
     def run(self, dt):

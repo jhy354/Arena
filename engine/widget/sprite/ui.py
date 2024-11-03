@@ -68,7 +68,7 @@ class TimerUI(UIGroup):
         self.start_time = pygame.time.get_ticks()  # ms
 
         Debug(True).div()
-        Debug(True) << f"(TimerUI) Count Down Started on {self.start_time}" << "\n"
+        Debug(True) << f"(TimerUI) Count Down Started on {self.start_time}"
         Debug(True).div()
 
         self.set_time_str()
@@ -102,9 +102,9 @@ class TimerUI(UIGroup):
         self.finish_time = pygame.time.get_ticks()  # ms
 
         Debug(True).div()
-        Debug(True) << f"(TimerUI) Count Down Finished on {self.finish_time}" << "\n"
+        Debug(True) << f"(TimerUI) Count Down Finished on {self.finish_time}"
         self.time_error = self.finish_time - self.start_time - self.cntdown_seconds * 1000
-        Debug(True) << f"(TimerUI) Time Error: {self.time_error} ms" << "\n"
+        Debug(True) << f"(TimerUI) Time Error: {self.time_error} ms"
         Debug(True).div()
 
     def set_time_str(self):

@@ -41,6 +41,8 @@ class AboutPage(Scene):
         self.author_text = None
         self.author_url = None
 
+        Debug(True) << "Inited AboutPage"
+
     def setup(self):
         super().setup()
 
@@ -132,13 +134,13 @@ class AboutPage(Scene):
             z=LAYERS["ui"]
         )
 
-        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites) << "\n"
-        Debug(True) << "Loaded AboutPage" << "\n"
+        Debug(True) << "All Sprites in Current Scene: " << str(self.all_sprites)
+        Debug(True) << "Loaded AboutPage"
 
     def release(self):
         super().release()
 
-        Debug(True) << "Released AboutPage" << "\n"
+        Debug(True) << "Released AboutPage"
         Debug(True).div()
 
     def activate(self):
@@ -148,7 +150,7 @@ class AboutPage(Scene):
         self.url.activate()
         self.author_url.activate()
 
-        Debug(True) << "Activated AboutPage" << "\n"
+        Debug(True) << "Activated AboutPage"
         Debug(True).div()
 
     def deactivate(self):
@@ -158,7 +160,7 @@ class AboutPage(Scene):
         self.url.deactivate()
         self.author_url.deactivate()
 
-        Debug(True) << "Deactivated AboutPage" << "\n"
+        Debug(True) << "Deactivated AboutPage"
         Debug(True).div()
 
     def run(self, dt):
