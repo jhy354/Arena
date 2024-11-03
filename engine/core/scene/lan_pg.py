@@ -2,11 +2,16 @@ import socket
 import pickle
 import select
 
+import pygame
+
 from .playground import PlayGround
 from engine.settings import *
 from engine.path import *
 from engine import layout
+from engine import text_script
 from engine.utils import Debug
+from engine.utils import set_fonts
+from engine.utils import render_text
 from engine.utils import custom_load
 from engine.widget.sprite import P1Cfg
 from engine.widget.sprite import LANPlayerCfg
@@ -34,7 +39,13 @@ class LAN_PlayGround(PlayGround):
         self.sk_server.ioctl(socket.SIO_KEEPALIVE_VALS, (1, 60 * 1000, 30 * 1000))
         self.connected = False
 
+        self.crown = None
+        self.crown_text = None
+        self.crown_text_sprite = None
+
         self.timer_ui = None
+
+        self.score_dist = {}
 
         if self.active:
             try:
@@ -78,8 +89,23 @@ class LAN_PlayGround(PlayGround):
         self.load_map(map_type="playground")
 
         # * TimerUI * #
-        self.timer_ui = TimerUI(self.all_sprites, 180)
+        self.timer_ui = TimerUI(self.all_sprites, ARENA_MODE_TIME)
         self.timer_ui.activate()
+
+        # * Crown * #
+        self.crown = Generic(
+            pos=layout.CROWN_POS,
+            surf=custom_load(PATH_UI_ICON + "crown/crown_gray.png", layout.CROWN_SIZE),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.crown_text_sprite = Generic(
+            pos=layout.CROWN_TEXT_POS,
+            surf=pygame.surface.Surface((1, 1)),
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
 
     def setup_player(self, data):
 
@@ -92,14 +118,16 @@ class LAN_PlayGround(PlayGround):
 
                 if self.player_id == p_data["id"]:
                     self.player_obj[p_data["id"]] = Player(
-                        [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
+                        [self.all_sprites, self.creature_group, self.player_group, self.gravity_group,
+                         self.shoot_group],
                         P1Cfg(),
                         all_sprite_group=self.all_sprites
                     )
 
                 else:
                     self.player_obj[p_data["id"]] = Player(
-                        [self.all_sprites, self.creature_group, self.player_group, self.gravity_group, self.shoot_group],
+                        [self.all_sprites, self.creature_group, self.player_group, self.gravity_group,
+                         self.shoot_group],
                         LANPlayerCfg(),
                         all_sprite_group=self.all_sprites
                     )
@@ -207,8 +235,15 @@ class LAN_PlayGround(PlayGround):
                         "bullet_list": bullet_list,
                     }
                 },
+
+                {
+                    "score": {
+                        "id": self.player_id,
+                        "score": me.kills,
+                    }
+                },
             ],
-            "id": self.player_id
+            "id": self.player_id,
         }
         response = {"action": "commands", "value": response}
         # print(f"[SENDING]")
@@ -252,8 +287,38 @@ class LAN_PlayGround(PlayGround):
             # bullet
             self.update_bullet_from_server(player["id"], player["bullet_list"])
 
+            # score
+            self.score_dist[player["id"]] = player["score"]
+
     def update_bullet_from_server(self, player_id, bullet_list):
         pass
+
+    def update_crown(self):
+
+        score_map = {}
+        max_name = None
+
+        for i in range(len(self.score_dist)):
+            score_map[i] = 0
+        for score in self.score_dist.values():
+            score_map[score] += 1
+        if max(score_map, key=score_map.get) >= 2:  # 存在平局现象
+            self.crown_text = text_script.CONTESTED
+        else:
+            max_name = max(self.score_dist, key=self.score_dist.get)
+            self.crown_text = f"{text_script.PLAYER_IN_LEAD[0]} {max_name} {text_script.PLAYER_IN_LEAD[1]}"
+
+        font_chs, font_eng = set_fonts(FONT_CHS_LIST, FONT_ENG_LIST)
+        self.crown_text_sprite.image = render_text(
+            self.crown_text,
+            font_eng,
+            layout.CROWN_TEXT_FONT_SIZE,
+            layout.CROWN_TEXT_COLOR
+        )
+
+        if max_name in CROWN_COLOR_LAN:
+            path = PATH_UI_ICON + "crown/crown_" + CROWN_COLOR[max_name] + ".png"
+            self.crown.image = custom_load(path, layout.CROWN_SIZE)
 
     def run(self, dt):
 

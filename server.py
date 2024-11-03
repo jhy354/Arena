@@ -64,6 +64,15 @@ class ResponseHandler:
 
         return status
 
+    @staticmethod
+    def handle_score(status, command):
+
+        for player in status["players"]:
+            if player["id"] == command["id"]:
+                player["score"] = command["score"]
+
+        return status
+
 
 class GameServer:
 

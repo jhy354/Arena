@@ -22,13 +22,14 @@ status = {
                     'image_path': './assets/game/weapon/gun/bullet/bullet.png',  # 子弹贴图
                     'damage': 50  # 子弹伤害
                 }
-            ]  
+            ],
+            'score': 0
         }
     ], 
     'timer':  # 游戏倒计时时间
     {
-        "time": 1,
-        "finished": False  # False/True
+        'time': 1,
+        'finished': False  # False/True
     }
 }
 
@@ -39,28 +40,41 @@ response = {  # 在./server.py/ResponseHandler(CLASS)中处理
     {
         'commands': 
         [
-            {'movement': {  # 调用handle_movement()
-                'id': '1', 
-                'pos': (531, 781)
-            }},
+            {
+                'movement': {  # 调用handle_movement()
+                    'id': '1',
+                    'pos': (531, 781)
+                }
+            },
             
-            {'animation': {  # 调用handle_animation()
-                'id': '1', 
-                'skin': 'p_pale', 
-                'status': 'idle', 
-                'frame_index': 0.79, 
-                'face_direction': 'right'
-            }}, 
+            {
+                'animation': {  # 调用handle_animation()
+                    'id': '1',
+                    'skin': 'p_pale',
+                    'status': 'idle',
+                    'frame_index': 0.79,
+                    'face_direction': 'right'
+                }
+            },
             
-            {'bullet': {  # 调用handle_bullet()
-                'id': '1', 
-                'bullet_list': 
-                [{
-                    'pos': (124, 750), 
-                    'image_path': './assets/game/weapon/gun/bullet/bullet.png', 
-                    'damage': 50
-                }]
-            }}
+            {
+                'bullet': {  # 调用handle_bullet()
+                    'id': '1',
+                    'bullet_list':
+                    [{
+                        'pos': (124, 750),
+                        'image_path': './assets/game/weapon/gun/bullet/bullet.png',
+                        'damage': 50
+                    }]
+                }
+            },
+
+            {
+                'score': {  # 调用handle_bullet()
+                    'id': '1',
+                    'score': 0
+                }
+            }
         ], 
         'id': '1'  # data sender
     }
