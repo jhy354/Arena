@@ -114,6 +114,7 @@ class GameServer:
         """
         while True:
             ready_sockets, _, _ = select.select([conn], [], [], SERVER_TIMEOUT)
+            response = None
 
             if not ready_sockets:
                 conn.send(pickle.dumps(status))
