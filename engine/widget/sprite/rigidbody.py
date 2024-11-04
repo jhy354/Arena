@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from .weapons import Pistol
@@ -60,7 +62,7 @@ class Player(pygame.sprite.Sprite):
             self.weapon = Pistol([all_sprite_group], all_sprite_group)
         else:
             Debug(True) << "Cannot add Pistol into all_sprite group"
-            raise Exception(f"Cannot add Pistol into all_sprite group in {__file__}")
+            raise Exception(f"Cannot add Pistol into all_sprite group")
 
         # print(f"!!!\n{self.groups()}\n!!!")
         # print(f"!!!\n{self.groups()[0]}\n!!!")
@@ -221,6 +223,7 @@ class Player(pygame.sprite.Sprite):
         """
         移出游戏后等待并复活
         """
+        Debug(DEBUG_MODE) << "(Player) Die"
         if self.enable_lan:
             # 暂时移出游戏
             self.rect.x = -1000
@@ -243,6 +246,7 @@ class Player(pygame.sprite.Sprite):
         self.respawn(self.cfg.spawn_point)
 
     def respawn(self, pos):
+        Debug(DEBUG_MODE) << "(Player) Respawn"
         if self.enable_lan:
             self.timers["respawn"].deactivate()
             self.direction.y = 0
@@ -322,4 +326,7 @@ class LANPlayerCfg(DefaultCfg):
         super().__init__()
         self.name = "LAN"
         self.enable_lan = True
-        self.skin = "p_soldier"
+        skin = "p_pale"
+        while skin == "p_pale"
+            skin = random.sample(list(SKIN_DICT.values()), 1))[0]
+        self.skin = skin
