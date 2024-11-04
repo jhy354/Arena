@@ -6,6 +6,7 @@ SCR_SIZE = (1280, 960)
 FPS = 90
 MOVEMENT_RATING = 100
 ARENA_MODE_TIME = 180  # 秒
+# 有关角色数据可在 rigidbody.py 中的 Config 类中修改
 
 VERSION = "e0.1.0.0429"
 CAPTION = "Arena - " + VERSION

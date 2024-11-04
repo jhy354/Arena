@@ -309,6 +309,7 @@ class LAN_PlayGround(PlayGround):
 
     def update_bullet_from_server(self, bullet_list):
         # 在 other_bullet_sprite_dict 中而不在 bullet_list 中则删除
+        del_list = []
         for bullet_id in self.other_bullet_sprite_dict.keys():
             exist_flag = False
             for bullet in bullet_list:
@@ -316,7 +317,9 @@ class LAN_PlayGround(PlayGround):
                     exist_flag = True
             if not exist_flag:
                 self.other_bullet_sprite_dict[bullet_id].destroy()
-                del self.other_bullet_sprite_dict[bullet_id]
+                del_list.append(bullet_id)
+        for del_id in del_list:
+            del self.other_bullet_sprite_dict[del_id]
 
         if bullet_list is None or bullet_list == []:
             return

@@ -165,8 +165,8 @@ class GameServer:
 
             # 客户端强制断开
             except ConnectionResetError as error:
-                print(error)
-                print(f"\033[1;32m[CLIENT]\033[0m client connection reset")
+                # print(error)
+                print(f"\033[1;32m[CLIENT]\033[0m Client Connection Reset")
                 break
 
             except Exception as error:
