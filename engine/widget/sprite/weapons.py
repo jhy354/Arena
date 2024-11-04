@@ -43,7 +43,7 @@ class Weapon(pygame.sprite.Sprite):
 
 # noinspection PyTypeChecker
 class Pistol(Weapon):
-    def __init__(self, group):
+    def __init__(self, group, all_sprite_group):
         super().__init__(group)
         self.source_image = custom_load(PATH_WEAPON_GUN_COMMON + "pistol.png", WEAPON_SIZE)
         self.image = self.source_image
@@ -52,6 +52,7 @@ class Pistol(Weapon):
         self.cd = 500  # ms
         self.can_shoot = True
         self.bullet_group = pygame.sprite.Group()
+        self.all_sprite_group = all_sprite_group
         self.timers = {
             "cd": Timer(self.cd, self.activate_shoot)
         }
@@ -64,9 +65,9 @@ class Pistol(Weapon):
             self.can_shoot = False
             self.timers["cd"].activate()
             if self.direction == "right":
-                Bullet(self.rect.midright, [self.groups()[0], self.bullet_group], 1)
+                Bullet(self.rect.midright, [self.all_sprite_group, self.bullet_group], 1)
             else:
-                Bullet(self.rect.midright, [self.groups()[0], self.bullet_group], -1)
+                Bullet(self.rect.midright, [self.all_sprite_group, self.bullet_group], -1)
 
     def update_timer(self):
         for timer in self.timers.values():
@@ -117,3 +118,10 @@ class Bullet(pygame.sprite.Sprite):
         self.kill()
         self.destroyed = True
         Debug(DEBUG_MODE) << "(Bullet) Destroyed"
+
+    def set_pos(self, pos):
+        """
+        给联机模式用的
+        """
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]

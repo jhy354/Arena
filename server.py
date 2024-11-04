@@ -105,7 +105,7 @@ class GameServer:
             self.sk_server.listen(MAX_LISTEN)
             self.sk_server.settimeout(1.0)  # Allow timeout to process KeyboardInterrupt
         except Exception as error:
-            sys.exit(f"[ERROR IN CREATING A SERVER] {error}")
+            sys.exit(f"\033[1;32m[ERROR IN CREATING A SERVER]\033[0m {error}")
         else:
             print(f"\033[1;36m[SERVER IS LISTENING]\033[0m "
                   f"@ "
@@ -161,17 +161,17 @@ class GameServer:
                     # print(status)
                     # Debug(True).div()
                 else:
-                    print(f'[WARNING] no handler for {response["action"]}')
+                    print(f'\033[1;32m[WARNING]\033[0m no handler for {response["action"]}')
 
             # 客户端强制断开
             except ConnectionResetError as error:
                 print(error)
-                print(f"[CLIENT] client connection reset")
+                print(f"\033[1;32m[CLIENT]\033[0m client connection reset")
                 break
 
             except Exception as error:
-                print(f"[WARNING IN RECEIVING DATA] {error}")
-                print("Response:")
+                print(f"\033[1;32m[WARNING IN RECEIVING DATA]\033[0m {error}")
+                print("\033[1;32mResponse:\033[0m")
                 Debug(True).div()
                 print(response)
                 Debug(True).div()
@@ -209,7 +209,7 @@ class GameServer:
 
             except KeyboardInterrupt:
                 self.sk_server.close()
-                sys.exit(f"[WARNING] {KeyboardInterrupt}")
+                sys.exit(f"\033[1;32m[WARNING]\033[0m {KeyboardInterrupt}")
 
             except socket.timeout:
                 # print(f"[WARNING] {socket.timeout}")
@@ -217,10 +217,10 @@ class GameServer:
                     continue
                 except KeyboardInterrupt:
                     self.sk_server.close()
-                    sys.exit(f"[WARNING] {KeyboardInterrupt}")
+                    sys.exit(f"\033[1;32m[WARNING]\033[0m {KeyboardInterrupt}")
 
             except BaseException as error:
-                print(f'[ERROR] {error}')
+                print(f'\033[1;32m[ERROR]\033[0m {error}')
                 self.sk_server.close()
                 sys.exit()
 

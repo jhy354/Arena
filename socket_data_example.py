@@ -62,6 +62,8 @@ response = {  # 在./server.py/ResponseHandler(CLASS)中处理
                     'id': '1',
                     'bullet_list':
                     [{
+                        'bullet_id': 123456,
+                        'destroy': False,
                         'pos': (124, 750),
                         'image_path': './assets/game/weapon/gun/bullet/bullet.png',
                         'damage': 50

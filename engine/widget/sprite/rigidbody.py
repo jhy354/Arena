@@ -57,7 +57,7 @@ class Player(pygame.sprite.Sprite):
         self.hp = cfg.hp
         self.push_space = False
         if all_sprite_group is not None:
-            self.weapon = Pistol([all_sprite_group])
+            self.weapon = Pistol([all_sprite_group], all_sprite_group)
         else:
             Debug(True) << "Cannot add Pistol into all_sprite group"
             raise Exception(f"Cannot add Pistol into all_sprite group in {__file__}")

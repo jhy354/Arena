@@ -78,7 +78,7 @@ class ArenaScene(Scene):
         self.break_group = pygame.sprite.Group()
         self.gravity_group = pygame.sprite.Group()
         self.shoot_group = pygame.sprite.Group()
-        self.bullet_groups = []
+        self.bullet_groups = []  # 注意这里是个 list 不是 pygame.sprite.Group()
 
         # * Map Tiles * #
         self.map_edges = []

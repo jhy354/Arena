@@ -14,6 +14,7 @@ from engine.utils import set_fonts
 from engine.utils import render_text
 from engine.utils import custom_load
 from engine.widget.sprite import P1Cfg
+from engine.widget.sprite import Bullet
 from engine.widget.sprite import LANPlayerCfg
 from engine.widget.sprite import Player
 from engine.widget.sprite import Generic
@@ -47,11 +48,14 @@ class LAN_PlayGround(PlayGround):
 
         self.score_dist = {}
 
+        self.other_bullet_group = pygame.sprite.Group()
+        self.other_bullet_sprite_dict = {}
+
         if self.active:
             try:
                 self.sk_server.connect((self.server_ip, DEFAULT_SERVER_PORT))
             except Exception as error:
-                print(f"[WARNING] {error}")
+                print(f"\033[1;32m[WARNING]\033[0m {error}")
                 Debug(True).div()
                 if self.active:
                     exit(1)
@@ -186,7 +190,7 @@ class LAN_PlayGround(PlayGround):
                     # print(data)
                     return data
                 except Exception as error:
-                    print(f"[GLOBAL WARNING] {error}")
+                    print(f"\033[1;32m[GLOBAL WARNING]\033[0m {error}")
 
         except Exception as error:
             print(f"[GLOBAL ERROR] {error}")
@@ -194,7 +198,7 @@ class LAN_PlayGround(PlayGround):
 
             data = {'action': 'error', 'value': {'error': error}}
             self.sk_server.send(pickle.dumps(data))
-            print(f"[SENDING]")
+            print(f"\033[1;32m[SENDING]\033[0m")
             print(data)
             # traceback.print_exc()
             exit(0)
@@ -206,6 +210,7 @@ class LAN_PlayGround(PlayGround):
         bullet_list = []
         for b in me.weapon.bullet_group.sprites():
             cur_status = {
+                "bullet_id": id(b),
                 "pos": (b.rect.x, b.rect.y),
                 "image_path": b.image_path,
                 "damage": b.damage,
@@ -296,14 +301,35 @@ class LAN_PlayGround(PlayGround):
                 self.player_obj[player["id"]].face_direction = player["face_direction"]
 
                 # bullet
-                self.update_bullet_from_server(player["id"], player["bullet_list"])
+                self.update_bullet_from_server(player["bullet_list"])
 
             except Exception as error:
-                print(f"[ERROR] {error}")
+                print(f"\033[1;32m[ERROR]\033[0m {error}")
                 Debug(True).div()
 
-    def update_bullet_from_server(self, player_id, bullet_list):
-        pass
+    def update_bullet_from_server(self, bullet_list):
+        # 在 other_bullet_sprite_dict 中而不在 bullet_list 中则删除
+        for bullet_id in self.other_bullet_sprite_dict.keys():
+            exist_flag = False
+            for bullet in bullet_list:
+                if bullet_id == bullet["bullet_id"]:
+                    exist_flag = True
+            if not exist_flag:
+                self.other_bullet_sprite_dict[bullet_id].destroy()
+                del self.other_bullet_sprite_dict[bullet_id]
+
+        if bullet_list is None or bullet_list == []:
+            return
+
+        for bullet in bullet_list:
+            if bullet["bullet_id"] not in self.other_bullet_sprite_dict.keys():
+                self.other_bullet_sprite_dict[bullet["bullet_id"]] = Bullet(
+                    bullet["pos"],
+                    [self.all_sprites, self.other_bullet_group],
+                    "right",
+                )
+            else:
+                self.other_bullet_sprite_dict[bullet["bullet_id"]].set_pos(bullet["pos"])
 
     def update_crown(self):
         if not self.score_dist:  # 检查 score_dist 是否为空
@@ -349,7 +375,7 @@ class LAN_PlayGround(PlayGround):
 
         if max_name in CROWN_COLOR_LAN:
             path = PATH_UI_ICON + "crown/crown_" + CROWN_COLOR_LAN[max_name] + ".png"
-            self.crown.image = custom_load(path, layout.CROWN_SIZE)
+            self.crown.image = custom_load(path, layout.CROWN_SIZE, silent=True)
 
     def run(self, dt):
 
