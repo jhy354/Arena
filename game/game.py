@@ -10,6 +10,7 @@ from game.scenes import StartMenu
 from game.scenes import AboutPage
 from game.scenes import StartPlayGround
 from game.scenes import StartLevel
+from game.scenes import StartPractice
 
 
 class Game:
@@ -37,13 +38,15 @@ class Game:
 
         start_menu = StartMenu()
         about_page = AboutPage()
-        play_ground = StartPlayGround(self.server_ip, randint(0, 2), randint(0, 3))
+        play_ground = StartPlayGround(self.server_ip, randint(0, 3), randint(0, 3))
         level = StartLevel(1, 0)
+        practice = StartPractice(randint(0, 3), randint(0, 3))
 
         scenes["start_menu"] = start_menu
         scenes["about_page"] = about_page
         scenes["play_ground"] = play_ground
         scenes["level"] = level
+        scenes["practice"] = practice
         Debug(DEBUG_MODE, highlight=True) << f"{len(scenes)} SCENE HAS BEEN INITED"
         Debug(DEBUG_MODE).div()
         # print(scenes)
@@ -94,6 +97,11 @@ class Game:
             self.scenes["play_ground"].connect_server()
             self.scenes["play_ground"].activate()
             self.scenes["start_menu"].arena_button.clicked = False
+
+        if self.scenes["start_menu"].practice_button.clicked:
+            self.scenes["start_menu"].deactivate()
+            self.scenes["practice"].activate()
+            self.scenes["start_menu"].practice_button.clicked = False
 
         if self.scenes["start_menu"].quit_button.clicked:
             pygame.quit()

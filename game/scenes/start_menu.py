@@ -35,6 +35,7 @@ class StartMenu(Scene):
         self.settings_button = None
         self.about_button = None
         self.arena_button = None
+        self.practice_button = None
 
         Debug(True) << "Inited StartMenu"
 
@@ -48,6 +49,7 @@ class StartMenu(Scene):
         self.settings_button.activate()
         self.about_button.activate()
         self.arena_button.activate()
+        self.practice_button.activate()
 
         Debug(True) << "Activated StartMenu"
         Debug(True).div()
@@ -62,6 +64,7 @@ class StartMenu(Scene):
         self.settings_button.deactivate()
         self.about_button.deactivate()
         self.arena_button.deactivate()
+        self.practice_button.deactivate()
 
         Debug(True) << "Deactivated StartMenu"
         Debug(True).div()
@@ -148,6 +151,15 @@ class StartMenu(Scene):
             size=glayout.SM_BUTTON_TEXT_SIZE,
             color=glayout.SM_BUTTON_COLOR,
             pos=glayout.SM_START_ARENA_POS,
+            group=[self.all_sprites],
+            z=LAYERS["ui"]
+        )
+
+        self.practice_button = TextButton(
+            text=text_script.SM_PRACTICE,
+            size=glayout.SM_BUTTON_TEXT_SIZE,
+            color=glayout.SM_BUTTON_COLOR,
+            pos=glayout.SM_PRACTICE_POS,
             group=[self.all_sprites],
             z=LAYERS["ui"]
         )
