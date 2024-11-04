@@ -8,7 +8,7 @@ MOVEMENT_RATING = 100
 ARENA_MODE_TIME = 180  # 秒
 # 有关角色数据可在 rigidbody.py 中的 Config 类中修改
 
-VERSION = "e0.1.0.0429"
+VERSION = "e0.2.0.1104"
 CAPTION = "Arena - " + VERSION
 
 FONT_CHS_LIST = [
