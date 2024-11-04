@@ -327,6 +327,6 @@ class LANPlayerCfg(DefaultCfg):
         self.name = "LAN"
         self.enable_lan = True
         skin = "p_pale"
-        while skin == "p_pale"
-            skin = random.sample(list(SKIN_DICT.values()), 1))[0]
+        while skin == "p_pale":
+            skin = random.sample(list(SKIN_DICT.values()), 1)[0]
         self.skin = skin
