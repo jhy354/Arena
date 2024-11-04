@@ -89,6 +89,7 @@ Player Skins:
 </div>
 
 ## Warning⚠️
+> [!NOTE]
 > This project is currently implemented using *pickle*. Please do not run it on public networks to prevent network attacks
 
 ## Developing🧩
