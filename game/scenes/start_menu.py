@@ -100,7 +100,7 @@ class StartMenu(Scene):
 
         # * Player Display Case * #
         self.player_display_case = DisplayCase(
-            start_pos=(900, 0),
+            start_pos=(750, 0),
             surf_list=import_folder(PATH_UI_P_DISPLAY_CASE, glayout.SM_P_DISPLAY_CASE_SIZE),
             group=[self.all_sprites],
             z=LAYERS["ui"]

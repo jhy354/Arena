@@ -1,7 +1,7 @@
 from engine.settings import *
 
 # * StartMenu * #
-SM_P_DISPLAY_CASE_SIZE = (224, 178)
+SM_P_DISPLAY_CASE_SIZE = (448, 356)
 SM_BUTTON_TEXT_SIZE = 46
 SM_TEXT_SIZE = 26
 SM_TEXT_COLOR = (169, 169, 169)
