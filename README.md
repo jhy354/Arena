@@ -5,29 +5,30 @@
 </div>
 Arena is a 2D platform LAN game based on pygame and socket
 
-## Language
+## Language💭
 [简体中文](README.zh_cn.md) | [English](README.md)
 
 ## Contents
-1. [Requirements](#requirements)
-2. [Getting Started](#getting-started)
-3. [Build to Binary](#build-to-binary)
-4. [Screenshots](#screenshots)
-5. [Developing](#developing)
-6. [License GPL-3.0](#license-gpl-30)
+1. [Requirements⚙️](#requirements)
+2. [Getting Started🛠️](#getting-started)
+3. [Build to Binary💻](#build-project)
+4. [Screenshots🎞️](#screenshots)
+5. [Warning⚠️](#warning)
+6. [Developing🧩](#developing)
+7. [License GPL-3.0📄](#license-gpl-30)
 
-## Requirements
+## Requirements⚙️
 - python (Tested on 3.6+)
 - [pip](https://github.com/pypa/pip)
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
 - [pyinstaller](https://github.com/pyinstaller/pyinstaller)
 
-## Getting Started
+## Getting Started🛠️
 
 ### Preparation
 
-1. Make sure you are running this on Python3.4+
+1. Make sure you are running the repo on Python3.6+
 ```shell
 # check your python version
 python --version
@@ -35,9 +36,13 @@ python --version
 
 2. Make sure you already installed following packages in your python environment
 ```shell
-pip install pygame
-pip install pytmx
-pip install pyinstaller
+pip install -r requirements.txt
+```
+or manually
+```shell
+pip install pygame~=2.6.0
+pip install PyTMX~=3.32
+pip install pyinstaller~=6.11.0 
 ```
 
 ### Run Game
@@ -45,23 +50,23 @@ pip install pyinstaller
 1. Run server
 ```shell
 # usage: python server.py [-a | --address] [-m | --map_index] [-b | background_index]
-python server.py -address [SERVER IP]
+python server.py --address [SERVER IP]
 ```
 
 2. Run client
 ```shell
 # usage: python server.py [-a | --address]
-python main.py -address [SERVER IP]
+python main.py --address [SERVER IP]
 ```
 
-### Build Project
+### Build Project💻
 
 You can build *Arena* by *`build.py`*
 ```shell
 python build.py
 ```
 
-## Screenshots
+## Screenshots🎞️
 Game Screen:
 <div align="center">
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/start_menu.png width=45% />
@@ -70,7 +75,7 @@ Game Screen:
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/du_arena.png width=45% />
 </div>
 
-Player:
+Player Skins:
 <div align="center">
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/Player/0.png width=5% />
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/Player/crown.png width=5% />
@@ -83,15 +88,15 @@ Player:
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/Player/soldier.png width=5% />
 </div>
 
-## Warning
-This project is using *pickle*, so DO NOT run it under public network
+## Warning⚠️
+> This project is currently implemented using *pickle*. Please do not run it on public networks to prevent network attacks
 
-## Developing
-See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+## Developing🧩
+> See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-## License GPL-3.0
-Project License can be found [here](LICENSE.md).
+## License GPL-3.0📄
+> Project License can be found [here](LICENSE.md).
 
 ---
 
-Made With ❤️ by [jhy354](https://github.com/jhy354/)
+> Made With ❤️ by [jhy354](https://github.com/jhy354/)
