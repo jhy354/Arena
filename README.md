@@ -24,12 +24,14 @@ Arena is a 2D platform LAN game based on pygame and socket
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
 - [pyinstaller](https://github.com/pyinstaller/pyinstaller)
-> [!TIP]Tested Environment: 
+> [!TIP]
+> Tested Environment: 
 >     pygame 2.6.0 (SDL 2.28.4, Python 3.12.4)
 >     PyTMX 3.32
 > and:
 >     pygame 2.6.0 (SDL 2.28.4, Python 3.11.1)
 >     PyTMX 3.32
+
 > [!NOTE]
 > The game has been tested on Python 3.11.x and 3.12.x. Other versions may work, but are not officially supported.
 > If you encounter an unsolvable issue, please make sure that your environment matches the one mentioned above.  
