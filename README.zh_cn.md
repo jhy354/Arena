@@ -24,7 +24,8 @@ Arena是一个基于pygame编写的局域网2D平台类游戏
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
 - [pyinstaller](https://github.com/pyinstaller/pyinstaller)
-> [!TIP]经过测试的运行环境:
+> [!TIP]
+> 经过测试的运行环境:
 >     pygame 2.6.0 (SDL 2.28.4, Python 3.12.4)
 >     PyTMX 3.32
 > 以及:
