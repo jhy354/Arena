@@ -9,32 +9,43 @@ Arena is a 2D platform LAN game based on pygame and socket
 [简体中文](README.zh_cn.md) | [English](README.md)
 
 ## Contents
-1. [Requirements⚙️](#requirements)
+1. [Dependencies⚙️](#dependencies)
 2. [Getting Started🛠️](#getting-started)
-3. [Build to Binary💻](#build-project)
-4. [Screenshots🎞️](#screenshots)
-5. [Warning⚠️](#warning)
-6. [Developing🧩](#developing)
-7. [License GPL-3.0📄](#license-gpl-30)
+3. [Build the Project💻](#build-the-project)
+4. [Game Controls🎮](#game-controls)
+5. [Gameplay Screenshots🎞️](#gameplay-screenshots)
+6. [Warning⚠️](#warning)
+7. [Developing🧩](#developing)
+8. [License GPL-3.0📄](#license-gpl-30)
 
-## Requirements⚙️
-- python (Tested on 3.6+)
+## Dependencies⚙️
+- python
 - [pip](https://github.com/pypa/pip)
 - [pygame](https://github.com/pygame/pygame)
 - [pytmx](https://github.com/bitcraft/pytmx)
 - [pyinstaller](https://github.com/pyinstaller/pyinstaller)
+> [!TIP]Tested Environment: 
+>     pygame 2.6.0 (SDL 2.28.4, Python 3.12.4)
+>     PyTMX 3.32
+> and:
+>     pygame 2.6.0 (SDL 2.28.4, Python 3.11.1)
+>     PyTMX 3.32
+> [!NOTE]
+> The game has been tested on Python 3.11.x and 3.12.x. Other versions may work, but are not officially supported.
+> If you encounter an unsolvable issue, please make sure that your environment matches the one mentioned above.  
+> You can also ask questions in the *Issue* section.
 
 ## Getting Started🛠️
 
 ### Preparation
 
-1. Make sure you are running the repo on Python3.6+
+1. It is recommended to run on Python 3.12 or higher.
 ```shell
 # check your python version
-python --version
+python --version~~~~
 ```
 
-2. Make sure you already installed following packages in your python environment
+2. Ensure that the following packages are installed in your Python environment
 ```shell
 pip install -r requirements.txt
 ```
@@ -59,14 +70,17 @@ python server.py --address [SERVER IP]
 python main.py --address [SERVER IP]
 ```
 
-### Build Project💻
+### Build the Project💻
 
 You can build *Arena* by *`build.py`*
 ```shell
 python build.py
 ```
 
-## Screenshots🎞️
+## Game Controls🎮
+- Use **W/A/S/D** or **UP/LEFT/DOWN/RIGHT** to move or attack.
+
+## Gameplay Screenshots🎞️
 Game Screen:
 <div align="center">
 <img src=https://raw.githubusercontent.com/jhy354/READMEIMAGE/master/Arena/start_menu.png width=45% />
@@ -89,14 +103,14 @@ Player Skins:
 </div>
 
 ## Warning⚠️
-> [!NOTE]
-> This project is currently implemented using *pickle*. Please do not run it on public networks to prevent network attacks
+> [!WARNING]
+> This project is currently implemented using *pickle*. Please avoid running it on public networks to prevent potential security risks.
 
 ## Developing🧩
 > See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ## License GPL-3.0📄
-> Project License can be found [here](LICENSE.md).
+> Project License is available [here](LICENSE.md).
 
 ---
 
