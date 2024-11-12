@@ -41,7 +41,7 @@ Arena是一个基于pygame编写的局域网2D平台类游戏
 
 ### 准备工作
 
-1. 建议在 ~~~~Python3.12 及以上版本中运行
+1. 建议在 Python3.12 及以上版本中运行
 ```shell
 # 检查python版本
 python --version
