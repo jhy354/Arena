@@ -44,7 +44,7 @@ Arena is a 2D platform LAN game based on pygame and socket
 1. It is recommended to run on Python 3.12 or higher.
 ```shell
 # check your python version
-python --version~~~~
+python --version
 ```
 
 2. Ensure that the following packages are installed in your Python environment
